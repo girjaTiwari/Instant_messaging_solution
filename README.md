@@ -1,13 +1,6 @@
 # Instance Messaging App
 
-Element Android is an Android Matrix Client provided by [Element](https://element.io/). The app can be run on every Android devices with Android OS Lollipop and more (API 21).
-
-It is a total rewrite of [Riot-Android](https://github.com/vector-im/riot-android) with a new user experience.
-
-[<img src="resources/img/google-play-badge.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=im.vector.app)
-[<img src="resources/img/f-droid-badge.png" alt="Get it on F-Droid" height="60">](https://f-droid.org/app/im.vector.app)
-
-Build of develop branch: [![GitHub Action](https://github.com/vector-im/element-android/actions/workflows/build.yml/badge.svg?query=branch%3Adevelop)](https://github.com/vector-im/element-android/actions/workflows/build.yml?query=branch%3Adevelop) Nightly test status: [![allScreensTest](https://github.com/vector-im/element-android/actions/workflows/nightly.yml/badge.svg)](https://github.com/vector-im/element-android/actions/workflows/nightly.yml)
+Element Android is an Android Matrix Client provided by ](https://www.startelelogic.com//). The app can be run on every Android devices with Android OS Lollipop and more (API 21).
 
 
 # New Android SDK
