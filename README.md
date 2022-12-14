@@ -1,7 +1,6 @@
 # Instance Messaging App
 
-Element Android is an Android Matrix Client provided by ](https://www.startelelogic.com//). The app can be run on every Android devices with Android OS Lollipop and more (API 21).
-
+Element Android is an Android Matrix Client (https://www.startelelogic.com//). The app can be run on every Android devices with Android OS
 
 # New Android SDK
 
