@@ -1,4 +1,4 @@
-# Element Android
+# Instance Messaging App
 
 Element Android is an Android Matrix Client provided by [Element](https://element.io/). The app can be run on every Android devices with Android OS Lollipop and more (API 21).
 
