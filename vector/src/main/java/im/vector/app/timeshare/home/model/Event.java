@@ -8,11 +8,11 @@ import java.util.List;
 public class Event {
 
    String activity_uuid,activity_name,activity_description,user_uuid,profile_name,user_pic,first_name,
-           last_name,category_name,sub_category,start_time,end_time,post_path,like_count,
+           last_name,category_name,sub_category,start_date_and_time,end_date_and_time,post_path,like_count,
         is_like,created_at,location;
     public List<JoiningUser> GetActivityJoinings = new ArrayList<>();
 
-    public Event(String activity_uuid, String activity_name, String activity_description, String user_uuid, String profile_name, String user_pic, String first_name, String last_name, String category_name, String sub_category, String start_time, String end_time, String post_path, String like_count, String is_like, String created_at, String location, List<JoiningUser> getActivityJoinings) {
+    public Event(String activity_uuid, String activity_name, String activity_description, String user_uuid, String profile_name, String user_pic, String first_name, String last_name, String category_name, String sub_category, String start_date_and_time, String end_date_and_time, String post_path, String like_count, String is_like, String created_at, String location, List<JoiningUser> getActivityJoinings) {
         this.activity_uuid = activity_uuid;
         this.activity_name = activity_name;
         this.activity_description = activity_description;
@@ -23,8 +23,8 @@ public class Event {
         this.last_name = last_name;
         this.category_name = category_name;
         this.sub_category = sub_category;
-        this.start_time = start_time;
-        this.end_time = end_time;
+        this.start_date_and_time = start_date_and_time;
+        this.end_date_and_time = end_date_and_time;
         this.post_path = post_path;
         this.like_count = like_count;
         this.is_like = is_like;
@@ -73,12 +73,12 @@ public class Event {
         return sub_category;
     }
 
-    public String getStart_time() {
-        return start_time;
+    public String getStart_date_and_time() {
+        return start_date_and_time;
     }
 
-    public String getEnd_time() {
-        return end_time;
+    public String getEnd_date_and_time() {
+        return end_date_and_time;
     }
 
     public String getPost_path() {

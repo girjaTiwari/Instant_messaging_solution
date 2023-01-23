@@ -20,6 +20,7 @@ package im.vector.app.timeshare.webservices;
 
 import java.util.List;
 
+import im.vector.app.timeshare.api_request_body.Accept_and_DeclineRequest;
 import im.vector.app.timeshare.api_request_body.SendRequest;
 import im.vector.app.timeshare.api_response_body.EventResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendListResponse;
@@ -65,6 +66,9 @@ public interface RetrofitAPI {
 
     @POST("undo-sent-friend-request")
     Call<CommonResponse> undoFriendRequest(@Body SendRequest body);
+
+    @POST("friend-requests")
+    Call<CommonResponse> accept_and_decline(@Body Accept_and_DeclineRequest body);
     @Multipart
    @POST("upload-profile-pic")
     Call<UploadImage>uploadProfileImage(@Part MultipartBody.Part file, @Part("user_uuid") RequestBody user_uuid);

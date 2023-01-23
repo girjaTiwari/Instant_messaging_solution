@@ -56,9 +56,6 @@ public class FindFriendFragment extends Fragment {
         String user_uuid =  user.get(TSSessionManager.KEY_user_uuid);
         System.out.println("uuid>>"+user_uuid);
         if (user_uuid!=null){
-            //suggestion_list(uuid);
-           // getSentFriendRequestList(uuid);
-
             getSentFriendRequestList(user_uuid);
             getSuggetionList(user_uuid);
 
@@ -126,7 +123,7 @@ public class FindFriendFragment extends Fragment {
         call.enqueue(new Callback<GetFriendSuggetionResponse>() {
             @Override
             public void onResponse(Call<GetFriendSuggetionResponse> call, retrofit2.Response<GetFriendSuggetionResponse> response) {
-                System.out.println("suggetion-list>>" + response.toString());
+              //  System.out.println("suggetion-list>>" + response.toString());
                 //  myDialog.hideDialog(mContext);
                 if(response.body()!=null){
 

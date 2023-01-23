@@ -157,8 +157,8 @@ public class HomeFragment extends Fragment {
                                 String last_name = event.getLast_name();
                                 String category_name = event.getCategory_name();
                                 String sub_category = event.getSub_category();
-                                String start_date_and_time = event.getStart_time();
-                                String end_date_and_time = event.getEnd_time();
+                                String start_date_and_time = event.getStart_date_and_time();
+                                String end_date_and_time = event.getEnd_date_and_time();
                                 String post_path = event.getPost_path();
                                 String like_count = event.getLike_count();
                                 String is_like = event.getIs_like();

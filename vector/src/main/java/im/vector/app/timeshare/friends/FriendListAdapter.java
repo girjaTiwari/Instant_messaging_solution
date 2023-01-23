@@ -20,13 +20,20 @@ import java.util.HashMap;
 
 import im.vector.app.R;
 import im.vector.app.timeshare.TSUtils.MyDialog;
+import im.vector.app.timeshare.api_request_body.Accept_and_DeclineRequest;
+import im.vector.app.timeshare.api_request_body.SendRequest;
+import im.vector.app.timeshare.api_response_body.CommonResponse;
+import im.vector.app.timeshare.webservices.ApiUtils;
+import im.vector.app.timeshare.webservices.RetrofitAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.MyViewHolder> {
     Context mContext;
    ArrayList<RequestModel>arrayList = new ArrayList<>();
    MyDialog myDialog;
 
-
+    private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     public FriendListAdapter(Context mContext, ArrayList<RequestModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
@@ -54,60 +61,48 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
         holder.iv_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // accept_friend_request(model.getFriend_request_uuid(),true);
+                accept_friend_request(model.getFriend_request_uuid(),true);
             }
         });
         holder.iv_decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // accept_friend_request(model.getFriend_request_uuid(),false);
+                accept_friend_request(model.getFriend_request_uuid(),false);
             }
         });
     }
 
-   /* private void accept_friend_request(String friend_request_uuid, boolean isAccepted) {
+    private void accept_friend_request(String friend_request_uuid, boolean isAccepted) {
         myDialog.showProgresbar(mContext);
-        HashMap<String,String> params = new HashMap<>();
-        params.put("friend_request_uuid",friend_request_uuid);
-        params.put("is_accepted",String.valueOf(isAccepted));
-
-        System.out.println("param>>"+params);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + friend_request, new JSONObject(params), new Response.Listener<JSONObject>() {
+        Accept_and_DeclineRequest accept_and_declineRequest = new Accept_and_DeclineRequest(friend_request_uuid, String.valueOf(isAccepted));
+        Call<CommonResponse> call = mAPIService.accept_and_decline(accept_and_declineRequest);
+        call.enqueue(new Callback<CommonResponse>() {
             @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("accept_request>>"+response);
-                 myDialog.hideDialog(mContext);
+            public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
+                System.out.println("accept-decline>>" + response.toString());
+                myDialog.hideDialog(mContext);
+                if (response.body() != null) {
 
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
+                    CommonResponse sendRequest = response.body();
+                    String status = sendRequest.getStatus();
+                    String mesage = sendRequest.getMsg();
                     if (status.equals("1"))
                     {
                         Toast.makeText(mContext, ""+mesage, Toast.LENGTH_SHORT).show();
                     }else {
-
-                         Toast.makeText(mContext, ""+mesage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, ""+mesage, Toast.LENGTH_SHORT).show();
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("accept_request>>"+error);
-    myDialog.hideDialog(mContext);
 
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                myDialog.hideDialog(mContext);
+                System.out.println("error>>" + t.getCause());
             }
         });
 
-        requestQueue = Volley.newRequestQueue(mContext);
-        requestQueue.add(jsonObjectRequest);
-
-    }*/
+    }
 
     @Override
     public int getItemCount() {

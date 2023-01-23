@@ -86,7 +86,7 @@ public class RvEventsAdapter extends RecyclerView.Adapter<RvEventsAdapter.MyView
         }
 */
         holder.tv_name.setText(model.getActivity_name());
-        holder.tv_date.setText(model.getStart_time());
+        holder.tv_date.setText(model.getStart_date_and_time());
         holder.tv_location.setText(model.getLocation());
         holder.tv_category.setText(model.getCategory_name());
 
