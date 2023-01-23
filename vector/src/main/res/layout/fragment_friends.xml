@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="im.vector.app.timeshare.friends.FriendsFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="118dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/rl_toolbar_main">
+            <LinearLayout
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/full_logo"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_toLeftOf="@+id/iv_notifi"
+                android:layout_marginLeft="8dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_search_icon"
+                android:padding="14dp"
+                android:layout_width="50dp"
+                android:layout_height="45dp"/>
+
+            <ImageView
+                android:id="@+id/iv_notifi"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_notification"
+                android:padding="14dp"
+                android:layout_width="50dp"
+                android:layout_height="45dp"/>
+
+        </RelativeLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            app:tabTextAppearance="@style/tabtext_style"
+            app:tabSelectedTextColor="@color/white"
+            android:background="@android:color/transparent"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabIndicatorHeight="3dp"
+            android:id="@+id/tab_layout"
+            app:tabTextColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_marginBottom="64dp"
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_top"
+        app:layout_anchor="@id/ll_top"
+        app:layout_anchorGravity="bottom" />
+
+
+</RelativeLayout>

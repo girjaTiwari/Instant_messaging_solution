@@ -17,9 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,9 +27,9 @@ import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.home.model.Event;
 import im.vector.app.timeshare.home.model.OngoingModel;
 import im.vector.app.timeshare.webservices.ApiUtils;
-import im.vector.app.timeshare.webservices.EventResponse;
+import im.vector.app.timeshare.api_response_body.EventResponse;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
-import im.vector.app.timeshare.webservices.TimeLineRequest;
+import im.vector.app.timeshare.api_request_body.CommonRequest;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -136,13 +133,12 @@ public class HomeFragment extends Fragment {
 
     private void getAllActvity(String uuid) {
         myDialog.showProgresbar(mContext);
-        TimeLineRequest timeLineRequest = new TimeLineRequest(uuid);
-        Call<EventResponse> call = mAPIService.postJson(timeLineRequest);
+        CommonRequest timeLineRequest = new CommonRequest(uuid);
+        Call<EventResponse> call = mAPIService.getTimelines(timeLineRequest);
         call.enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
-                 System.out.println("error>>  response " + response.toString());
-                Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+                 System.out.println("timeline>>" + response.toString());
                 myDialog.hideDialog(mContext);
                 if(response.body()!=null){
 
@@ -170,7 +166,7 @@ public class HomeFragment extends Fragment {
                                 String location = event.getLocation();
                                 List joiningUserList = event.getGetActivityJoinings();
 
-                                // add static data in eventlist
+                                // add data in eventlist
                                 eventList.add(new Event(activity_uuid,activity_name,activity_description,
                                         user_uuid,profile_name,user_pic,first_name,last_name,category_name,sub_category,
                                         start_date_and_time,end_date_and_time,post_path,like_count,is_like,created_at,location,joiningUserList));
@@ -200,96 +196,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-/*        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + get_timeline_by_user_uuid, new JSONObject(params), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("timeline>>"+response);
-                shimmerFrameLayout.stopShimmer();
-                shimmerFrameLayout.setVisibility(View.GONE);
-                shimmer_ongoing_event.stopShimmer();
-                shimmer_ongoing_event.setVisibility(View.GONE);
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
-                    if (status.equals("1"))
-                    {
-                       // tv_no_request_found.setVisibility(View.GONE);
-                        JSONArray jsonArray = response.getJSONArray("get_timelines");
-                        if (jsonArray.length()>0){
-                            for (int i=0;i<jsonArray.length();i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                String activity_uuid = object.getString("activity_uuid");
-                                String activity_name = object.getString("activity_name");
-                                String activity_description = object.getString("activity_description");
-                                String user_uuid = object.getString("user_uuid");
-                                String profile_name = object.getString("profile_name");
-                                String user_pic = object.getString("user_pic");
-                                String first_name = object.getString("first_name");
-                                String last_name = object.getString("last_name");
-                                String category_name = object.getString("category_name");
-                                String sub_category = object.getString("sub_category");
-                                String start_date_and_time = object.getString("start_date_and_time");
-                                String end_date_and_time = object.getString("end_date_and_time");
-                                String post_path = object.getString("post_path");
-                                String like_count = object.getString("like_count");
-                                String is_like = object.getString("is_like");
-                                String created_at = object.getString("created_at");
-                                String location = object.getString("location");
-                                JSONArray joinings = object.getJSONArray("GetActivityJoinings");
-
-
-                                // add static data in eventlist
-                               eventList.add(new Event(activity_uuid,activity_name,activity_description,
-                                       user_uuid,profile_name,user_pic,first_name,last_name,category_name,sub_category,
-                                       start_date_and_time,end_date_and_time,post_path,like_count,is_like,created_at,location,joinings));
-
-                            }
-                        }
-
-                        // set data in all events
-                        rv_allevents.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        rv_allevents.setHasFixedSize(true);
-                        rvEventsAdapter = new RvEventsAdapter(getActivity(), eventList);
-                        rv_allevents.setAdapter(rvEventsAdapter);
-                       *//* ******************************************//* // ongoing event list
-                        rv_ongoing_events.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
-                        rv_ongoing_events.setHasFixedSize(true);
-                        rvOngoingAdapter = new RvOngoingAdapter(getActivity(), eventList);
-                        rv_ongoing_events.setAdapter(rvOngoingAdapter);
-
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("timeline>>"+error);
-
-            }
-        });
-
-        requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(jsonObjectRequest);
-        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });*/
     }
 
 

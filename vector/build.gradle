@@ -278,7 +278,7 @@ dependencies {
 
     implementation project(":library:external:dialpad")
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
-    //implementation 'com.facebook.shimmer:shimmer:0.5.0'
+   // implementation 'com.facebook.shimmer:shimmer:0.5.0'
     //implementation 'com.android.volley:volley:1.2.1'
     // JWT
     api libs.jsonwebtoken.jjwtApi
@@ -326,6 +326,7 @@ dependencies {
     androidTestImplementation(libs.jetbrains.coroutinesTest) {
         exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
     }
+
     // Plant Timber tree for test
     androidTestImplementation libs.tests.timberJunitRule
     // "The one who serves a great Espresso"

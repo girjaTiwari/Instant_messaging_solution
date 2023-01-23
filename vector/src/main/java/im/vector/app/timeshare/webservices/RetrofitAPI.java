@@ -18,11 +18,16 @@ package im.vector.app.timeshare.webservices;
 
 
 
-import org.json.JSONObject;
-
 import java.util.List;
 
-import im.vector.app.timeshare.home.model.Event;
+import im.vector.app.timeshare.api_response_body.EventResponse;
+import im.vector.app.timeshare.api_response_body.GetFriendListResponse;
+import im.vector.app.timeshare.api_response_body.GetFriendRequestResponse;
+import im.vector.app.timeshare.api_response_body.GetFriendSuggetionResponse;
+import im.vector.app.timeshare.api_response_body.LoginResponse;
+import im.vector.app.timeshare.api_response_body.UploadImage;
+import im.vector.app.timeshare.api_request_body.LoginRequest;
+import im.vector.app.timeshare.api_request_body.CommonRequest;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -35,11 +40,19 @@ public interface RetrofitAPI {
 
 
     @POST("loggedin")
-    Call<LoginResponse> postJson(@Body LoginRequest body);
+    Call<LoginResponse> login(@Body LoginRequest body);
 
     @POST("get-timeline-by-user-uuid")
-    Call<EventResponse> postJson(@Body TimeLineRequest body);
+    Call<EventResponse> getTimelines(@Body CommonRequest body);
 
+    @POST("get-friend-list")
+    Call<GetFriendListResponse> getFriends(@Body CommonRequest body);
+
+    @POST("get-friend-request")
+    Call<GetFriendRequestResponse> getFriendRequest(@Body CommonRequest body);
+
+    @POST("suggestion-list")
+    Call<GetFriendSuggetionResponse> getFriendSuggetion(@Body CommonRequest body);
 
     @Multipart
    @POST("upload-profile-pic")

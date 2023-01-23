@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <ImageView
+        android:layout_marginLeft="8dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/iv_friend_avtar"
+        android:src="@drawable/avtar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+    <LinearLayout
+        android:layout_marginLeft="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="7dp"
+        android:gravity="center|left"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/ll_req_accept_and_decline"
+        android:layout_toRightOf="@+id/iv_friend_avtar"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_friend_name"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black"
+            android:text="Andrew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_message"
+            android:fontFamily="@font/ubuntu_regular"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_req_accept_and_decline"
+        android:layout_marginRight="8dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_invited"
+            android:visibility="gone"
+            android:background="@drawable/red_rounded_bg"
+            android:text="Invited"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/white"
+            android:layout_marginLeft="8dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"/>
+
+        <TextView
+            android:id="@+id/tv_invite"
+            android:visibility="gone"
+            android:background="@drawable/grey_line_bg_with_stroke"
+            android:text="Invite"
+            android:layout_marginLeft="8dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            android:layout_width="90dp"
+            android:layout_height="36dp"/>
+
+
+        <ImageView
+            android:id="@+id/iv_cross"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="14dp"
+            android:src="@drawable/ic_cross"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package im.vector.app.timeshare.webservices;
+package im.vector.app.timeshare.api_response_body;
 
-import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
 
-public class LoginResponse {
+import im.vector.app.timeshare.friends.FriendModel;
+import im.vector.app.timeshare.friends.RequestModel;
 
-    String Status,Msg;
-    int ResponseCode;
-    AccountStatus account_status;
+public class GetFriendRequestResponse {
+    String Status,Msg,ResponseCode;
 
-    public LoginResponse(String status, String msg, int responseCode, AccountStatus account_status) {
+    public List<RequestModel> get_friend_requests = new ArrayList<>();
+
+    public GetFriendRequestResponse(String status, String msg, String responseCode, List<RequestModel> get_friend_requests) {
         Status = status;
         Msg = msg;
         ResponseCode = responseCode;
-        this.account_status = account_status;
+        this.get_friend_requests = get_friend_requests;
     }
 
     public String getStatus() {
@@ -39,11 +42,11 @@ public class LoginResponse {
         return Msg;
     }
 
-    public int getResponseCode() {
+    public String getResponseCode() {
         return ResponseCode;
     }
 
-    public AccountStatus getAccount_status() {
-        return account_status;
+    public List<RequestModel> getGet_friend_requests() {
+        return get_friend_requests;
     }
 }

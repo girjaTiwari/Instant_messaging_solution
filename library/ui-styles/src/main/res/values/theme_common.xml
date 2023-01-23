@@ -57,5 +57,8 @@
     <style name="Theme.EQuip.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.EQuip.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+    <style name="tabtext_style">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
 </resources>

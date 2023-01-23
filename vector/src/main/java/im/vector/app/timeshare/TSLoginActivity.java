@@ -33,15 +33,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import im.vector.app.R;
 import im.vector.app.timeshare.TSUtils.MyDialog;
+import im.vector.app.timeshare.api_response_body.LoginResponse;
 import im.vector.app.timeshare.webservices.AccountStatus;
 import im.vector.app.timeshare.webservices.ApiUtils;
-import im.vector.app.timeshare.webservices.LoginRequest;
-import im.vector.app.timeshare.webservices.LoginResponse;
+import im.vector.app.timeshare.api_request_body.LoginRequest;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,7 +94,7 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
                         throw new RuntimeException(e);
                     }*/
                     LoginRequest loginRequest = new LoginRequest(email,pass);
-                    Call<LoginResponse> call = mAPIService.postJson(loginRequest);
+                    Call<LoginResponse> call = mAPIService.login(loginRequest);
                     call.enqueue(new Callback<LoginResponse>() {
                         @Override
                         public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {

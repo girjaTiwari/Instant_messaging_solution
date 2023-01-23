@@ -66,6 +66,7 @@ import im.vector.app.timeshare.categ.Category;
 import im.vector.app.timeshare.categ.SingleRecyclerViewAdapter;
 import im.vector.app.timeshare.categ.SubCategory;
 import im.vector.app.timeshare.categ.SubCategorySingleSelectionAdapter;
+import im.vector.app.timeshare.friends.FriendsFragment;
 import im.vector.app.timeshare.home.HomeFragment;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -220,7 +221,7 @@ public class TSMainActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-/*       rl_users.setOnClickListener(new View.OnClickListener() {
+       rl_users.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isHome = false;
@@ -248,7 +249,7 @@ public class TSMainActivity extends AppCompatActivity implements View.OnClickLis
                         .addToBackStack(null)
                         .commit();
             }
-        });*/
+        });
 
         rl_chat.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package im.vector.app.timeshare.webservices;
+package im.vector.app.timeshare.api_request_body;
 
-public class TimeLineRequest {
-    String user_uuid;
+public class LoginRequest {
+     String email_id;
+     String password;
 
-    public TimeLineRequest(String user_uuid) {
-        this.user_uuid = user_uuid;
+    public LoginRequest(String email_id, String password) {
+        this.email_id = email_id;
+        this.password = password;
     }
 }

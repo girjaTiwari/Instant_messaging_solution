@@ -14,47 +14,39 @@
  * limitations under the License.
  */
 
-package im.vector.app.timeshare.webservices;
+package im.vector.app.timeshare.api_response_body;
 
-public class UploadImage {
-    String Status,Msg,ResponseCode,Activity_UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-    public UploadImage(String status, String msg, String responseCode, String activity_UUID) {
+import im.vector.app.timeshare.friends.RequestModel;
+import im.vector.app.timeshare.friends.Suggetion;
+
+public class GetFriendSuggetionResponse {
+    String Status,Msg,ResponseCode;
+
+    public List<Suggetion> suggestion_list = new ArrayList<>();
+
+    public GetFriendSuggetionResponse(String status, String msg, String responseCode, List<Suggetion> suggestion_list) {
         Status = status;
         Msg = msg;
         ResponseCode = responseCode;
-        Activity_UUID = activity_UUID;
+        this.suggestion_list = suggestion_list;
     }
 
     public String getStatus() {
         return Status;
     }
 
-    public void setStatus(String status) {
-        Status = status;
-    }
-
     public String getMsg() {
         return Msg;
-    }
-
-    public void setMsg(String msg) {
-        Msg = msg;
     }
 
     public String getResponseCode() {
         return ResponseCode;
     }
 
-    public void setResponseCode(String responseCode) {
-        ResponseCode = responseCode;
-    }
-
-    public String getActivity_UUID() {
-        return Activity_UUID;
-    }
-
-    public void setActivity_UUID(String activity_UUID) {
-        Activity_UUID = activity_UUID;
+    public List<Suggetion> getSuggestion_list() {
+        return suggestion_list;
     }
 }
