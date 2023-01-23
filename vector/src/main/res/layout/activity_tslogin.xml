@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
+    tools:context=".timeshare.TSLoginActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@drawable/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"/>
+
+            <TextView
+                android:layout_marginTop="12dp"
+                android:textSize="26sp"
+                android:textColor="@color/palette_white"
+                android:fontFamily="@font/ubuntu_regular"
+                android:text="TimeShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:layout_marginTop="50dp"
+                android:textSize="24sp"
+                android:textColor="@color/palette_white"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Let's Get In."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <RelativeLayout
+                android:layout_marginTop="36dp"
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/edt_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Email"
+                    android:maxLength="65"
+                    android:singleLine="true"
+                    android:text="girja.tiwari@startelelogic.com"
+                    android:textColor="@color/palette_white"
+                    android:textColorHint="#EFEDED"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:background="#ccc"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <RelativeLayout
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_show_pin"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_eye"
+                    app:tint="@color/palette_white" />
+
+                <EditText
+                    android:id="@+id/edt_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_toLeftOf="@+id/img_show_pin"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:text="qwerty"
+                    android:textColor="@color/palette_white"
+                    android:textColorHint="#EFEDED"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:background="#ccc"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:id="@+id/tv_forgot_pass"
+                android:textColor="@color/palette_white"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="36dp"
+                android:layout_gravity="left"
+                android:padding="5dp"
+                android:text="Forgot Password?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
+                android:background="@drawable/accent_color_rounded_bg"
+                android:text="Sign In"
+                android:fontFamily="@font/poppins_medium"
+                android:textAllCaps="false"
+                android:textColor="@color/palette_white"
+                android:textSize="16sp" />
+
+
+            <LinearLayout
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:padding="4dp"
+                    android:textColor="@color/palette_gray_150"
+                    android:layout_gravity="left"
+                    android:text="Don't have an account? "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/tv_dont_account"
+                    android:textSize="14sp"
+                    android:textColor="@color/palette_white"
+                    android:layout_gravity="left"
+                    android:text="Sign Up"
+                    android:padding="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

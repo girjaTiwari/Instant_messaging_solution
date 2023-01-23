@@ -23,5 +23,3 @@
 /yarn.lock
 /node_modules
 **/out/failures
-
-/matrix-sdk-android/build/.transforms/b107ed43ab73f0739a9e8185cac28d95/transformed/debug/io/realm/org_matrix_android_sdk_internal_auth_db_PendingSessionEntityRealmProxy$PendingSessionEntityColumnInfo.dex

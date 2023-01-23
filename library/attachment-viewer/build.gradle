@@ -51,7 +51,6 @@ dependencies {
     implementation project(":library:core-utils")
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-
     implementation libs.androidx.core
     implementation libs.androidx.appCompat
     implementation libs.androidx.recyclerview

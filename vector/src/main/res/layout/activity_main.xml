@@ -5,10 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@drawable/splash"
     tools:context=".features.MainActivity">
 
-    <ProgressBar
+   <ProgressBar
         android:id="@+id/progressBar"
         style="@style/Widget.Vector.ProgressBar.Horizontal"
         android:layout_width="120dp"
@@ -22,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/status"
+        android:id="@+id/status_"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/layout_horizontal_margin"

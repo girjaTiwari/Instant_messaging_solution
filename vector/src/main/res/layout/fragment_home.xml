@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="im.vector.app.timeshare.home.HomeFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/rl_toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageView
+                android:id="@+id/iv_filter"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_filter_icon" />
+
+            <LinearLayout
+                android:id="@+id/ll_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/full_logo" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toLeftOf="@+id/iv_notifi"
+                android:padding="14dp"
+                android:src="@drawable/ic_search_icon" />
+
+            <ImageView
+                android:id="@+id/iv_notifi"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="14dp"
+                android:src="@drawable/ic_notification" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/rl_searchlayout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                app:queryHint="Search Event"
+                app:iconifiedByDefault="true"
+                android:layout_height="match_parent">
+            </androidx.appcompat.widget.SearchView>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+   <androidx.core.widget.NestedScrollView
+       android:layout_below="@+id/ll_header"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <LinearLayout
+           android:background="#F5F5F5"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <TextView
+               android:layout_margin="16dp"
+               android:text="Ongoing events"
+               android:fontFamily="@font/poppins_medium"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+
+           <LinearLayout
+               android:orientation="vertical"
+               android:background="@color/ongoing_event_color"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+<!--               <com.facebook.shimmer.ShimmerFrameLayout-->
+<!--                   android:id="@+id/shimmer_ongoing_event"-->
+<!--                   android:layout_width="wrap_content"-->
+<!--                   android:layout_height="wrap_content"-->
+<!--                   app:shimmer_repeat_mode="restart"-->
+<!--                   app:shimmer_shape="radial">-->
+
+<!--                   <LinearLayout-->
+<!--                       android:orientation="horizontal"-->
+<!--                       android:layout_width="match_parent"-->
+<!--                       android:layout_height="match_parent">-->
+<!--                       <include layout="@layout/shimmer_layout_ongoing_event"></include>-->
+<!--                       <include layout="@layout/shimmer_layout_ongoing_event"></include>-->
+<!--                       <include layout="@layout/shimmer_layout_ongoing_event"></include>-->
+
+<!--                   </LinearLayout>-->
+
+<!--               </com.facebook.shimmer.ShimmerFrameLayout>-->
+
+               <androidx.recyclerview.widget.RecyclerView
+                   android:layout_marginLeft="16dp"
+                   android:id="@+id/rv_ongoing_events"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+
+               </androidx.recyclerview.widget.RecyclerView>
+
+           </LinearLayout>
+
+         <!--  <com.facebook.shimmer.ShimmerFrameLayout
+               android:id="@+id/shimmer_view_container"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               app:shimmer_repeat_mode="restart"
+               app:shimmer_shape="radial">
+
+               <LinearLayout
+                   android:orientation="vertical"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+                   <include layout="@layout/shimmer_layout_timeline"></include>
+                   <include layout="@layout/shimmer_layout_timeline"></include>
+                   <include layout="@layout/shimmer_layout_timeline"></include>
+
+               </LinearLayout>
+
+           </com.facebook.shimmer.ShimmerFrameLayout>-->
+
+           <androidx.recyclerview.widget.RecyclerView
+               android:layout_marginBottom="64dp"
+               android:id="@+id/rv_allevents"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+           </androidx.recyclerview.widget.RecyclerView>
+
+       </LinearLayout>
+
+   </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

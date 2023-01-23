@@ -220,6 +220,8 @@ dependencies {
     // implementation 'com.github.MikeOrtiz:TouchImageView:3.0.2'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
+   // implementation 'com.android.volley:volley:1.2.1'
+
     implementation libs.github.glide
     kapt libs.github.glideCompiler
     implementation 'com.github.yalantis:ucrop:2.2.8'
@@ -275,7 +277,9 @@ dependencies {
     api libs.vanniktech.emojiGoogle
 
     implementation project(":library:external:dialpad")
-
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    //implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    //implementation 'com.android.volley:volley:1.2.1'
     // JWT
     api libs.jsonwebtoken.jjwtApi
     runtimeOnly libs.jsonwebtoken.jjwtImpl

@@ -39,6 +39,7 @@ dependencies {
     implementation libs.jetbrains.coroutinesAndroid
     implementation libs.androidx.lifecycleLivedata
 
+
     // Paging
     implementation libs.androidx.pagingRuntimeKtx
 }

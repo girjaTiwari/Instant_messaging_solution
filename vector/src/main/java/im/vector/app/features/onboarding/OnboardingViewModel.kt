@@ -686,7 +686,8 @@ class OnboardingViewModel @AssistedInject constructor(
                     val result = authenticationService.createSessionFromSso(homeServerConnectionConfigFinal, action.credentials)
                     onSessionCreated(result, authenticationDescription = AuthenticationDescription.Login)
                 } catch (failure: Throwable) {
-                    setState { copy(isLoading = false) }
+                    setState { copy(isLoading = false)
+                    }
                 }
             }
         }

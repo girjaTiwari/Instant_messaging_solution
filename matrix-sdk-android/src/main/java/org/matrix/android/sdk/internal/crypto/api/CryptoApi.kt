@@ -34,12 +34,14 @@ import org.matrix.android.sdk.internal.network.NetworkConstants
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface CryptoApi {
+
 
     /**
      * Get the devices list
@@ -72,6 +74,8 @@ internal interface CryptoApi {
      */
     @POST(NetworkConstants.URI_API_PREFIX_PATH_R0 + "keys/query")
     suspend fun downloadKeysForUsers(@Body params: KeysQueryBody): KeysQueryResponse
+
+    @Multipart
 
     /**
      * CrossSigning - Uploading signing keys

@@ -16,7 +16,7 @@
     <color name="palette_polly">#E64F7A</color>
     <color name="palette_melon">#FF812D</color>
 
-    <color name="palette_element_green">#0DBD8B</color>
+    <color name="palette_element_green">#BF0222</color>
     <color name="palette_element_orange">#D9B072</color>
     <color name="palette_white">#FFFFFF</color>
     <color name="palette_vermilion">#FF5B55</color>
@@ -43,5 +43,36 @@
     <color name="palette_gray_450">#394049</color>
     <color name="palette_black_800">#15191E</color>
     <color name="palette_black_950">#21262C</color>
+
+    <!-- For timeshare color -->
+    <color name="primary_color">#FF6027</color>
+    <color name="primary_dark">#BF0222</color>
+    <color name="color_acent">#BF0222</color>
+    <color name="floating_bg_color">#E18113</color>
+    <color name="primary_light">#FFA76A</color>
+    <color name="primary_light_dark">#F89D62</color>
+    <color name="dark_red_circle_Color">#C51028</color>
+    <color name="profile_background_color">#E0463C</color>
+    <color name="color4">#0E87A5</color>
+    <color name="textcolor_dark">#090909</color>
+    <color name="textcolor_light">#342131</color>
+    <color name="white">#fff</color>
+    <color name="grey">#ccc</color>
+    <color name="grey_light">#eee</color>
+    <color name="grey_light0">#F4F4F4</color>
+    <color name="grey2">#9F9F9F</color>
+    <color name="cross_circle_bg_color">#988585</color>
+    <color name="red">#F44336</color>
+    <color name="ongoing_event_color">#F5F5F5</color>
+
+    <color name="black">#000000</color>
+    <color name="dark_grey_color">#444444</color>
+    <color name="grey_color">#808080</color>
+    <color name="text_grey2">#6D6D6E</color>
+    <color name="text_grey1">#A5A5A5</color>
+    <color name="light_grey_color">#c4c4c4</color>
+    <color name="red_color">#EF0B0B</color>
+    <color name="green_color">#96c11f</color>
+    <color name="green_c">#228B22</color>
 
 </resources>

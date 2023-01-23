@@ -22,6 +22,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -139,7 +140,7 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
 
         shortcutsHandler.updateShortcutsWithPreviousIntent()
 
-        startAppViewModel.onEach {
+      startAppViewModel.onEach {
             renderState(it)
         }
         startAppViewModel.viewEvents.stream()
@@ -151,9 +152,11 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
 
     private fun renderState(state: StartAppViewState) {
         if (state.mayBeLongToProcess) {
-            views.status.setText(R.string.updating_your_data)
+          //  views.status.setText(R.string.updating_your_data)
+            views.status.setText("")
         }
-        views.status.isVisible = state.mayBeLongToProcess
+      //  views.status.isVisible = state.mayBeLongToProcess
+        views.status.isInvisible = state.mayBeLongToProcess
     }
 
     private fun handleViewEvents(event: StartAppViewEvent) {
