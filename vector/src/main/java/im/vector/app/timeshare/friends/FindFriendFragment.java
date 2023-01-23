@@ -21,6 +21,7 @@ import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.api_request_body.CommonRequest;
 import im.vector.app.timeshare.api_response_body.GetFriendRequestResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendSuggetionResponse;
+import im.vector.app.timeshare.api_response_body.GetSentFriendRequestResponse;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
 import retrofit2.Call;
@@ -58,12 +59,64 @@ public class FindFriendFragment extends Fragment {
             //suggestion_list(uuid);
            // getSentFriendRequestList(uuid);
 
-
+            getSentFriendRequestList(user_uuid);
             getSuggetionList(user_uuid);
 
         }
 
         return view;
+    }
+
+    private void getSentFriendRequestList(String user_uuid) {
+        //myDialog.showProgresbar(mContext);
+        CommonRequest commonRequest = new CommonRequest(user_uuid);
+        Call<GetSentFriendRequestResponse> call = mAPIService.getSentFriendRequest(commonRequest);
+        call.enqueue(new Callback<GetSentFriendRequestResponse>() {
+            @Override
+            public void onResponse(Call<GetSentFriendRequestResponse> call, retrofit2.Response<GetSentFriendRequestResponse> response) {
+                System.out.println("sent-list>>" + response.toString());
+                //  myDialog.hideDialog(mContext);
+                if(response.body()!=null){
+
+                    GetSentFriendRequestResponse sentFriendRequestResponse = response.body();
+
+                    List<RequestSentModel> sentModelList= sentFriendRequestResponse.getGet_sent_friend_request();
+                    if (sentModelList!=null){
+                        if (sentModelList.size()>0){
+                            ll_your_request_empty.setVisibility(View.GONE);
+                            for (RequestSentModel sentModel:sentModelList){
+                                String friend_request_uuid = sentModel.getFriend_request_uuid();
+                                String reciever_uuid = sentModel.getReciever_uuid();
+                                String reciever_name = sentModel.getReciever_name();
+                                String reciever_pic = sentModel.getReciever_pic();
+                                String mutual_friends = sentModel.getMutual_friends();
+                                String created_at = sentModel.getCreated_at();
+
+                                // add static data in eventlist
+                                sentArrayList.add(new RequestSentModel(friend_request_uuid,reciever_uuid,reciever_name,reciever_pic,mutual_friends,created_at));
+                            }
+
+                        }else {
+                            ll_your_request_empty.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                        ll_your_request_empty.setVisibility(View.VISIBLE);
+                    }
+
+                    // set data in adapter
+                    sent_friends.setLayoutManager(new LinearLayoutManager(mContext));
+                    sent_friends.setHasFixedSize(true);
+                    sentAdapter = new RvRequestSentAdapter(mContext, sentArrayList);
+                    sent_friends.setAdapter(sentAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetSentFriendRequestResponse> call, Throwable t) {
+                //  myDialog.hideDialog(mContext);
+                System.out.println("error>>" + t.getCause());
+            }
+        });
     }
 
     private void getSuggetionList(String user_uuid) {
@@ -85,7 +138,7 @@ public class FindFriendFragment extends Fragment {
                         if (suggetionList.size()>0){
                             ll_guggetion_list_empty.setVisibility(View.GONE);
                             for (Suggetion suggetion:suggetionList){
-                                String user_id = suggetion.getUser_uuid();
+                                String user_id = suggetion.getUser_id();
                                 String first_name = suggetion.getFirst_name();
                                 String last_name = suggetion.getLast_name();
                                 String name = suggetion.getName();

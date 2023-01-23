@@ -24,13 +24,19 @@ import im.vector.app.R;
 import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
+import im.vector.app.timeshare.api_request_body.SendRequest;
+import im.vector.app.timeshare.api_response_body.CommonResponse;
+import im.vector.app.timeshare.webservices.ApiUtils;
+import im.vector.app.timeshare.webservices.RetrofitAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class RvRequestSentAdapter extends RecyclerView.Adapter<RvRequestSentAdapter.MyViewHolder> {
     Context mContext;
     ArrayList<RequestSentModel>arrayList = new ArrayList<>();
     TSSessionManager tsSessionManager;
     String receiver_uuid="";
-
+    private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     MyDialog myDialog;
     public RvRequestSentAdapter(Context mContext, ArrayList<RequestSentModel> arrayList) {
         this.mContext = mContext;
@@ -65,10 +71,9 @@ public class RvRequestSentAdapter extends RecyclerView.Adapter<RvRequestSentAdap
                 HashMap<String, String> user = new HashMap<>();
                 user = tsSessionManager.getUserDetails();
                 String sender_uuid=  user.get(TSSessionManager.KEY_user_uuid);
-                System.out.println("uuid>>"+sender_uuid);
                 if (sender_uuid!=null){
                     receiver_uuid = model.getReciever_uuid();
-                 //   unduFriendRequest(holder,sender_uuid,receiver_uuid,holder.getAdapterPosition());
+                    unduFriendRequest(sender_uuid,receiver_uuid,holder.getAdapterPosition());
 
                 }
             }
@@ -76,24 +81,20 @@ public class RvRequestSentAdapter extends RecyclerView.Adapter<RvRequestSentAdap
 
     }
 
-   /* private void unduFriendRequest(MyViewHolder holder, String sender_uuid, String receiver_uuid,int pos) {
+    private void unduFriendRequest(String sender_uuid, String receiver_uuid,int pos) {
         myDialog.showProgresbar(mContext);
-
-        HashMap<String,String> params = new HashMap<>();
-        params.put("sender",sender_uuid);
-        params.put("reciever",receiver_uuid);
-
-        System.out.println("param>>"+params);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + undo_sent_friend_request, new JSONObject(params), new Response.Listener<JSONObject>() {
+        SendRequest sendRequest = new SendRequest(sender_uuid, receiver_uuid);
+        Call<CommonResponse> call = mAPIService.undoFriendRequest(sendRequest);
+        call.enqueue(new Callback<CommonResponse>() {
             @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("undu-sent-friend_req>>"+response);
+            public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
+                System.out.println("reuest-undo>>" + response.toString());
                 myDialog.hideDialog(mContext);
+                if (response.body() != null) {
 
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
+                    CommonResponse sendRequest = response.body();
+                    String status = sendRequest.getStatus();
+                    String mesage = sendRequest.getMsg();
                     if (status.equals("1"))
                     {
                         removeAt(pos);
@@ -107,40 +108,17 @@ public class RvRequestSentAdapter extends RecyclerView.Adapter<RvRequestSentAdap
 
                         Toast.makeText(mContext, ""+mesage, Toast.LENGTH_SHORT).show();
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("undu-sent-friend_req>>"+error);
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
                 myDialog.hideDialog(mContext);
-
+                System.out.println("error>>" + t.getCause());
             }
         });
 
-        requestQueue = Volley.newRequestQueue(mContext);
-        requestQueue.add(jsonObjectRequest);
-        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 30000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 30000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
-    }*/
+    }
 
     private void removeAt(int position) {
         arrayList.remove(position);

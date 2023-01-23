@@ -20,11 +20,14 @@ package im.vector.app.timeshare.webservices;
 
 import java.util.List;
 
+import im.vector.app.timeshare.api_request_body.SendRequest;
 import im.vector.app.timeshare.api_response_body.EventResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendListResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendRequestResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendSuggetionResponse;
+import im.vector.app.timeshare.api_response_body.GetSentFriendRequestResponse;
 import im.vector.app.timeshare.api_response_body.LoginResponse;
+import im.vector.app.timeshare.api_response_body.CommonResponse;
 import im.vector.app.timeshare.api_response_body.UploadImage;
 import im.vector.app.timeshare.api_request_body.LoginRequest;
 import im.vector.app.timeshare.api_request_body.CommonRequest;
@@ -54,6 +57,14 @@ public interface RetrofitAPI {
     @POST("suggestion-list")
     Call<GetFriendSuggetionResponse> getFriendSuggetion(@Body CommonRequest body);
 
+    @POST("get-sent-friend-request")
+    Call<GetSentFriendRequestResponse> getSentFriendRequest(@Body CommonRequest body);
+
+    @POST("send-friend-request")
+    Call<CommonResponse> sendFriendRequest(@Body SendRequest body);
+
+    @POST("undo-sent-friend-request")
+    Call<CommonResponse> undoFriendRequest(@Body SendRequest body);
     @Multipart
    @POST("upload-profile-pic")
     Call<UploadImage>uploadProfileImage(@Part MultipartBody.Part file, @Part("user_uuid") RequestBody user_uuid);

@@ -1,10 +1,10 @@
 package im.vector.app.timeshare.friends;
 
 public class Suggetion {
-    String user_uuid,first_name,last_name,name,profile_pic,mutual_friends;
+    String user_id,first_name,last_name,name,profile_pic,mutual_friends;
 
-    public Suggetion(String user_uuid, String first_name, String last_name, String name, String profile_pic, String mutual_friends) {
-        this.user_uuid = user_uuid;
+    public Suggetion(String user_id, String first_name, String last_name, String name, String profile_pic, String mutual_friends) {
+        this.user_id = user_id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.name = name;
@@ -12,8 +12,8 @@ public class Suggetion {
         this.mutual_friends = mutual_friends;
     }
 
-    public String getUser_uuid() {
-        return user_uuid;
+    public String getUser_id() {
+        return user_id;
     }
 
     public String getFirst_name() {
