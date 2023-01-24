@@ -91,6 +91,7 @@ ext.groups = [
                         'com.google.code.gson',
                         'com.facebook.shimmer',
                         'de.hdodenhof',
+                        'com.jsibbold',
                         'com.google.dagger',
                         'com.google.devtools.ksp',
                         'com.google.errorprone',

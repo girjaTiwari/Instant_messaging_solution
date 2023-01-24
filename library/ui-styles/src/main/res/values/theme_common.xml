@@ -11,7 +11,7 @@
         <item name="android:navigationBarColor">@color/element_accent_light</item>
     </style>
 
-    <style name="BasicTheme">
+    <style name="BasicTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
@@ -60,5 +60,11 @@
     <style name="tabtext_style">
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="BottomDialogButtonsSeparator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1.5dp</item>
+        <item name="android:background">@color/grey_light</item>
     </style>
 </resources>

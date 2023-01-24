@@ -100,10 +100,10 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
         iv_prof_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(mActivity,ProfileImageViewerActivity.class);
+                Intent intent = new Intent(mActivity,ProfileImageViewerActivity.class);
                 intent.putExtra("user_pic",user_pic);
                 intent.putExtra("friend_uuid",friend_uuid);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
 

@@ -60,6 +60,8 @@
     </queries>
 
     <application android:supportsRtl="true">
+        <activity android:name=".timeshare.profile.ProfileImageViewerActivity"
+            android:exported="false"/>
         <activity android:name=".timeshare.profile.MyProfileActivity"
             android:exported="false"/>
         <activity android:name=".timeshare.menu.MyActivity"
@@ -71,6 +73,7 @@
             android:exported="false" />
         <activity
             android:name=".timeshare.TSMainActivity"
+            android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
             android:name=".timeshare.TSSignupActivity"
@@ -87,7 +90,7 @@
         <activity
             android:name=".timeshare.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.Vector.Launcher" /> <!-- Sentry auto-initialization disable -->
+            android:theme="@style/BasicTheme" /> <!-- Sentry auto-initialization disable -->
         <meta-data
             android:name="io.sentry.auto-init"
             android:value="false" /> <!-- No limit for screen ratio: avoid black strips -->

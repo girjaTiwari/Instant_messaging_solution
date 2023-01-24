@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
+    android:fitsSystemWindows="true"
+    tools:context="im.vector.app.timeshare.profile.ProfileImageViewerActivity">
+
+    <ImageView
+        android:layout_marginTop="12dp"
+        android:id="@+id/iv_back_profile_viewer"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="8dp"
+        android:padding="14dp"
+        android:src="@drawable/ic_back_arrow" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Profile Photo"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+
+    <ImageView
+        android:id="@+id/iv_edit_iamge"
+        android:layout_width="50dp"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_height="45dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="12dp"
+        android:padding="14dp"
+        android:src="@drawable/ic_edit_icon" />
+
+
+    <RelativeLayout
+        android:alpha=".4"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </RelativeLayout>
+
+    <com.jsibbold.zoomage.ZoomageView
+        android:id="@+id/myZoomageView"
+      android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:zoomage_restrictBounds="false"
+        app:zoomage_animateOnReset="true"
+        app:zoomage_autoResetMode="UNDER"
+        app:zoomage_autoCenter="true"
+        app:zoomage_zoomable="true"
+        app:zoomage_translatable="true"
+        app:zoomage_minScale="0.6"
+        app:zoomage_maxScale="8"
+        />
+
+</RelativeLayout>
