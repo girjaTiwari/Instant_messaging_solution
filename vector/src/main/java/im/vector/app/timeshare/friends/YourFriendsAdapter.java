@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import im.vector.app.R;
+import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSSessionManager;
 
 public class YourFriendsAdapter extends RecyclerView.Adapter<YourFriendsAdapter.MyViewHolder> {
@@ -81,6 +84,10 @@ public class YourFriendsAdapter extends RecyclerView.Adapter<YourFriendsAdapter.
                 }
             }
         });
+
+        Glide.with(mContext)
+                .load(ApiClass.IMAGE_BASE_URL+model.getProfile_pic()).circleCrop()
+                .into(holder.iv_friend_avtar);
     }
 
     /*private void inviteFriend(String user_uuid,String friend_uuid,String activity_uuid,TextView tv_invite,TextView tv_invited) {
@@ -199,7 +206,7 @@ public class YourFriendsAdapter extends RecyclerView.Adapter<YourFriendsAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_friend_name,tv_message,tv_invited,tv_invite;
-        ImageView iv_cross;
+        ImageView iv_cross,iv_friend_avtar;
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             tv_friend_name = itemView.findViewById(R.id.tv_friend_name);
@@ -207,6 +214,7 @@ public class YourFriendsAdapter extends RecyclerView.Adapter<YourFriendsAdapter.
             iv_cross = itemView.findViewById(R.id.iv_cross);
             tv_invited = itemView.findViewById(R.id.tv_invited);
             tv_invite = itemView.findViewById(R.id.tv_invite);
+            iv_friend_avtar = itemView.findViewById(R.id.iv_friend_avtar);
         }
     }
 }

@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.facebook.shimmer.ShimmerFrameLayout;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +47,7 @@ public class FriendListFragment extends Fragment {
     TSSessionManager tsSessionManager;
    public static LinearLayout ll_empty_req_list,ll_empty_friend_list;
     private RetrofitAPI mAPIService = ApiUtils.getAPIService();
-    MyDialog myDialog;
-    //ShimmerFrameLayout shimmerFrameLayout1,shimmerFrameLayout2;
+    ShimmerFrameLayout shimmerFrameLayout1,shimmerFrameLayout2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +56,6 @@ public class FriendListFragment extends Fragment {
       View view =  inflater.inflate(R.layout.fragment_friend_list, container, false);
       findView(view);
         mContext = getActivity();
-        myDialog = new MyDialog(mContext);
         tsSessionManager = new TSSessionManager(getActivity());
         // set data for friend request
 
@@ -79,7 +80,8 @@ public class FriendListFragment extends Fragment {
             @Override
             public void onResponse(Call<GetFriendRequestResponse> call, retrofit2.Response<GetFriendRequestResponse> response) {
                 System.out.println("friend-request>>" + response.toString());
-              //  myDialog.hideDialog(mContext);
+                shimmerFrameLayout1.stopShimmer();
+                shimmerFrameLayout1.setVisibility(View.GONE);
                 if(response.body()!=null){
 
                     GetFriendRequestResponse requestResponse = response.body();
@@ -126,14 +128,14 @@ public class FriendListFragment extends Fragment {
     }
 
     private void getFriends(String user_uuid) {
-        myDialog.showProgresbar(mContext);
         CommonRequest commonRequest = new CommonRequest(user_uuid);
         Call<GetFriendListResponse> call = mAPIService.getFriends(commonRequest);
         call.enqueue(new Callback<GetFriendListResponse>() {
             @Override
             public void onResponse(Call<GetFriendListResponse> call, retrofit2.Response<GetFriendListResponse> response) {
                 System.out.println("friend-list>>" + response.toString());
-                myDialog.hideDialog(mContext);
+                shimmerFrameLayout2.stopShimmer();
+                shimmerFrameLayout2.setVisibility(View.GONE);
                 if(response.body()!=null){
 
                     GetFriendListResponse friendListResponse = response.body();
@@ -170,7 +172,6 @@ public class FriendListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetFriendListResponse> call, Throwable t) {
-                myDialog.hideDialog(mContext);
                 System.out.println("error>>" + t.getCause());
 
             }
@@ -186,10 +187,11 @@ public class FriendListFragment extends Fragment {
         ll_empty_friend_list = view.findViewById(R.id.ll_empty_friend_list);
 
 
-      //  shimmerFrameLayout1 = view.findViewById(R.id.shimmer_view_container1);
-      //  shimmerFrameLayout2 = view.findViewById(R.id.shimmer_view_container2);
-       // shimmerFrameLayout1.startShimmer();
-       // shimmerFrameLayout2.startShimmer();
+
+        shimmerFrameLayout1 = view.findViewById(R.id.shimmer_view_container1);
+        shimmerFrameLayout2 = view.findViewById(R.id.shimmer_view_container2);
+        shimmerFrameLayout1.startShimmer();
+        shimmerFrameLayout2.startShimmer();
 
     }
 

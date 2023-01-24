@@ -21,11 +21,15 @@ package im.vector.app.timeshare.webservices;
 import java.util.List;
 
 import im.vector.app.timeshare.api_request_body.Accept_and_DeclineRequest;
+import im.vector.app.timeshare.api_request_body.DeleteActivityRequest;
+import im.vector.app.timeshare.api_request_body.GetProfileRequest;
 import im.vector.app.timeshare.api_request_body.SendRequest;
 import im.vector.app.timeshare.api_response_body.EventResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendListResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendRequestResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendSuggetionResponse;
+import im.vector.app.timeshare.api_response_body.GetMyActivityResponse;
+import im.vector.app.timeshare.api_response_body.GetProfileResponse;
 import im.vector.app.timeshare.api_response_body.GetSentFriendRequestResponse;
 import im.vector.app.timeshare.api_response_body.LoginResponse;
 import im.vector.app.timeshare.api_response_body.CommonResponse;
@@ -69,6 +73,27 @@ public interface RetrofitAPI {
 
     @POST("friend-requests")
     Call<CommonResponse> accept_and_decline(@Body Accept_and_DeclineRequest body);
+
+    @POST("get-activity-by-user-uuid")
+    Call<GetMyActivityResponse> getMyActivities(@Body CommonRequest body);
+
+    @POST("delete-activity")
+    Call<CommonResponse> deleteActivity(@Body DeleteActivityRequest body);
+
+    @POST("get-profile")
+    Call<GetProfileResponse> getProfile(@Body GetProfileRequest body);
+
+
+
+
+
+
+
+
+
+
+
+
     @Multipart
    @POST("upload-profile-pic")
     Call<UploadImage>uploadProfileImage(@Part MultipartBody.Part file, @Part("user_uuid") RequestBody user_uuid);

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Logout"
+        android:gravity="center"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginBottom="20dp"
+        android:text="Are you sure you want to Logout?"
+        android:textColor="@color/dark_grey_color"
+        android:textSize="17dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/light_grey_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Cancel"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:textAllCaps="true"
+            android:textColor="@color/primary_color"
+            android:textSize="15sp" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_grey_color"/>
+
+        <TextView
+            android:id="@+id/mLogout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Logout"
+            android:fontFamily="@font/poppins_medium"
+            android:textAllCaps="true"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:textColor="@color/primary_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>

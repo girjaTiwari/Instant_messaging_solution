@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import im.vector.app.R;
+import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.Accept_and_DeclineRequest;
 import im.vector.app.timeshare.api_request_body.SendRequest;
@@ -56,6 +60,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
             holder.iv_decline.setVisibility(View.VISIBLE);
              holder.tv_ispending.setVisibility(View.GONE);
 
+        Glide.with(mContext)
+                .load(ApiClass.IMAGE_BASE_URL+model.getSender_pic()).circleCrop()
+                .into(holder.iv_friend_avtar);
 
 
         holder.iv_accept.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +118,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_friend_name,tv_message,tv_add_frnd_request,tv_ispending;
-        ImageView iv_accept,iv_decline;
+        ImageView iv_accept,iv_decline,iv_friend_avtar;
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             tv_friend_name = itemView.findViewById(R.id.tv_friend_name);
@@ -120,6 +127,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
             iv_accept = itemView.findViewById(R.id.iv_accept_request);
             iv_decline = itemView.findViewById(R.id.iv_cancel_request);
             tv_ispending = itemView.findViewById(R.id.tv_ispending);
+            iv_friend_avtar = itemView.findViewById(R.id.iv_friend_avtar);
         }
     }
 }

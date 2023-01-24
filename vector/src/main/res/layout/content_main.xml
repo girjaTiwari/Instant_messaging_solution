@@ -122,13 +122,13 @@
           android:layout_weight="1"
           >
 
-        <ImageView
-            android:padding="3dp"
-            android:id="@+id/iv_menu"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_menu" />
+          <ImageView
+              android:id="@+id/iv_menu"
+              android:layout_width="30dp"
+              android:layout_height="30dp"
+              android:layout_centerInParent="true"
+              android:padding="3dp"
+              android:src="@drawable/ic_menu" />
 
 
         <View

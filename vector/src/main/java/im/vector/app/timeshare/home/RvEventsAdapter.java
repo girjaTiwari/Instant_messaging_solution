@@ -108,7 +108,7 @@ public class RvEventsAdapter extends RecyclerView.Adapter<RvEventsAdapter.MyView
                 .into(holder.iv_eventpic);
 
         Glide.with(mContext)
-                .load(ApiClass.IMAGE_BASE_URL+model.getUser_pic())
+                .load(ApiClass.IMAGE_BASE_URL+model.getUser_pic()).circleCrop()
                 .into(holder.iv_profilepic);
 
         holder.ll_details.setOnClickListener(new View.OnClickListener() {

@@ -62,7 +62,7 @@ public class RvRequestSentAdapter extends RecyclerView.Adapter<RvRequestSentAdap
          holder.iv_decline.setVisibility(View.VISIBLE);
 
         Glide.with(mContext)
-                .load(ApiClass.IMAGE_BASE_URL+model.getReciever_pic())
+                .load(ApiClass.IMAGE_BASE_URL+model.getReciever_pic()).circleCrop()
                 .into(holder.iv_friend_avtar);
 
         holder.iv_decline.setOnClickListener(new View.OnClickListener() {

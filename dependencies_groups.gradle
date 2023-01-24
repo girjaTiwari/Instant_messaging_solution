@@ -89,6 +89,8 @@ ext.groups = [
                         'com.google.auto.value',
                         'com.google.code.findbugs',
                         'com.google.code.gson',
+                        'com.facebook.shimmer',
+                        'de.hdodenhof',
                         'com.google.dagger',
                         'com.google.devtools.ksp',
                         'com.google.errorprone',

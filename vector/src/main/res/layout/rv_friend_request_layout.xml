@@ -52,7 +52,7 @@
         <ImageView
             android:id="@+id/iv_cancel_request"
             android:padding="14dp"
-            android:src="@drawable/ic_cross"
+            android:src="@drawable/ic_crossed"
             android:background="@drawable/circle_grey_bg"
             android:layout_width="38dp"
             android:layout_height="38dp"/>

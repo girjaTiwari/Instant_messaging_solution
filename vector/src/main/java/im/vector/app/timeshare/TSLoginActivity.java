@@ -85,14 +85,6 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
                 String email = edt_username.getText().toString().trim();
                 String pass = edt_password.getText().toString().trim();
                 if (validate(email,pass)) {
-                  //  loggedin(email,pass);
-                   /* JSONObject params = new  JSONObject();
-                    try {
-                        params.put("email_id",email);
-                        params.put("password",pass);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }*/
                     LoginRequest loginRequest = new LoginRequest(email,pass);
                     Call<LoginResponse> call = mAPIService.login(loginRequest);
                     call.enqueue(new Callback<LoginResponse>() {
@@ -133,7 +125,7 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void onFailure(Call<LoginResponse> call, Throwable t) {
                              System.out.println("error>>" + t.getCause());
-                            Toast.makeText(mActivity, "Failed", Toast.LENGTH_SHORT).show();
+
                         }
                     });
                 }

@@ -68,6 +68,7 @@ import im.vector.app.timeshare.categ.SubCategory;
 import im.vector.app.timeshare.categ.SubCategorySingleSelectionAdapter;
 import im.vector.app.timeshare.friends.FriendsFragment;
 import im.vector.app.timeshare.home.HomeFragment;
+import im.vector.app.timeshare.menu.MenuFragment;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -284,7 +285,7 @@ public class TSMainActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-/*
+
         rl_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -315,7 +316,7 @@ public class TSMainActivity extends AppCompatActivity implements View.OnClickLis
                         .commit();
             }
         });
-*/
+
 
     }
 

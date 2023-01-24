@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context="im.vector.app.timeshare.filter.FilterActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/iv_close_filter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:padding="18dp"
+            android:src="@drawable/ic_crossed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Filter"
+            android:textColor="@color/textcolor_dark"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_above="@+id/ll_bottombar"
+        android:layout_below="@+id/rl_header"
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="16sp"
+                    android:text="Find an activity near"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="@color/textcolor_dark"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:text="Belgium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="8dp"
+                        android:layout_toLeftOf="@+id/tv_change"
+                        android:src="@drawable/ic_map_pin" />
+
+                    <TextView
+                        android:id="@+id/tv_change"
+                        android:layout_alignParentRight="true"
+                        android:textSize="16sp"
+                        android:text="Change"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/text_grey2"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:background="@color/grey_light0"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:text="Activity happening"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:background="@drawable/grey_line_bg_with_stroke"
+                        android:text="Today"
+                        android:layout_marginLeft="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"/>
+
+                    <TextView
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/grey_line_bg_with_stroke"
+                        android:text="This Weekend"
+                        android:layout_marginLeft="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_add_friend"
+                        android:background="@drawable/red_rounded_bg"
+                        android:text="Tomorrow"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"/>
+
+                    <TextView
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/grey_line_bg_with_stroke"
+                        android:text="Next Week"
+                        android:layout_marginLeft="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"/>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_select_date"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:background="@drawable/grey_line_bg_with_stroke"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <ImageView
+                    android:id="@+id/iv_calendar"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/tv_change"
+                    android:src="@drawable/ic_calendar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"/>
+
+                <TextView
+                    android:id="@+id/tv_custom_date"
+                    android:textColor="@color/text_grey2"
+                    android:textSize="15sp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:text="Choose Custom Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_calendar_view_custom_date"
+                android:visibility="gone"
+                android:background="#F4F4F4"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+               <!-- <com.applandeo.materialcalendarview.CalendarView
+                    android:id="@+id/calendarView"
+                    app:type="one_day_picker"
+                    android:background="@color/grey_light0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:headerColor="@color/grey_light0"
+                    app:headerLabelColor="@color/textcolor_dark"
+                    app:previousButtonSrc="@drawable/previous"
+                    app:forwardButtonSrc="@drawable/next"
+                    app:daysLabelsColor="@color/text_grey1"
+                    app:disabledDaysLabelsColor="@color/text_grey1"
+                    app:todayLabelColor="@color/dark_red_circle_Color"
+                    app:selectionColor="@color/dark_red_circle_Color"
+                    />-->
+
+                <LinearLayout
+                    android:layout_margin="16dp"
+                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_calendar_cancel"
+                        android:textColor="@color/text_grey1"
+                        android:text="Cancel"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tv_calendar_ok"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/textcolor_light"
+                        android:text="OK"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:text="Category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_select_category"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:text="Choose a Category"
+                    android:textColor="@color/textcolor_light"
+                    android:textSize="16sp" />
+
+
+                <ImageView
+                    android:padding="4dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_selection_down"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"/>
+
+
+            </RelativeLayout>
+
+
+            <View
+                android:background="@color/grey_light0"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_category_space"
+                android:background="#FAFAFA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:id="@+id/rv_spinnercategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:text="Subcategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_select_subcategory"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:text="Choose a Subcategory"
+                    android:textColor="@color/textcolor_light"
+                    android:textSize="16sp" />
+
+
+                <ImageView
+                    android:padding="4dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_selection_down"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"/>
+
+
+            </RelativeLayout>
+
+
+            <View
+                android:background="@color/grey_light0"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_subcategory_space"
+                android:background="#FAFAFA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:id="@+id/rv_spinnersubcategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/et_activity_name"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:paddingTop="7dp"
+                android:inputType="textCapSentences"
+                android:paddingBottom="7dp"
+                android:layout_marginTop="16dp"
+                android:background="@android:color/transparent"
+                android:hint="ex-Thailand Tour"
+                android:textColor="@color/textcolor_light"
+                android:textSize="15sp" />
+
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+<LinearLayout
+    android:id="@+id/ll_bottombar"
+    android:layout_margin="16dp"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:gravity="center"
+        android:text="Reset"
+        android:background="@drawable/grey_rectangle_bg"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="52dp"/>
+
+    <TextView
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="Apply"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/accent_color_rounded_bg"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="52dp"/>
+</LinearLayout>
+
+
+</RelativeLayout>

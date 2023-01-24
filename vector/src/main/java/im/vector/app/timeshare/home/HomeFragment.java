@@ -4,6 +4,7 @@ package im.vector.app.timeshare.home;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.facebook.shimmer.ShimmerFrameLayout;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.List;
 import im.vector.app.R;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
+import im.vector.app.timeshare.filter.FilterActivity;
 import im.vector.app.timeshare.home.model.Event;
 import im.vector.app.timeshare.home.model.OngoingModel;
 import im.vector.app.timeshare.webservices.ApiUtils;
@@ -49,7 +53,7 @@ public class HomeFragment extends Fragment {
     TSSessionManager tsSessionManager;
     androidx.appcompat.widget.SearchView mSearchView;
     RelativeLayout rl_searchlayout,rl_toolbar_main;
-    //ShimmerFrameLayout shimmer_ongoing_event,shimmerFrameLayout;
+    ShimmerFrameLayout shimmer_ongoing_event,shimmerFrameLayout;
     private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,9 +67,9 @@ public class HomeFragment extends Fragment {
         iv_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent = new Intent(mContext, FilterActivity.class);
+                Intent intent = new Intent(mContext, FilterActivity.class);
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);*/
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -132,14 +136,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void getAllActvity(String uuid) {
-        myDialog.showProgresbar(mContext);
         CommonRequest timeLineRequest = new CommonRequest(uuid);
         Call<EventResponse> call = mAPIService.getTimelines(timeLineRequest);
         call.enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(Call<EventResponse> call, retrofit2.Response<EventResponse> response) {
                  System.out.println("timeline>>" + response.toString());
-                myDialog.hideDialog(mContext);
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                shimmer_ongoing_event.stopShimmer();
+                shimmer_ongoing_event.setVisibility(View.GONE);
+
                 if(response.body()!=null){
 
                    EventResponse eventResponse = response.body();
@@ -190,9 +197,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<EventResponse> call, Throwable t) {
-                myDialog.hideDialog(mContext);
                 System.out.println("error>>" + t.getCause());
-                Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -206,8 +212,8 @@ public class HomeFragment extends Fragment {
         rl_searchlayout = view.findViewById(R.id.rl_searchlayout);
         rl_toolbar_main = view.findViewById(R.id.rl_toolbar_main);
         iv_search = view.findViewById(R.id.iv_search);
-        //shimmer_ongoing_event = view.findViewById(R.id.shimmer_ongoing_event);
-       // shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
+        shimmer_ongoing_event = view.findViewById(R.id.shimmer_ongoing_event);
+       shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
 
     }
 }
