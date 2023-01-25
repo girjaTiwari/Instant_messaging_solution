@@ -60,13 +60,18 @@
     </queries>
 
     <application android:supportsRtl="true">
+        <activity android:name=".timeshare.home.TSRespondActivity"
+            android:theme="@style/BasicTheme"
+            android:exported="false"/>
         <activity android:name=".timeshare.profile.ProfileImageViewerActivity"
             android:exported="false"/>
         <activity android:name=".timeshare.profile.MyProfileActivity"
             android:exported="false"/>
         <activity android:name=".timeshare.menu.MyActivity"
+            android:theme="@style/BasicTheme"
             android:exported="false"/>
         <activity android:name=".timeshare.menu.FollowActivity"
+            android:theme="@style/BasicTheme"
             android:exported="false"/>
         <activity
             android:name=".timeshare.filter.FilterActivity"

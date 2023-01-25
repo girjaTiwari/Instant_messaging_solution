@@ -3,14 +3,12 @@ package im.vector.app.timeshare.home;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,13 +18,12 @@ import com.bumptech.glide.Glide;
 
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 
 import im.vector.app.R;
 import im.vector.app.timeshare.ApiClass;
@@ -44,7 +41,7 @@ public class RvEventsAdapter extends RecyclerView.Adapter<RvEventsAdapter.MyView
     MyDialog myDialog;
     ArrayList<JoiningUser>joiningUsers = new ArrayList<>();
     RvInterestedAdapter rvInterestedAdapter;
-    JSONArray jsonArray;
+
 
     public RvEventsAdapter(Context mContext, ArrayList<Event> eventList) {
         this.mContext = mContext;
@@ -62,29 +59,24 @@ public class RvEventsAdapter extends RecyclerView.Adapter<RvEventsAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
-        Event model = eventList.get(position);
-       /* jsonArray = model.getJsonArray();
         joiningUsers.clear();
-        try {
-            for (int i=0;i<jsonArray.length();i++){
-                JSONObject object = jsonArray.getJSONObject(i);
-                String activity_uuid = object.getString("activity_uuid");
-                String first_name  = object.getString("first_name");
-                String last_name = object.getString("last_name");
-                String user_name = object.getString("user_name");
-                String profile_pic = object.getString("profile_pic");
+        Event model = eventList.get(position);
+        List<JoiningUser> userList = model.getGetActivityJoinings();
+        if (userList.size()>0){
+            for (JoiningUser user:userList){
+                String activity_uuid = user.getActivity_uuid();
+                String first_name  = user.getFirst_name();
+                String last_name = user.getLast_name();
+                String user_name = user.getUser_name();
+                String profile_pic = user.getProfile_pic();
 
                 joiningUsers.add(new JoiningUser(activity_uuid,first_name,last_name,user_name,profile_pic));
                 holder.rv_attendies.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
                 rvInterestedAdapter=new RvInterestedAdapter(mContext,joiningUsers);
                 holder.rv_attendies.setAdapter(rvInterestedAdapter);
-
             }
-
-        }catch (JSONException e){
-            e.printStackTrace();
         }
-*/
+
         holder.tv_name.setText(model.getActivity_name());
         holder.tv_date.setText(model.getStart_date_and_time());
         holder.tv_location.setText(model.getLocation());

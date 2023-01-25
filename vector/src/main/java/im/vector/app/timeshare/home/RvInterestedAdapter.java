@@ -68,7 +68,9 @@ public class RvInterestedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void populateItemMedia(MyViewHolder viewHolder, int position) {
         if (dataList.size()>0) {
             JoiningUser model = dataList.get(position);
-            Glide.with(mContext).load(ApiClass.IMAGE_BASE_URL + model.getProfile_pic()).placeholder(mContext.getResources().getDrawable(R.drawable.avtar)).error(mContext.getResources().getDrawable(R.drawable.avtar)).into(viewHolder.ivImage);
+            Glide.with(mContext).load(ApiClass.IMAGE_BASE_URL + model.getProfile_pic()).circleCrop()
+                    .placeholder(mContext.getResources().getDrawable(R.drawable.avtar))
+                    .into(viewHolder.ivImage);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(60, 60);
             if (position != 0) {
@@ -80,9 +82,9 @@ public class RvInterestedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(mContext, RespondActivity.class);
-//                    intent.putExtra("activity_uuid", model.getActivity_uuid());
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, TSRespondActivity.class);
+                    intent.putExtra("activity_uuid", model.getActivity_uuid());
+                    mContext.startActivity(intent);
                 }
             });
         }

@@ -21,15 +21,20 @@ package im.vector.app.timeshare.webservices;
 import java.util.List;
 
 import im.vector.app.timeshare.api_request_body.Accept_and_DeclineRequest;
+import im.vector.app.timeshare.api_request_body.CreateRespondRequest;
 import im.vector.app.timeshare.api_request_body.DeleteActivityRequest;
+import im.vector.app.timeshare.api_request_body.GetAttendiesRequest;
 import im.vector.app.timeshare.api_request_body.GetProfileRequest;
+import im.vector.app.timeshare.api_request_body.GetRespondRequest;
 import im.vector.app.timeshare.api_request_body.SendRequest;
 import im.vector.app.timeshare.api_response_body.EventResponse;
+import im.vector.app.timeshare.api_response_body.GetActivityJoingingResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendListResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendRequestResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendSuggetionResponse;
 import im.vector.app.timeshare.api_response_body.GetMyActivityResponse;
 import im.vector.app.timeshare.api_response_body.GetProfileResponse;
+import im.vector.app.timeshare.api_response_body.GetRespondResponse;
 import im.vector.app.timeshare.api_response_body.GetSentFriendRequestResponse;
 import im.vector.app.timeshare.api_response_body.LoginResponse;
 import im.vector.app.timeshare.api_response_body.CommonResponse;
@@ -83,12 +88,14 @@ public interface RetrofitAPI {
     @POST("get-profile")
     Call<GetProfileResponse> getProfile(@Body GetProfileRequest body);
 
+    @POST("get-joining-activity")
+    Call<GetActivityJoingingResponse> getAttendies(@Body GetAttendiesRequest body);
 
+    @POST("get-respond-by-activity-uuid")
+    Call<GetRespondResponse> getResponds(@Body GetRespondRequest body);
 
-
-
-
-
+    @POST("create-respond")
+    Call<CommonResponse> createRespond(@Body CreateRespondRequest body);
 
 
 
