@@ -60,6 +60,9 @@
     </queries>
 
     <application android:supportsRtl="true">
+        <activity android:name=".timeshare.details.EventDetailsActivity"
+            android:theme="@style/BasicTheme"
+            android:exported="false"/>
         <activity android:name=".timeshare.home.TSRespondActivity"
             android:theme="@style/BasicTheme"
             android:exported="false"/>

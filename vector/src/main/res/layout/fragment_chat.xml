@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/main_bg"
+    tools:context="im.vector.app.timeshare.chat.ChatFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/rl_toolbar_main">
+
+        <ImageView
+            android:id="@+id/iv_filter"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_create_group_icon" />
+
+        <LinearLayout
+            android:id="@+id/ll_"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/full_logo"
+                android:layout_width="130dp"
+                android:layout_height="40dp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_toLeftOf="@+id/iv_start_chat"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_search_icon"
+            android:padding="14dp"
+            android:layout_width="50dp"
+            android:layout_height="45dp"/>
+
+        <ImageView
+            android:id="@+id/iv_start_chat"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/write_new_message"
+            android:padding="14dp"
+            android:layout_width="50dp"
+            android:layout_height="45dp"/>
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_toolbar_main">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:visibility="visible"
+                android:id="@+id/ll_your_request_empty"
+                android:layout_marginLeft="16dp"
+                android:gravity="center|left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/not_found"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:tint="@color/text_grey2" />
+
+                <TextView
+                    android:textColor="@color/text_grey2"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/ubuntu_regular"
+                    android:text="No Message Yet!"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginBottom="64dp"
+                android:id="@+id/rv_chats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

@@ -3,6 +3,7 @@ package im.vector.app.timeshare.home;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,10 @@ import im.vector.app.R;
 import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
+import im.vector.app.timeshare.details.EventDetailsActivity;
 import im.vector.app.timeshare.home.model.Event;
 import im.vector.app.timeshare.home.model.JoiningUser;
+import im.vector.app.timeshare.profile.MyProfileActivity;
 
 public class RvEventsAdapter extends RecyclerView.Adapter<RvEventsAdapter.MyViewHolder> {
 
@@ -106,34 +109,34 @@ public class RvEventsAdapter extends RecyclerView.Adapter<RvEventsAdapter.MyView
         holder.ll_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // mContext.startActivity(new Intent(mContext, EventDetailsActivity.class));
+                mContext.startActivity(new Intent(mContext, EventDetailsActivity.class));
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+/*        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(mContext, RespondActivity.class);
-//                intent.putExtra("activity_uuid",model.getActivity_uuid());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, TSRespondActivity.class);
+                intent.putExtra("activity_uuid",model.getActivity_uuid());
+                mContext.startActivity(intent);
             }
-        });
+        });*/
 
         holder.iv_profilepic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(mContext, MyProfileActivity.class);
-//                intent.putExtra("friend_uuid",model.getUser_uuid());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, MyProfileActivity.class);
+                intent.putExtra("friend_uuid",model.getUser_uuid());
+                mContext.startActivity(intent);
             }
         });
 
         holder.iv_eventpic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(mContext,EventDetailsActivity.class);
-//                intent.putExtra("activity_uuid",model.getActivity_uuid());
-//               mContext.startActivity(intent);
+                Intent intent = new Intent(mContext,EventDetailsActivity.class);
+                intent.putExtra("activity_uuid",model.getActivity_uuid());
+               mContext.startActivity(intent);
             }
         });
 

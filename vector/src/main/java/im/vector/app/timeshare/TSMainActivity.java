@@ -66,6 +66,7 @@ import im.vector.app.timeshare.categ.Category;
 import im.vector.app.timeshare.categ.SingleRecyclerViewAdapter;
 import im.vector.app.timeshare.categ.SubCategory;
 import im.vector.app.timeshare.categ.SubCategorySingleSelectionAdapter;
+import im.vector.app.timeshare.chat.ChatFragment;
 import im.vector.app.timeshare.friends.FriendsFragment;
 import im.vector.app.timeshare.home.HomeFragment;
 import im.vector.app.timeshare.menu.MenuFragment;
@@ -272,16 +273,12 @@ public class TSMainActivity extends AppCompatActivity implements View.OnClickLis
                 mChatSelected.setVisibility(View.VISIBLE);
                 mMenuSelected.setVisibility(View.GONE);
 
-                mActivity.startActivity(new Intent(mActivity,MainActivity.class));
-
-
-               /* Fragment newCase = new ChatFragment();
-
+                Fragment newCase = new ChatFragment();
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragmentContainer, newCase)
                         .addToBackStack(null)
-                        .commit();*/
+                        .commit();
             }
         });
 

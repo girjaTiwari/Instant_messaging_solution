@@ -111,10 +111,6 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
 
     private void get_profile(String friend_uuid,String user_uuid) {
         myDialog.showProgresbar(mActivity);
-        HashMap<String,String> params = new HashMap<>();
-        params.put("friend_uuid",friend_uuid);
-        params.put("user_uuid",user_uuid);
-
 
         if (friend_uuid.equals(user_uuid)){
             iv_edit_profile.setVisibility(View.VISIBLE);

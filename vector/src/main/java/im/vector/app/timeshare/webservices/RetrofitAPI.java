@@ -23,11 +23,13 @@ import java.util.List;
 import im.vector.app.timeshare.api_request_body.Accept_and_DeclineRequest;
 import im.vector.app.timeshare.api_request_body.CreateRespondRequest;
 import im.vector.app.timeshare.api_request_body.DeleteActivityRequest;
+import im.vector.app.timeshare.api_request_body.GetActivityDetailsRequest;
 import im.vector.app.timeshare.api_request_body.GetAttendiesRequest;
 import im.vector.app.timeshare.api_request_body.GetProfileRequest;
 import im.vector.app.timeshare.api_request_body.GetRespondRequest;
 import im.vector.app.timeshare.api_request_body.SendRequest;
 import im.vector.app.timeshare.api_response_body.EventResponse;
+import im.vector.app.timeshare.api_response_body.GetActivityDetailsResponse;
 import im.vector.app.timeshare.api_response_body.GetActivityJoingingResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendListResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendRequestResponse;
@@ -97,6 +99,8 @@ public interface RetrofitAPI {
     @POST("create-respond")
     Call<CommonResponse> createRespond(@Body CreateRespondRequest body);
 
+    @POST("get-activity-by-activity-uuid")
+    Call<GetActivityDetailsResponse> getActvityDetails(@Body GetActivityDetailsRequest body);
 
 
 
