@@ -10,13 +10,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import im.vector.app.R;
@@ -24,11 +29,17 @@ import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.GetActivityDetailsRequest;
+import im.vector.app.timeshare.api_request_body.GetAttendiesRequest;
 import im.vector.app.timeshare.api_request_body.GetProfileRequest;
+import im.vector.app.timeshare.api_request_body.JoinActivityRequest;
 import im.vector.app.timeshare.api_response_body.GetActivityDetailsResponse;
+import im.vector.app.timeshare.api_response_body.GetActivityJoingingResponse;
 import im.vector.app.timeshare.api_response_body.GetProfileResponse;
+import im.vector.app.timeshare.api_response_body.JoinActivityResponse;
+import im.vector.app.timeshare.api_response_body.JoiningCountData;
 import im.vector.app.timeshare.api_response_body.ProfileData;
 import im.vector.app.timeshare.api_response_body.TimelineDetails;
+import im.vector.app.timeshare.home.RvAttendyAdapter;
 import im.vector.app.timeshare.home.RvInterestedAdapter;
 import im.vector.app.timeshare.home.TSRespondActivity;
 import im.vector.app.timeshare.home.model.JoiningUser;
@@ -72,12 +83,12 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
          activity_uuid = intent.getStringExtra("activity_uuid");
 
         if (user_uuid!=null){
-         //   getActvityDetails(activity_uuid,user_uuid);
+            getActvityDetails(activity_uuid,user_uuid);
         }
 
     }
 
-    /*private void getActvityDetails(String activity_id,String user_uuid) {
+    private void getActvityDetails(String activity_id,String user_uuid) {
         myDialog.showProgresbar(mActivity);
         GetActivityDetailsRequest detailsRequest = new GetActivityDetailsRequest(activity_id,user_uuid);
         Call<GetActivityDetailsResponse> call = mAPIService.getActvityDetails(detailsRequest);
@@ -86,52 +97,77 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<GetActivityDetailsResponse> call, retrofit2.Response<GetActivityDetailsResponse> response) {
                 //  System.out.println("error>>  response " + response.toString());
                 myDialog.hideDialog(mActivity);
+                getJoiningActivity(activity_uuid);
                 if(response.body()!=null){
                     GetActivityDetailsResponse detailsResponse = response.body();
                     String message = detailsResponse.getMsg();
                     TimelineDetails details = detailsResponse.getGet_activities();
-                    firstname = profileData.getFirst_name();
-                    lastname = profileData.getLast_name();
-                    user_pic = profileData.getUser_pic();
-                    profile_name = profileData.getProfile_name();
-                    email = profileData.getEmail_id();
-                    mobile_number = profileData.getMobile_number();
-                    String gender = profileData.getGender();
-                    dob = profileData.getDate_of_birth();
-                    city = profileData.getCity();
-                    address = profileData.getAddress();
-                    country = profileData.getCountry();
-                    cat1 = profileData.getCategory1();
-                    cat2 = profileData.getCategory2();
-                    cat3 = profileData.getCategory3();
-                    cat4 = profileData.getCategory4();
-                    cat5 = profileData.getCategory5();
-                    String mutual_friends=profileData.getMutual_friends();
+                    activity_uuid = details.getActivity_uuid();
+                    friend_uuid = details.getUser_uuid();
+                    String activity_name = details.getActivity_name();
+                    String activity_description = details.getActivity_description();
+                    first_name = details.getFirst_name();
+                    last_name = details.getLast_name();
+                    String profile_name = details.getProfile_name();
+                    user_pic = details.getUser_pic();
+                    String category_name = details.getCategory_name();
+                    String sub_category = details.getSub_category();
+                    String start_date_and_time = details.getStart_date_and_time();
+                    String end_date_and_time = details.getEnd_date_and_time();
+                    String post_path = details.getPost_path();
+                    String location = details.getLocation();
+                    String comment_list = details.getComment_list();
 
-                    Glide.with(getApplicationContext())
-                            .load(ApiClass.IMAGE_BASE_URL+user_pic).circleCrop()
-                            .into(iv_prof_pic);
+                    String like_count = details.getLike_count();
+                    String joining_count = details.getJoining_count();
+                    String is_like = details.getIs_like();
+                    is_joining = details.getIs_joining();
+                    String date = details.getCreated_at();
+
+                    Glide.with(mActivity)
+                            .load(ApiClass.IMAGE_BASE_URL+user_pic)
+                            .into(iv_profilepic);
 
 
-                    tv_name.setText(firstname+" "+lastname);
-                    tv_prifile_name.setText(profile_name);
-                    if (cat1.equals("")){
-                        tv_interested_categories.setText(null);
-                    }else{
-                        tv_interested_categories.setText(cat1 + "," + cat2 + "," + cat3 + "," + cat4 + "," + cat5);
+                    if (is_joining.equals("true")){
+                        tv_join.setVisibility(View.GONE);
+                        tv_joining.setVisibility(View.VISIBLE);
+                    }else {
+                        tv_joining.setVisibility(View.GONE);
+                        tv_join.setVisibility(View.VISIBLE);
                     }
-                    tv_email_address.setText(email);
-                    tv_mobile_number.setText(mobile_number);
-                    tv_dob.setText(dob);
-                    tv_address.setText(address);
-                    tv_city.setText(city);
-                    tv_country.setText(country);
 
-                    if (gender.equalsIgnoreCase("male")){
-                        tv_gender.setText("Male");
-                    }else if (gender.equalsIgnoreCase("female")){
-                        tv_gender.setText("Female");
+                    tv_activity_name.setText(activity_name);
+                    tv_loaction.setText(location);
+                    tv_date.setText(start_date_and_time);
+                    tv_desc.setText(activity_description);
+                    tv_like_count.setText(like_count);
+                    tv_createdby.setText(first_name+" "+last_name);
+
+                    tv_like_count.setText(like_count);
+                    if (is_like.equals("true")){
+                        iv_LIKE.setImageResource(R.drawable.ic_like_a);
+                    }else {
+                        iv_LIKE.setImageResource(R.drawable.ic_like_i);
                     }
+
+                    String strImages = remove_last_charectar(post_path);
+                    imageList = new ArrayList<>(Arrays.asList(strImages.split(",")));
+
+
+                    try {
+                        BannerSliderAdapterTest adapter = new BannerSliderAdapterTest(mActivity,imageList);
+                        vpBanner.setAdapter(adapter);
+                        vpBanner.setCurrentItem(adapter.getCount()-1);
+                      //  dots_indicator.setViewPager(vpBanner);
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new SliderTimer(), 2000, 4000);
+
 
                 }
             }
@@ -144,177 +180,53 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         });
 
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + get_activity_by_activity_uuid, new JSONObject(params), new Response.Listener<JSONObject>() {
+    }
+
+    private void getJoiningActivity(String activity_uuid) {
+        GetAttendiesRequest attendiesRequest = new GetAttendiesRequest(activity_uuid);
+        Call<GetActivityJoingingResponse> call = mAPIService.getAttendies(attendiesRequest);
+        call.enqueue(new Callback<GetActivityJoingingResponse>() {
             @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("details>>"+response);
-                myDialog.hideDialog(mActivity);
+            public void onResponse(Call<GetActivityJoingingResponse> call, retrofit2.Response<GetActivityJoingingResponse> response) {
+                //   System.out.println("timeline>>" + response.toString());
 
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
-                    if (status.equals("1"))
-                    {
-                        getJoiningActivity(activity_uuid);
-                        // tv_no_request_found.setVisibility(View.GONE);
+                if(response.body()!=null){
 
-                                JSONObject object = response.getJSONObject("get_activities");
-                                 activity_uuid = object.getString("activity_uuid");
-                                 friend_uuid = object.getString("user_uuid");
-                                String activity_name = object.getString("activity_name");
+                    GetActivityJoingingResponse joingingResponse = response.body();
+                    String message = joingingResponse.getMsg();
+                    List<JoiningUser> joiningUserList = joingingResponse.getGetActivityJoining();
+                    if (joiningUserList.size()>0) {
+                       // view.setVisibility(View.VISIBLE);
+                        for (JoiningUser joiningUser : joiningUserList) {
+                            String activity_uuid = joiningUser.getActivity_uuid();
+                            String first_name = joiningUser.getFirst_name();
+                            String last_name = joiningUser.getLast_name();
+                            String user_name = joiningUser.getUser_name();
+                            String profile_pic = joiningUser.getProfile_pic();
 
-
-                                String activity_description = object.getString("activity_description");
-                                 first_name = object.getString("first_name");
-                                 last_name = object.getString("last_name");
-                                String profile_name = object.getString("profile_name");
-                                 user_pic = object.getString("user_pic");
-
-
-                                String category_name = object.getString("category_name");
-                                String sub_category = object.getString("sub_category");
-                                String start_date_and_time = object.getString("start_date_and_time");
-                                String end_date_and_time = object.getString("end_date_and_time");
-                                String post_path = object.getString("post_path");
-                                String location = object.getString("location");
-                                String comment_list = object.getString("comment_list");
-
-                                String like_count = object.getString("like_count");
-                                String joining_count = object.getString("joining_count");
-                                String is_like = object.getString("is_like");
-                                 is_joining = object.getString("is_joining");
-                                String date = object.getString("created_at");
-
-
-                                Glide.with(mActivity)
-                                .load(ApiStatus.IMAGE_BASE_URL+user_pic)
-                                .into(iv_profilepic);
-
-
-                                if (is_joining.equals("true")){
-                                    tv_join.setVisibility(View.GONE);
-                                    tv_joining.setVisibility(View.VISIBLE);
-                                }else {
-                                    tv_joining.setVisibility(View.GONE);
-                                    tv_join.setVisibility(View.VISIBLE);
-                                }
-
-                                 tv_activity_name.setText(activity_name);
-                                 tv_loaction.setText(location);
-                                tv_date.setText(start_date_and_time);
-                                tv_desc.setText(activity_description);
-                                tv_like_count.setText(like_count);
-                                tv_createdby.setText(first_name+" "+last_name);
-
-                                tv_like_count.setText(like_count);
-                                if (is_like.equals("true")){
-                                    iv_LIKE.setImageResource(R.drawable.ic_like_a);
-                                }else {
-                                    iv_LIKE.setImageResource(R.drawable.ic_like_i);
-                                }
-
-
-                                String strImages = remove_last_charectar(post_path);
-                                imageList = new ArrayList<>(Arrays.asList(strImages.split(",")));
-
-
-                                try {
-                                    BannerSliderAdapterTest adapter = new BannerSliderAdapterTest(mActivity,imageList);
-                                    vpBanner.setAdapter(adapter);
-                                    vpBanner.setCurrentItem(adapter.getCount()-1);
-                                    dots_indicator.setViewPager(vpBanner);
-                                }catch (Exception e)
-                                {
-                                    e.printStackTrace();
-                                }
-
-                                Timer timer = new Timer();
-                                timer.scheduleAtFixedRate(new SliderTimer(), 2000, 4000);
-
-
-
-                    }else {
-
-                        Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("details>>"+error);
-                myDialog.hideDialog(mActivity);
-
-
-            }
-        });
-
-        requestQueue = Volley.newRequestQueue(mActivity);
-        requestQueue.add(jsonObjectRequest);
-    }*/
-
-  /*  private void getJoiningActivity(String activity_uuid) {
-        HashMap<String,String> params = new HashMap<>();
-        params.put("activity_uuid",activity_uuid);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + get_joining_activity, new JSONObject(params), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("getJoin>>"+response);
-                myDialog.hideDialog(mActivity);
-
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
-                    if (status.equals("1"))
-                    {
-
-                        JSONArray jsonArray = response.getJSONArray("GetActivityJoining");
-                        if (jsonArray.length()>0){
-                            for (int i=0;i<jsonArray.length();i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                               String activity_uuid = object.getString("activity_uuid");
-                               String first_name  = object.getString("first_name");
-                               String last_name = object.getString("last_name");
-                               String user_name = object.getString("user_name");
-                               String profile_pic = object.getString("profile_pic");
-
-                                joiningUsers.add(new JoiningUser(activity_uuid,first_name,last_name,user_name,profile_pic));
-                            }
-                            tv_joining_count.setText(joiningUsers.size()+" Attendees");
-                         //   GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity,3, LinearLayoutManager.VERTICAL,false);
-                            rv_attendies.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.HORIZONTAL,false));
-                            rvInterestedAdapter=new RvInterestedAdapter(mActivity,joiningUsers);
-                            rv_attendies.setAdapter(rvInterestedAdapter);
-
+                            joiningUsers.add(new JoiningUser(activity_uuid, first_name, last_name, user_name, profile_pic));
                         }
 
-                    }else {
+                        tv_joining_count.setText(joiningUsers.size()+" Attendees");
+                        rv_attendies.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.HORIZONTAL,false));
+                        rvInterestedAdapter=new RvInterestedAdapter(mActivity,joiningUsers);
+                        rv_attendies.setAdapter(rvInterestedAdapter);
 
-                        tv_joining_count.setVisibility(View.VISIBLE);
-                        tv_joining_count.setText("No Attendies");
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }else {
+                    tv_joining_count.setVisibility(View.VISIBLE);
+                    tv_joining_count.setText("No Attendies");
                 }
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("getJoin>>"+error);
+            public void onFailure(Call<GetActivityJoingingResponse> call, Throwable t) {
+                System.out.println("error>>" + t.getCause());
             }
         });
-        requestQueue = Volley.newRequestQueue(mActivity);
-        requestQueue.add(jsonObjectRequest);
 
     }
-*/
+
 
     private String remove_last_charectar(String str) {
             if (str != null && str.length() > 0 && str.charAt(str.length() - 1) == ',') {
@@ -363,7 +275,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         if (id == R.id.iv_back_) {
             finish();
         } else if (id == R.id.btn_upload_media) {
-           /* Intent intent = new Intent(mActivity, GalleryActivity.class);
+            Intent intent = new Intent(mActivity, GalleryActivity.class);
             Bundle args = new Bundle();
             args.putSerializable("ARRAYLIST", (Serializable) imageList);
             intent.putExtra("BUNDLE", args);
@@ -371,12 +283,12 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             intent.putExtra("last_name", last_name);
             intent.putExtra("user_pic", user_pic);
             intent.putExtra("friend_uuid", friend_uuid);
-            startActivity(intent);*/
+            startActivity(intent);
         } else if (id == R.id.tv_join) {
             if (is_joining.equals("false")) {
-              //  getJoinActivity(activity_uuid, user_uuid, "true");
+                getJoinActivity(activity_uuid, user_uuid, "true");
             } else {
-              //  getJoinActivity(activity_uuid, user_uuid, "false");
+                getJoinActivity(activity_uuid, user_uuid, "false");
             }
 
             Intent intent = new Intent(mActivity, TSRespondActivity.class);
@@ -399,78 +311,44 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
 
- /*   private void getJoinActivity(String activity_uuid, String user_uuid, String is_joining) {
+    private void getJoinActivity(String activity_uuid, String user_uuid, String is_joining) {
         myDialog.showProgresbar(mActivity);
-        HashMap<String,String> params = new HashMap<>();
-        params.put("activity_uuid",activity_uuid);
-        params.put("user_uuid",user_uuid);
-        params.put("is_joining",is_joining);
-
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + joining_activity, new JSONObject(params), new Response.Listener<JSONObject>() {
+        JoinActivityRequest joinActivityRequest = new JoinActivityRequest(activity_uuid,user_uuid,is_joining);
+        Call<JoinActivityResponse> call = mAPIService.joinActivity(joinActivityRequest);
+        call.enqueue(new Callback<JoinActivityResponse>() {
             @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("joinActivity>>"+response);
+            public void onResponse(Call<JoinActivityResponse> call, retrofit2.Response<JoinActivityResponse> response) {
+                //  System.out.println("error>>  response " + response.toString());
                 myDialog.hideDialog(mActivity);
 
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
-                    if (status.equals("1"))
-                    {
-                        JSONObject jsonObject = response.getJSONObject("JoiningCount");
-                        String count = jsonObject.getString("joining_count");
-                        tv_joining_count.setText(count);
-                        tv_joining_count.setText(count+" Attendees");
-                        if (mesage.equalsIgnoreCase("Joining")){
-                            tv_joining.setVisibility(View.VISIBLE);
-                            tv_join.setVisibility(View.GONE);
-                            tv_joining.setClickable(false);
-                        }else {
-                            tv_joining.setVisibility(View.GONE);
-                            tv_join.setVisibility(View.VISIBLE);
-                            tv_joining.setClickable(true);
-                        }
+                if(response.body()!=null){
+                    JoinActivityResponse joinActivityResponse = response.body();
+                    String message = joinActivityResponse.getMsg();
+                    JoiningCountData joiningCount = joinActivityResponse.getJoiningCount();
 
-                       // Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
+                    String count = joiningCount.getJoining_count();
+                    tv_joining_count.setText(count);
+                    tv_joining_count.setText(count+" Attendees");
+                    if (message.equalsIgnoreCase("Joining")){
+                        tv_joining.setVisibility(View.VISIBLE);
+                        tv_join.setVisibility(View.GONE);
+                        tv_joining.setClickable(false);
                     }else {
-
-                      //  Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
+                        tv_joining.setVisibility(View.GONE);
+                        tv_join.setVisibility(View.VISIBLE);
+                        tv_joining.setClickable(true);
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("join>>"+error);
+            public void onFailure(Call<JoinActivityResponse> call, Throwable t) {
+                System.out.println("error>>" + t.getCause());
                 myDialog.hideDialog(mActivity);
-
             }
         });
 
-        requestQueue = Volley.newRequestQueue(mActivity);
-        requestQueue.add(jsonObjectRequest);
-        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 30000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 30000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
-    }*/
+    }
 
 /*    private void getLikePost(String activity_uuid, String uuid, boolean like) {
         myDialog.showProgresbar(mActivity);

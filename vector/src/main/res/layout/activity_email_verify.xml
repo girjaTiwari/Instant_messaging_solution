@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/main_bg"
+    tools:context="im.vector.app.timeshare.auth.EmailVerifyActivity">
+
+    <TextView
+        android:textSize="18sp"
+        android:layout_marginTop="50dp"
+       android:layout_gravity="center"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/white"
+        android:text="E-mail verification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/grey_light"
+        android:text="A verification code has been sent to your email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_registered_email"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/grey"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/grey_light"
+        android:text="Enter the email-verification code here:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/et_otp"
+        android:text=""
+        android:inputType="number"
+        android:maxLength="6"
+        android:textSize="21sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:hint="Enter Verification code"
+        android:background="@android:color/transparent"
+        android:layout_margin="16dp"
+        android:textColorHint="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <View
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="#ccc"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+
+    <RelativeLayout
+        android:id="@+id/ll_agreement_txt"
+        android:paddingTop="5dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/poppins_regular"
+            android:paddingBottom="6dp"
+            android:text="Didn’t receive OTP yet? "
+            android:textColor="@color/grey_light"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/otpReSent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_medium"
+            android:maxLines="1"
+            android:paddingBottom="6dp"
+            android:text="Resent OTP"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/otpGetTimmerTxt"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="1:00"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="30dp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/grey_light"
+        android:textSize="16sp"
+        />
+
+    <Button
+        android:id="@+id/btn_verify_email"
+        android:text="Verify Email"
+        android:textColor="@color/white"
+        android:layout_margin="16dp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins_medium"
+        android:background="@drawable/accent_color_rounded_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+</LinearLayout>

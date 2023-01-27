@@ -60,6 +60,12 @@
     </queries>
 
     <application android:supportsRtl="true">
+        <activity android:name=".timeshare.myactivities.ImageViewerActivity"
+            android:theme="@style/BasicTheme"
+            android:exported="false"/>
+        <activity android:name=".timeshare.details.GalleryActivity"
+            android:theme="@style/BasicTheme"
+            android:exported="false"/>
         <activity android:name=".timeshare.details.EventDetailsActivity"
             android:theme="@style/BasicTheme"
             android:exported="false"/>
@@ -84,16 +90,23 @@
             android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
-            android:name=".timeshare.TSSignupActivity"
-            android:exported="false" />
-        <activity
             android:name=".timeshare.TSSubCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".timeshare.TSCategoryActivity"
             android:exported="false" />
         <activity
+            android:name=".timeshare.auth.EmailVerifyActivity"
+            android:theme="@style/BasicTheme"
+            android:exported="false" />
+        <activity
+            android:name=".timeshare.auth.SignupActivity"
+            android:theme="@style/BasicTheme"
+            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:exported="false" />
+        <activity
             android:name=".timeshare.TSLoginActivity"
+            android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
             android:name=".timeshare.SplashActivity"
@@ -218,10 +231,7 @@
                     android:scheme="element" />
             </intent-filter>
         </activity-alias> <!-- exported="true" is required for the share functionality -->
-        <activity
-            android:name=".timeshare.GirjaActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Vector.Launcher" />
+
         <activity
             android:name=".features.MainActivity"
             android:theme="@style/Theme.Vector.Launcher" />

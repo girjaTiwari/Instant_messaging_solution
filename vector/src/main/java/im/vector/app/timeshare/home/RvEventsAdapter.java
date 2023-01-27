@@ -136,7 +136,7 @@ public class RvEventsAdapter extends RecyclerView.Adapter<RvEventsAdapter.MyView
             public void onClick(View v) {
                 Intent intent = new Intent(mContext,EventDetailsActivity.class);
                 intent.putExtra("activity_uuid",model.getActivity_uuid());
-               mContext.startActivity(intent);
+                mContext.startActivity(intent);
             }
         });
 

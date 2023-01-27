@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package im.vector.app.timeshare
+package im.vector.app.timeshare.api_response_body;
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import im.vector.app.R
+public class JoiningCountData {
+    String joining_count;
 
-class GirjaActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_girja)
+    public JoiningCountData(String joining_count) {
+        this.joining_count = joining_count;
+    }
 
+    public String getJoining_count() {
+        return joining_count;
     }
 }

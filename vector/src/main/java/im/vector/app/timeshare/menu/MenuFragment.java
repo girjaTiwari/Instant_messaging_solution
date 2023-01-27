@@ -25,9 +25,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import im.vector.app.R;
+import im.vector.app.timeshare.TSLoginActivity;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
+import im.vector.app.timeshare.api_request_body.CommonRequest;
+import im.vector.app.timeshare.api_request_body.ResentOtpRequest;
+import im.vector.app.timeshare.api_response_body.CommonResponse;
 import im.vector.app.timeshare.profile.MyProfileActivity;
+import im.vector.app.timeshare.webservices.ApiUtils;
+import im.vector.app.timeshare.webservices.RetrofitAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 public class MenuFragment extends Fragment implements View.OnClickListener {
@@ -48,7 +56,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     EditText edt_oldpass,edt_newpass,edt_repass;
    public static ExpandableListAdapter expandableListAdapter;
     private static ExpandableListView expandableListView;
-
+    private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -448,9 +456,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                             user = tsSessionManager.getUserDetails();
                             String uuid =  user.get(TSSessionManager.KEY_user_uuid);
 
-                          //  delete_account(uuid,deleteDialog);
-
-
+                            delete_account(uuid,deleteDialog);
+                            deleteDialog.dismiss();
                         }
 
                     }
@@ -465,68 +472,42 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         deleteDialog = builder.show();
     }
 
-/*
+
     private void delete_account(String uuid,AlertDialog deleteDialog) {
         myDialog.showProgresbar(getActivity());
-        HttpsTrustManager.allowAllSSL();
-        HashMap<String,String> params = new HashMap<>();
-        params.put("user_uuid",uuid);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + delete_account, new JSONObject(params), new Response.Listener<JSONObject>() {
+        CommonRequest delete_account_request = new CommonRequest(uuid);
+        Call<CommonResponse> call = mAPIService.deleteAccount(delete_account_request);
+        call.enqueue(new Callback<CommonResponse>() {
             @Override
-            public void onResponse(JSONObject response) {
-              //  System.out.println("delete_account>>"+response);
-           myDialog.hideDialog(getActivity());
-
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
+            public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
+                //  System.out.println("error>>  response " + response.toString());
+                myDialog.hideDialog(getActivity());
+                if(response.body()!=null){
+                    CommonResponse signupResponse = response.body();
+                    String message = signupResponse.getMsg();
+                    String status = signupResponse.getStatus();
                     if (status.equals("1"))
                     {
-                        Toast.makeText(getActivity(), ""+mesage, Toast.LENGTH_SHORT).show();
-                        sessionManager.logoutUser();
-                       startActivity(new Intent(getActivity(),LoginActivity.class));
-                       getActivity().finish();
-                        deleteDialog.dismiss();
+                        Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
+                        tsSessionManager.logoutUser();
+                        startActivity(new Intent(getActivity(),TSLoginActivity.class));
+                        getActivity().finish();
                     }else {
-                        deleteDialog.dismiss();
-                        Toast.makeText(getActivity(), ""+mesage, Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("delete_account>>"+error);
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                System.out.println("error>>" + t.getCause());
                 myDialog.hideDialog(getActivity());
-
             }
         });
 
-        requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(jsonObjectRequest);
-        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
     }
-*/
+
 
     private void alertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -545,7 +526,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                             user = tsSessionManager.getUserDetails();
                            String uuid =  user.get(TSSessionManager.KEY_user_uuid);
 
-                           //  logout(uuid);
+                            logout(uuid);
                             logoutDialog.dismiss();
 
                         }
@@ -562,61 +543,38 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         logoutDialog = builder.show();
     }
 
-   /* private void logout(String uuid) {
+    private void logout(String uuid) {
         myDialog.showProgresbar(getActivity());
-        HashMap<String,String> params = new HashMap<>();
-        params.put("user_uuid",uuid);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + loggedout, new JSONObject(params), new Response.Listener<JSONObject>() {
+        CommonRequest logoutRequest = new CommonRequest(uuid);
+        Call<CommonResponse> call = mAPIService.logout(logoutRequest);
+        call.enqueue(new Callback<CommonResponse>() {
             @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("logout>>"+response);
-          myDialog.hideDialog(getActivity());
-
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
+            public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
+                //  System.out.println("error>>  response " + response.toString());
+                myDialog.hideDialog(getActivity());
+                if(response.body()!=null){
+                    CommonResponse signupResponse = response.body();
+                    String message = signupResponse.getMsg();
+                    String status = signupResponse.getStatus();
                     if (status.equals("1"))
                     {
-                        sessionManager.logoutUser();
-                        Toast.makeText(getActivity(), ""+mesage, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        tsSessionManager.logoutUser();
+                        Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getActivity(), TSLoginActivity.class));
                         getActivity().finish();
+
                     }else {
-                        Toast.makeText(getActivity(), ""+mesage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("logout>>"+error);
-          myDialog.hideDialog(getActivity());
 
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                System.out.println("error>>" + t.getCause());
+                myDialog.hideDialog(getActivity());
             }
         });
 
-        requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(jsonObjectRequest);
-        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
-    }*/
+    }
 }

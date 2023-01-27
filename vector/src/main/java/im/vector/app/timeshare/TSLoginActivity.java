@@ -36,6 +36,7 @@ import android.widget.Toast;
 import im.vector.app.R;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_response_body.LoginResponse;
+import im.vector.app.timeshare.auth.SignupActivity;
 import im.vector.app.timeshare.webservices.AccountStatus;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.api_request_body.LoginRequest;
@@ -95,30 +96,40 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
                             if(response.body()!=null){
                                 LoginResponse loginResponse = response.body();
                                 String message = loginResponse.getMsg();
+                                String status = loginResponse.getStatus();
+                                if (status.equals("1"))
+                                {
                                 AccountStatus account_status = loginResponse.getAccount_status();
-                                String user_uuid = account_status.getUser_uuid();
-                                String first_name = account_status.getFirst_name();
-                                String last_name = account_status.getLast_name();
-                                String email_id = account_status.getEmail_id();
-                                String profile_name = account_status.getProfile_name();
-                                String mobile_number = account_status.getMobile_number();
-                                String is_category = account_status.getIs_category();
-                                String is_sub_category = account_status.getIs_sub_category();
+                                if (account_status!=null){
+                                    String user_uuid = account_status.getUser_uuid();
+                                    String first_name = account_status.getFirst_name();
+                                    String last_name = account_status.getLast_name();
+                                    String email_id = account_status.getEmail_id();
+                                    String profile_name = account_status.getProfile_name();
+                                    String mobile_number = account_status.getMobile_number();
+                                    String is_category = account_status.getIs_category();
+                                    String is_sub_category = account_status.getIs_sub_category();
 
-                                tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,
-                                        email_id,profile_name,mobile_number,Boolean.parseBoolean(is_category),Boolean.parseBoolean(is_sub_category));
+                                    tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,
+                                            email_id,profile_name,mobile_number,Boolean.parseBoolean(is_category),Boolean.parseBoolean(is_sub_category));
 
+                                    if (Boolean.parseBoolean(is_category) && Boolean.parseBoolean(is_sub_category)){
+                                       // startActivity(new Intent(mActivity, TSMainActivity.class));
+                                    }else if (Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
+                                        startActivity(new Intent(mActivity, TSSubCategoryActivity.class));
 
-                                if (Boolean.parseBoolean(is_category) && Boolean.parseBoolean(is_sub_category)){
-                                    startActivity(new Intent(mActivity, TSMainActivity.class));
-                                }else if (Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
-                                    startActivity(new Intent(mActivity, TSSubCategoryActivity.class));
-                                }else if (!Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
-                                    startActivity(new Intent(mActivity, TSCategoryActivity.class));
+                                    }else if (!Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
+                                        startActivity(new Intent(mActivity, TSCategoryActivity.class));
+
+                                    }
+                                    Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
+                                    finish();
+
                                 }
 
-                                Toast.makeText(TSLoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                                finish();
+                            } else {
+                                    Toast.makeText(TSLoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
 
@@ -134,84 +145,7 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-   /* private void loggedin(String email, String pass) {
-        myDialog.showProgresbar(mActivity);
-      //  HttpsTrustManager.allowAllSSL();
-        HashMap<String,String> params = new HashMap<>();
-        params.put("email_id",email);
-        params.put("password",pass);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + loggedin, new JSONObject(params), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("login>>"+response);
-                myDialog.hideDialog(mActivity);
-
-                try {
-                    String status = response.getString("Status");
-                    String mesage = response.getString("Msg");
-                    if (status.equals("1"))
-                    {
-                        JSONObject account_status = response.getJSONObject("account_status");
-                        String user_uuid = account_status.getString("user_uuid");
-                        String first_name = account_status.getString("first_name");
-                        String last_name = account_status.getString("last_name");
-                        String email_id = account_status.getString("email_id");
-                        String profile_name = account_status.getString("profile_name");
-                        String mobile_number = account_status.getString("mobile_number");
-                        String is_category = account_status.getString("is_category");
-                        String is_sub_category = account_status.getString("is_sub_category");
-
-                        sessionManager.createLoginSession(true,user_uuid,first_name,last_name,
-                                email_id,profile_name,mobile_number,Boolean.parseBoolean(is_category),Boolean.parseBoolean(is_sub_category));
-
-                        if (Boolean.parseBoolean(is_category) && Boolean.parseBoolean(is_sub_category)){
-                            startActivity(new Intent(mActivity, MainActivity.class));
-                        }else if (Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
-                            startActivity(new Intent(mActivity, SubCategoryActivity.class));
-                        }else if (!Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
-                            startActivity(new Intent(mActivity, CategoryActivity.class));
-                        }
-                        Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
-                        finish();
-
-                    }else {
-                        Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("login>>"+error);
-                myDialog.hideDialog(mActivity);
-
-            }
-        });
-
-        requestQueue = Volley.newRequestQueue(mActivity);
-        requestQueue.add(jsonObjectRequest);
-        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
-    }*/
 
     private boolean validate(String email, String pass) {
         if (email.equals("")) {
@@ -244,7 +178,7 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.tv_dont_account) {
-            startActivity(new Intent(mActivity, TSSignupActivity.class));
+            startActivity(new Intent(mActivity, SignupActivity.class));
         } else if (id == R.id.tv_forgot_pass || id == R.id.img_show_pin) {
             //  startActivity(new Intent(mActivity, ForgotPasswordActivity.class));
 

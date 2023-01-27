@@ -27,7 +27,11 @@ import im.vector.app.timeshare.api_request_body.GetActivityDetailsRequest;
 import im.vector.app.timeshare.api_request_body.GetAttendiesRequest;
 import im.vector.app.timeshare.api_request_body.GetProfileRequest;
 import im.vector.app.timeshare.api_request_body.GetRespondRequest;
+import im.vector.app.timeshare.api_request_body.JoinActivityRequest;
+import im.vector.app.timeshare.api_request_body.ResentOtpRequest;
 import im.vector.app.timeshare.api_request_body.SendRequest;
+import im.vector.app.timeshare.api_request_body.SignupRequest;
+import im.vector.app.timeshare.api_request_body.VerifyEmailRequest;
 import im.vector.app.timeshare.api_response_body.EventResponse;
 import im.vector.app.timeshare.api_response_body.GetActivityDetailsResponse;
 import im.vector.app.timeshare.api_response_body.GetActivityJoingingResponse;
@@ -38,6 +42,7 @@ import im.vector.app.timeshare.api_response_body.GetMyActivityResponse;
 import im.vector.app.timeshare.api_response_body.GetProfileResponse;
 import im.vector.app.timeshare.api_response_body.GetRespondResponse;
 import im.vector.app.timeshare.api_response_body.GetSentFriendRequestResponse;
+import im.vector.app.timeshare.api_response_body.JoinActivityResponse;
 import im.vector.app.timeshare.api_response_body.LoginResponse;
 import im.vector.app.timeshare.api_response_body.CommonResponse;
 import im.vector.app.timeshare.api_response_body.UploadImage;
@@ -56,6 +61,21 @@ public interface RetrofitAPI {
 
     @POST("loggedin")
     Call<LoginResponse> login(@Body LoginRequest body);
+
+    @POST("signup")
+    Call<CommonResponse> signup(@Body SignupRequest body);
+
+    @POST("verify_email")
+    Call<CommonResponse> verifyEmail(@Body VerifyEmailRequest body);
+
+    @POST("resend_otp")
+    Call<CommonResponse> resendOtp(@Body ResentOtpRequest body);
+
+    @POST("loggedout")
+    Call<CommonResponse> logout(@Body CommonRequest body);
+
+    @POST("delete_account")
+    Call<CommonResponse> deleteAccount(@Body CommonRequest body);
 
     @POST("get-timeline-by-user-uuid")
     Call<EventResponse> getTimelines(@Body CommonRequest body);
@@ -102,7 +122,8 @@ public interface RetrofitAPI {
     @POST("get-activity-by-activity-uuid")
     Call<GetActivityDetailsResponse> getActvityDetails(@Body GetActivityDetailsRequest body);
 
-
+    @POST("joining-activity")
+    Call<JoinActivityResponse> joinActivity(@Body JoinActivityRequest body);
 
 
     @Multipart

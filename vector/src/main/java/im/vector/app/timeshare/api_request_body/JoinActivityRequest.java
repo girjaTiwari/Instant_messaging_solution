@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package im.vector.app.timeshare;
+package im.vector.app.timeshare.api_request_body;
 
-import androidx.appcompat.app.AppCompatActivity;
+public class JoinActivityRequest {
+    String activity_uuid,user_uuid,is_joining;
 
-import android.os.Bundle;
-
-import im.vector.app.R;
-
-public class TSSignupActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tssignup);
+    public JoinActivityRequest(String activity_uuid, String user_uuid, String is_joining) {
+        this.activity_uuid = activity_uuid;
+        this.user_uuid = user_uuid;
+        this.is_joining = is_joining;
     }
 }
