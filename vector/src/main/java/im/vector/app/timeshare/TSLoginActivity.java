@@ -37,6 +37,8 @@ import im.vector.app.R;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_response_body.LoginResponse;
 import im.vector.app.timeshare.auth.SignupActivity;
+import im.vector.app.timeshare.categ.CategoryActivity;
+import im.vector.app.timeshare.categ.SubCategoryActivity;
 import im.vector.app.timeshare.webservices.AccountStatus;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.api_request_body.LoginRequest;
@@ -116,10 +118,10 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
                                     if (Boolean.parseBoolean(is_category) && Boolean.parseBoolean(is_sub_category)){
                                        // startActivity(new Intent(mActivity, TSMainActivity.class));
                                     }else if (Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
-                                        startActivity(new Intent(mActivity, TSSubCategoryActivity.class));
+                                        startActivity(new Intent(mActivity, SubCategoryActivity.class));
 
                                     }else if (!Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
-                                        startActivity(new Intent(mActivity, TSCategoryActivity.class));
+                                        startActivity(new Intent(mActivity, CategoryActivity.class));
 
                                     }
                                     Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();

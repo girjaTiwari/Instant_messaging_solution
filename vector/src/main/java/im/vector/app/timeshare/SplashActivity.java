@@ -27,6 +27,8 @@ import android.view.Window;
 
 
 import im.vector.app.R;
+import im.vector.app.timeshare.categ.CategoryActivity;
+import im.vector.app.timeshare.categ.SubCategoryActivity;
 
 public class SplashActivity extends AppCompatActivity {
     TSSessionManager tsSessionManager;
@@ -49,14 +51,14 @@ public class SplashActivity extends AppCompatActivity {
                 if (tsSessionManager.isLoggedIn()) {
 
                     if (tsSessionManager.isCategory() && tsSessionManager.isSubCategory()) {
-                        startActivity(new Intent(SplashActivity.this, TSMainActivity.class));
-                        finish();
+                       startActivity(new Intent(SplashActivity.this, TSMainActivity.class));
+                       finish();
                     } else if (tsSessionManager.isCategory() && !tsSessionManager.isSubCategory()) {
-                        startActivity(new Intent(SplashActivity.this, TSSubCategoryActivity.class));
+                        startActivity(new Intent(SplashActivity.this, SubCategoryActivity.class));
                         finish();
                     } else if (!tsSessionManager.isCategory() && !tsSessionManager.isSubCategory()) {
-                        startActivity(new Intent(SplashActivity.this, TSCategoryActivity.class));
-                        finish();
+                        startActivity(new Intent(SplashActivity.this, CategoryActivity.class));
+                       finish();
                     }
                 }
                 else {

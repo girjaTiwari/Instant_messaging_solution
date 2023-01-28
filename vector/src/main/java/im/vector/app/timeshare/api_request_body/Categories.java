@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package im.vector.app.timeshare;
+package im.vector.app.timeshare.api_request_body;
 
-import androidx.appcompat.app.AppCompatActivity;
+public class Categories {
+    String category1,category2,category3,category4,category5;
 
-import android.os.Bundle;
-
-import im.vector.app.R;
-
-public class TSCategoryActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tscategory);
+    public Categories(String category1, String category2, String category3, String category4, String category5) {
+        this.category1 = category1;
+        this.category2 = category2;
+        this.category3 = category3;
+        this.category4 = category4;
+        this.category5 = category5;
     }
 }

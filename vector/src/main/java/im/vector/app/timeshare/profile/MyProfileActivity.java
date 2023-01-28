@@ -10,30 +10,21 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 
-import org.jetbrains.annotations.ApiStatus;
-
 import java.util.HashMap;
 
 import im.vector.app.R;
 import im.vector.app.timeshare.ApiClass;
-import im.vector.app.timeshare.TSCategoryActivity;
-import im.vector.app.timeshare.TSLoginActivity;
-import im.vector.app.timeshare.TSMainActivity;
 import im.vector.app.timeshare.TSSessionManager;
-import im.vector.app.timeshare.TSSubCategoryActivity;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.GetProfileRequest;
-import im.vector.app.timeshare.api_request_body.LoginRequest;
 import im.vector.app.timeshare.api_response_body.GetProfileResponse;
-import im.vector.app.timeshare.api_response_body.LoginResponse;
 import im.vector.app.timeshare.api_response_body.ProfileData;
-import im.vector.app.timeshare.webservices.AccountStatus;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
 import retrofit2.Call;

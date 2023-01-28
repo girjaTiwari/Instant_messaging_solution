@@ -84,16 +84,11 @@
             android:exported="false"/>
         <activity
             android:name=".timeshare.filter.FilterActivity"
+            android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
             android:name=".timeshare.TSMainActivity"
             android:theme="@style/BasicTheme"
-            android:exported="false" />
-        <activity
-            android:name=".timeshare.TSSubCategoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".timeshare.TSCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".timeshare.auth.EmailVerifyActivity"
@@ -103,6 +98,14 @@
             android:name=".timeshare.auth.SignupActivity"
             android:theme="@style/BasicTheme"
             android:windowSoftInputMode="adjustResize|adjustPan"
+            android:exported="false" />
+        <activity
+            android:name=".timeshare.categ.SubCategoryActivity"
+            android:theme="@style/BasicTheme"
+            android:exported="false" />
+        <activity
+            android:name=".timeshare.categ.CategoryActivity"
+            android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
             android:name=".timeshare.TSLoginActivity"

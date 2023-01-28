@@ -21,6 +21,7 @@ package im.vector.app.timeshare.webservices;
 import java.util.List;
 
 import im.vector.app.timeshare.api_request_body.Accept_and_DeclineRequest;
+import im.vector.app.timeshare.api_request_body.AddCategoryRequest;
 import im.vector.app.timeshare.api_request_body.CreateRespondRequest;
 import im.vector.app.timeshare.api_request_body.DeleteActivityRequest;
 import im.vector.app.timeshare.api_request_body.GetActivityDetailsRequest;
@@ -70,6 +71,9 @@ public interface RetrofitAPI {
 
     @POST("resend_otp")
     Call<CommonResponse> resendOtp(@Body ResentOtpRequest body);
+
+    @POST("add_category")
+    Call<CommonResponse> addCategory(@Body AddCategoryRequest body);
 
     @POST("loggedout")
     Call<CommonResponse> logout(@Body CommonRequest body);
