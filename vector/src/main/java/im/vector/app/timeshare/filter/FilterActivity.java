@@ -98,14 +98,14 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
 
         rv_category.setLayoutManager(new LinearLayoutManager(mActivity));
         rv_category.setHasFixedSize(true);
-        categoryList.add(new Category(R.drawable.ic_work,"Work"));
+        /*categoryList.add(new Category(R.drawable.ic_work,"Work"));
         categoryList.add(new Category(R.drawable.ic_work,"Health"));
         categoryList.add(new Category(R.drawable.ic_work,"Holiday"));
         categoryList.add(new Category(R.drawable.ic_work,"Gift"));
         categoryList.add(new Category(R.drawable.ic_work,"Ideas"));
         categoryList.add(new Category(R.drawable.ic_work,"Sports"));
         categoryList.add(new Category(R.drawable.ic_work,"Music"));
-        categoryList.add(new Category(R.drawable.ic_work,"Hiking"));
+        categoryList.add(new Category(R.drawable.ic_work,"Hiking"));*/
         rvSpinnerCategoryAdapter = new RvSpinnerCategoryAdapter(mActivity, categoryList);
         rv_category.setAdapter(rvSpinnerCategoryAdapter);
 

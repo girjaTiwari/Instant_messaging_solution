@@ -2,6 +2,9 @@ package im.vector.app.timeshare.categ;
 
 
 
+import static im.vector.app.timeshare.ApiClass.add_sub_category;
+import static im.vector.app.timeshare.ApiClass.get_category;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +15,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,12 +32,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import im.vector.app.R;
+import im.vector.app.timeshare.ApiClass;
+import im.vector.app.timeshare.TSMainActivity;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
+import im.vector.app.timeshare.api_request_body.GetCategoryRequest;
+import im.vector.app.timeshare.api_response_body.GetCategoryResponse;
+import im.vector.app.timeshare.webservices.ApiUtils;
+import im.vector.app.timeshare.webservices.RetrofitAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class SubCategoryActivity extends AppCompatActivity {
     AppCompatActivity mActivity;
     RecyclerView rvCategory;
+    RequestQueue requestQueue;
     TSSessionManager tsSessionManager;
     MyDialog myDialog;
     Button btn_continue;
@@ -34,7 +55,7 @@ public class SubCategoryActivity extends AppCompatActivity {
     ImageView iv_close_subcategory;
     String user_uuid,first_name,last_name,email_id,profile_name,mobile_number;
     boolean isCategory;
-
+    private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     public static ArrayList<String>selectedSubCategoryList1 = new ArrayList<>();
     public static ArrayList<String>selectedSubCategoryList2 = new ArrayList<>();
     public static ArrayList<String>selectedSubCategoryList3 = new ArrayList<>();
@@ -61,17 +82,17 @@ public class SubCategoryActivity extends AppCompatActivity {
             if (tsSessionManager.isCategory()){
                 isCategory=true;
             }
-           // getCategories(email_id);
+            getCategories(email_id);
         }
 
     }
 
-  /*  private void getCategories(String email_id) {
+    private void getCategories(String email_id) {
         myDialog.showProgresbar(mActivity);
         HashMap<String,String> params = new HashMap<>();
         params.put("email_id",email_id);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + get_category,new JSONObject(params), new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiClass.BASE_URL + get_category,new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 System.out.println("categorylist>>"+response);
@@ -94,9 +115,9 @@ public class SubCategoryActivity extends AppCompatActivity {
                         rvCategory.setHasFixedSize(true);
                         // add static data in eventlist
                         categoryList.add(new Category(R.drawable.ic_work,category1));
-                        categoryList.add(new Category(R.drawable.ic_health,category2));
-                        categoryList.add(new Category(R.drawable.ic_holiday,category3));
-                        categoryList.add(new Category(R.drawable.ic_gift,category4));
+                        categoryList.add(new Category(R.drawable.ic_work,category2));
+                        categoryList.add(new Category(R.drawable.ic_work,category3));
+                        categoryList.add(new Category(R.drawable.ic_work,category4));
                         categoryList.add(new Category(R.drawable.ic_ideas,category5));
 
                         rvSubCategoryAdapter = new RvSubCategoryAdapter(mActivity, categoryList);
@@ -138,7 +159,7 @@ public class SubCategoryActivity extends AppCompatActivity {
 
             }
         });
-    }*/
+    }
 
     private void findView() {
         myDialog = new MyDialog(mActivity);
@@ -171,11 +192,11 @@ public class SubCategoryActivity extends AppCompatActivity {
                            selectedSubCategoryList3.size()>0 ||
                            selectedSubCategoryList4.size()>0 ||
                            selectedSubCategoryList5.size()>0){
-                      /*  addSubCategories(user_uuid,email_id,selectedSubCategoryList1.size(),
+                       addSubCategories(user_uuid,email_id,selectedSubCategoryList1.size(),
                                 selectedSubCategoryList2.size(),
                                 selectedSubCategoryList3.size(),
                                 selectedSubCategoryList4.size(),
-                                selectedSubCategoryList5.size());*/
+                                selectedSubCategoryList5.size());
                     } else {
                         Toast.makeText(mActivity, "Please Select Sub Category", Toast.LENGTH_SHORT).show();
                     }
@@ -188,7 +209,7 @@ public class SubCategoryActivity extends AppCompatActivity {
 
     }
 
-    /*private void addSubCategories(String user_uuid, String email_id,int count1,int count2,int count3,int count4,int count5) {
+    private void addSubCategories(String user_uuid, String email_id,int count1,int count2,int count3,int count4,int count5) {
         myDialog.showProgresbar(mActivity);
         JSONObject jsonObject = new JSONObject();
 
@@ -345,7 +366,7 @@ public class SubCategoryActivity extends AppCompatActivity {
 
         System.out.println("param>>"+jsonObject.toString());
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + add_sub_category,jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiClass.BASE_URL + add_sub_category,jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 System.out.println("subcategory>>"+response);
@@ -356,10 +377,10 @@ public class SubCategoryActivity extends AppCompatActivity {
                     String mesage = response.getString("Msg");
                     if (status.equals("1"))
                     {
-                        sessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,isCategory,true);
+                        tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,isCategory,true);
 
                         Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(mActivity, MainActivity.class));
+                        startActivity(new Intent(mActivity, TSMainActivity.class));
                         finish();
 
                     }else {
@@ -398,5 +419,5 @@ public class SubCategoryActivity extends AppCompatActivity {
 
             }
         });
-    }*/
+    }
 }

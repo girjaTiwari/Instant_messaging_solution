@@ -18,6 +18,8 @@ package im.vector.app.timeshare.webservices;
 
 
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import im.vector.app.timeshare.api_request_body.Accept_and_DeclineRequest;
@@ -26,6 +28,7 @@ import im.vector.app.timeshare.api_request_body.CreateRespondRequest;
 import im.vector.app.timeshare.api_request_body.DeleteActivityRequest;
 import im.vector.app.timeshare.api_request_body.GetActivityDetailsRequest;
 import im.vector.app.timeshare.api_request_body.GetAttendiesRequest;
+import im.vector.app.timeshare.api_request_body.GetCategoryRequest;
 import im.vector.app.timeshare.api_request_body.GetProfileRequest;
 import im.vector.app.timeshare.api_request_body.GetRespondRequest;
 import im.vector.app.timeshare.api_request_body.JoinActivityRequest;
@@ -36,6 +39,7 @@ import im.vector.app.timeshare.api_request_body.VerifyEmailRequest;
 import im.vector.app.timeshare.api_response_body.EventResponse;
 import im.vector.app.timeshare.api_response_body.GetActivityDetailsResponse;
 import im.vector.app.timeshare.api_response_body.GetActivityJoingingResponse;
+import im.vector.app.timeshare.api_response_body.GetCategoryResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendListResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendRequestResponse;
 import im.vector.app.timeshare.api_response_body.GetFriendSuggetionResponse;
@@ -71,6 +75,9 @@ public interface RetrofitAPI {
 
     @POST("resend_otp")
     Call<CommonResponse> resendOtp(@Body ResentOtpRequest body);
+
+    @POST("get_category")
+    Call<GetCategoryResponse> getCategory(@Body GetCategoryRequest body);
 
     @POST("add_category")
     Call<CommonResponse> addCategory(@Body AddCategoryRequest body);

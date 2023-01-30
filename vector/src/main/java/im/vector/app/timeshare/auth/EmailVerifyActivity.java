@@ -19,10 +19,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import im.vector.app.R;
-import im.vector.app.timeshare.TSLoginActivity;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.ResentOtpRequest;
-import im.vector.app.timeshare.api_request_body.SignupRequest;
 import im.vector.app.timeshare.api_request_body.VerifyEmailRequest;
 import im.vector.app.timeshare.api_response_body.CommonResponse;
 import im.vector.app.timeshare.webservices.ApiUtils;

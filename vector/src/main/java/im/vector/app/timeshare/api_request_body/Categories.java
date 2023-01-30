@@ -19,6 +19,28 @@ package im.vector.app.timeshare.api_request_body;
 public class Categories {
     String category1,category2,category3,category4,category5;
 
+    public Categories(String category1) {
+        this.category1 = category1;
+    }
+
+    public Categories(String category1, String category2) {
+        this.category1 = category1;
+        this.category2 = category2;
+    }
+
+    public Categories(String category1, String category2, String category3) {
+        this.category1 = category1;
+        this.category2 = category2;
+        this.category3 = category3;
+    }
+
+    public Categories(String category1, String category2, String category3, String category4) {
+        this.category1 = category1;
+        this.category2 = category2;
+        this.category3 = category3;
+        this.category4 = category4;
+    }
+
     public Categories(String category1, String category2, String category3, String category4, String category5) {
         this.category1 = category1;
         this.category2 = category2;

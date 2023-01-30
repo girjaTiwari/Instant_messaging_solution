@@ -108,7 +108,7 @@
             android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
-            android:name=".timeshare.TSLoginActivity"
+            android:name=".timeshare.auth.TSLoginActivity"
             android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity

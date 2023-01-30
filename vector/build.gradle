@@ -220,7 +220,7 @@ dependencies {
     // implementation 'com.github.MikeOrtiz:TouchImageView:3.0.2'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
-   // implementation 'com.android.volley:volley:1.2.1'
+    implementation 'com.android.volley:volley:1.2.1'
 
     implementation libs.github.glide
     kapt libs.github.glideCompiler

@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import im.vector.app.R;
-import im.vector.app.timeshare.TSLoginActivity;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.SignupRequest;

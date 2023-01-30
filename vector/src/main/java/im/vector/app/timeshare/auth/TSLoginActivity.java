@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.timeshare;
+package im.vector.app.timeshare.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -34,9 +34,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import im.vector.app.R;
+import im.vector.app.timeshare.TSMainActivity;
+import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_response_body.LoginResponse;
-import im.vector.app.timeshare.auth.SignupActivity;
 import im.vector.app.timeshare.categ.CategoryActivity;
 import im.vector.app.timeshare.categ.SubCategoryActivity;
 import im.vector.app.timeshare.webservices.AccountStatus;
@@ -104,6 +105,7 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
                                 AccountStatus account_status = loginResponse.getAccount_status();
                                 if (account_status!=null){
                                     String user_uuid = account_status.getUser_uuid();
+                                    System.out.println("userid>>" +user_uuid);
                                     String first_name = account_status.getFirst_name();
                                     String last_name = account_status.getLast_name();
                                     String email_id = account_status.getEmail_id();
@@ -116,7 +118,7 @@ public class TSLoginActivity extends AppCompatActivity implements View.OnClickLi
                                             email_id,profile_name,mobile_number,Boolean.parseBoolean(is_category),Boolean.parseBoolean(is_sub_category));
 
                                     if (Boolean.parseBoolean(is_category) && Boolean.parseBoolean(is_sub_category)){
-                                       // startActivity(new Intent(mActivity, TSMainActivity.class));
+                                        startActivity(new Intent(mActivity, TSMainActivity.class));
                                     }else if (Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)){
                                         startActivity(new Intent(mActivity, SubCategoryActivity.class));
 

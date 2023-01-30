@@ -2,6 +2,8 @@ package im.vector.app.timeshare.categ;
 
 
 
+import static im.vector.app.timeshare.ApiClass.add_category;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import im.vector.app.R;
+import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.AddCategoryRequest;
@@ -40,6 +51,7 @@ public class CategoryActivity extends AppCompatActivity {
     ArrayList<Category>categoryList = new ArrayList<>();
     RvCategoryAdapter rvCategoryAdapter;
     ImageView iv_close_category;
+    RequestQueue requestQueue;
     Button btn_continue;
   public static ArrayList<String>selectedCategoryList = new ArrayList<>();
   String user_uuid,first_name,last_name,email_id,profile_name,mobile_number;
@@ -195,7 +207,6 @@ public class CategoryActivity extends AppCompatActivity {
 
 
     private void addCategory(String email_id,int count) {
-        Categories categories=null;
         myDialog.showProgresbar(mActivity);
         JSONObject jsonObject = new JSONObject();
         JSONObject innerObj = new JSONObject();
@@ -204,69 +215,84 @@ public class CategoryActivity extends AppCompatActivity {
 
             if (count==1){
                 innerObj.put("category1",selectedCategoryList.get(0));
-                 categories = new Categories(selectedCategoryList.get(0),"","","","");
             }else if (count==2){
                 innerObj.put("category1",selectedCategoryList.get(0));
                 innerObj.put("category2",selectedCategoryList.get(1));
-                 categories = new Categories(selectedCategoryList.get(0),selectedCategoryList.get(1),"","","");
             }else if (count==3){
                 innerObj.put("category1",selectedCategoryList.get(0));
                 innerObj.put("category2",selectedCategoryList.get(1));
                 innerObj.put("category3",selectedCategoryList.get(2));
-                 categories = new Categories(selectedCategoryList.get(0),selectedCategoryList.get(1),selectedCategoryList.get(2),"","");
             }else if (count==4){
                 innerObj.put("category1",selectedCategoryList.get(0));
                 innerObj.put("category2",selectedCategoryList.get(1));
                 innerObj.put("category3",selectedCategoryList.get(2));
                 innerObj.put("category4",selectedCategoryList.get(3));
-                 categories = new Categories(selectedCategoryList.get(0),selectedCategoryList.get(1),selectedCategoryList.get(2),selectedCategoryList.get(3),"");
             }else {
                 innerObj.put("category1",selectedCategoryList.get(0));
                 innerObj.put("category2",selectedCategoryList.get(1));
                 innerObj.put("category3",selectedCategoryList.get(2));
                 innerObj.put("category4",selectedCategoryList.get(3));
                 innerObj.put("category5",selectedCategoryList.get(4));
-                 categories = new Categories(selectedCategoryList.get(0),selectedCategoryList.get(1),selectedCategoryList.get(2),selectedCategoryList.get(3),selectedCategoryList.get(4));
             }
 
             jsonObject.put("categorys",innerObj);
-
-            AddCategoryRequest addCategoryRequest = new AddCategoryRequest(email_id,categories);
-            System.out.println("param>>"+addCategoryRequest);
-            Call<CommonResponse> call = mAPIService.addCategory(addCategoryRequest);
-            call.enqueue(new Callback<CommonResponse>() {
-                @Override
-                public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
-                      System.out.println("error>>  response " + response.toString());
-
-                    if(response.body()!=null){
-                        CommonResponse loginResponse = response.body();
-                        String message = loginResponse.getMsg();
-                        String status = loginResponse.getStatus();
-                        if (status.equals("1"))
-                        {
-                            tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,true,false);
-                            Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(mActivity, SubCategoryActivity.class));
-                            finish();
-
-                        } else {
-                            Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CommonResponse> call, Throwable t) {
-                    System.out.println("error>>" + t.getCause());
-
-                }
-            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-      //  System.out.println("param>>"+jsonObject.toString());
+        System.out.println("param>>"+jsonObject.toString());
 
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiClass.BASE_URL + add_category,jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("category>>"+response);
+                myDialog.hideDialog(mActivity);
+
+                try {
+                    String status = response.getString("Status");
+                    String mesage = response.getString("Msg");
+                    if (status.equals("1"))
+                    {
+                        tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,true,false);
+                        Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(mActivity, SubCategoryActivity.class));
+                        finish();
+
+                    }else {
+                        Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("category>>"+error);
+                myDialog.hideDialog(mActivity);
+
+            }
+        });
+
+        requestQueue = Volley.newRequestQueue(mActivity);
+        requestQueue.add(jsonObjectRequest);
+        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 30000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 30000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
     }
 }

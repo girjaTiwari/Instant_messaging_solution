@@ -17,7 +17,6 @@
 package im.vector.app.timeshare;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Build;
@@ -27,6 +26,7 @@ import android.view.Window;
 
 
 import im.vector.app.R;
+import im.vector.app.timeshare.auth.TSLoginActivity;
 import im.vector.app.timeshare.categ.CategoryActivity;
 import im.vector.app.timeshare.categ.SubCategoryActivity;
 

@@ -16,12 +16,10 @@
 
 package im.vector.app.timeshare.api_request_body;
 
-import org.json.JSONObject;
+public class GetCategoryRequest {
+    String email_id;
 
-public class AddCategoryRequest {
-    JSONObject jsonObject;
-
-    public AddCategoryRequest(JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
+    public GetCategoryRequest(String email_id) {
+        this.email_id = email_id;
     }
 }

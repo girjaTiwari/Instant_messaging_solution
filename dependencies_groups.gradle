@@ -36,6 +36,7 @@ ext.groups = [
                         'com.android.tools',
                         'com.google.firebase',
                         'com.google.testing.platform',
+                        'com.android.volley'
                 ]
         ],
         snapshot: [
