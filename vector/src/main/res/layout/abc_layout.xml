@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/main_bg"
+    android:id="@+id/loginRoot"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/logo_img"
+        android:src="@drawable/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/loginHeaderTitle"
+        style="@style/Widget.Vector.TextView.Title.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="TimeShare"
+        android:textColor="@color/palette_white"
+        android:fontFamily="@font/ubuntu_regular"
+        />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/selectedServerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/editServerButton"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/selectedServerDescription"
+            style="@style/Widget.Vector.TextView.Micro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="?vctr_content_tertiary" />
+
+        <Button
+            android:id="@+id/editServerButton"
+            style="@style/Widget.Vector.Button.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/ftue_auth_create_account_edit_server_selection"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_marginTop="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/loginEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="Email"
+            android:maxLength="65"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/palette_white"
+            android:textColorHint="#EFEDED"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="#ccc"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <RelativeLayout
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_show_pin"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_eye"
+            app:tint="@color/palette_white" />
+
+        <EditText
+            android:id="@+id/loginPasswordInput"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="2dp"
+            android:layout_toLeftOf="@+id/img_show_pin"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:text=""
+            android:textColor="@color/palette_white"
+            android:textColorHint="#EFEDED"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="#ccc"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <TextView
+        android:id="@+id/tv_forgot_pass"
+        android:textColor="@color/palette_white"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="36dp"
+        android:layout_gravity="left"
+        android:padding="5dp"
+        android:text="Forgot Password?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/loginForgotPassword"
+        style="@style/Widget.Vector.Button.Text.Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ftue_auth_forgot_password"
+        android:textAllCaps="true"
+        android:textColor="?colorSecondary" />
+
+    <Button
+        android:id="@+id/loginSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:background="@drawable/accent_color_rounded_bg"
+        android:text="Sign In"
+        android:fontFamily="@font/poppins_medium"
+        android:textAllCaps="false"
+        android:textColor="@color/palette_white"
+        android:textSize="16sp" />
+
+    <!--  <androidx.constraintlayout.widget.Group
+          android:id="@+id/ssoGroup"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:visibility="gone"
+          app:constraint_referenced_ids="ssoButtonsHeader,ssoButtons"
+          app:layout_constraintBottom_toTopOf="@id/ssoButtonsHeader"
+          app:layout_constraintTop_toBottomOf="@id/loginSubmit"
+          tools:visibility="visible" />
+
+      <TextView
+          android:id="@+id/ssoButtonsHeader"
+          style="@style/Widget.Vector.TextView.Subtitle.Medium"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:layout_marginBottom="16dp"
+          android:text="@string/ftue_auth_create_account_sso_section_header"
+          android:textColor="?vctr_content_secondary"
+          app:layout_constraintBottom_toTopOf="@id/ssoButtons"
+          app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
+          app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+          app:layout_constraintTop_toBottomOf="@id/loginSubmit" />
+
+      <Button
+          android:id="@+id/loginWithQrCode"
+          style="@style/Widget.Vector.Button.Outlined.Login"
+          android:layout_width="0dp"
+          android:layout_height="60dp"
+          android:layout_marginTop="12dp"
+          android:text="@string/login_scan_qr_code"
+          android:visibility="gone"
+          app:drawableLeftCompat="@drawable/ic_qr_code"
+          app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
+          app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+          app:layout_constraintTop_toBottomOf="@id/ssoButtonsHeader"
+          tools:visibility="visible" />
+
+      <im.vector.app.features.login.SocialLoginButtonsView
+          android:id="@+id/ssoButtons"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="16dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
+          app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+          app:layout_constraintTop_toBottomOf="@id/loginWithQrCode"
+          tools:signMode="signup" />-->
+
+</LinearLayout>
+
+

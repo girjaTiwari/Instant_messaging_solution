@@ -26,6 +26,7 @@ import android.view.Window;
 
 
 import im.vector.app.R;
+import im.vector.app.features.MainActivity;
 import im.vector.app.timeshare.auth.TSLoginActivity;
 import im.vector.app.timeshare.categ.CategoryActivity;
 import im.vector.app.timeshare.categ.SubCategoryActivity;
@@ -47,8 +48,9 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                if (tsSessionManager.isLoggedIn()) {
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent);
+               /* if (tsSessionManager.isLoggedIn()) {
 
                     if (tsSessionManager.isCategory() && tsSessionManager.isSubCategory()) {
                        startActivity(new Intent(SplashActivity.this, TSMainActivity.class));
@@ -66,7 +68,7 @@ public class SplashActivity extends AppCompatActivity {
                     Intent intent = new Intent(SplashActivity.this, TSLoginActivity.class);
                     startActivity(intent);
                     finish();
-                }
+                }*/
 
             }
         },2000);

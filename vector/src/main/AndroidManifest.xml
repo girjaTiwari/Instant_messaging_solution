@@ -146,6 +146,7 @@
         <activity
             android:name=".features.login.LoginActivity"
             android:launchMode="singleTask"
+            android:theme="@style/BasicTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".features.onboarding.OnboardingActivity"
@@ -237,7 +238,7 @@
 
         <activity
             android:name=".features.MainActivity"
-            android:theme="@style/Theme.Vector.Launcher" />
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".features.share.IncomingShareActivity"
             android:exported="true"

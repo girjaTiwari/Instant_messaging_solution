@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/LoginFormScrollView"
     android:layout_height="match_parent"
-    android:background="?android:colorBackground"
+    android:background="@drawable/main_bg"
     android:fillViewport="true"
     android:paddingTop="0dp"
     android:paddingBottom="0dp">
@@ -37,6 +37,15 @@
             app:layout_constraintVertical_bias="0"
             app:layout_constraintVertical_chainStyle="packed" />
 
+        <ImageView
+            android:id="@+id/logo_img"
+            app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/headerSpacing"
+            android:src="@drawable/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"/>
+
         <TextView
             android:id="@+id/loginHeaderTitle"
             style="@style/Widget.Vector.TextView.Title.Medium"
@@ -44,12 +53,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="@string/ftue_auth_welcome_back_title"
-            android:textColor="?vctr_content_primary"
+            android:text="TimeShare"
+            android:fontFamily="@font/ubuntu_regular"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@id/titleContentSpacing"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/headerSpacing" />
+            app:layout_constraintTop_toBottomOf="@id/logo_img" />
 
         <Space
             android:id="@+id/titleContentSpacing"
@@ -67,7 +77,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="4dp"
             android:text="@string/ftue_auth_sign_in_choose_server_header"
-            android:textColor="?vctr_content_secondary"
+            android:textColor="@color/grey_light"
             app:layout_constraintBottom_toTopOf="@id/selectedServerName"
             app:layout_constraintEnd_toStartOf="@id/editServerButton"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
@@ -79,7 +89,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:textColor="?vctr_content_primary"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@id/selectedServerDescription"
             app:layout_constraintEnd_toStartOf="@id/editServerButton"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
@@ -137,10 +147,9 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/loginInput"
-            style="@style/Widget.Vector.TextInputLayout.Username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/ftue_auth_login_username_entry"
+            android:hint="Email"
             app:layout_constraintBottom_toTopOf="@id/entrySpacing"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
@@ -152,6 +161,7 @@
                 android:layout_height="match_parent"
                 android:imeOptions="actionNext"
                 android:inputType="textNoSuggestions"
+                android:textColor="@color/white"
                 android:maxLines="1"
                 android:nextFocusForward="@id/loginPasswordInput" />
 
@@ -181,12 +191,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:imeOptions="actionDone"
+                android:textColor="@color/white"
                 android:inputType="textPassword"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/loginForgotPas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/actionSpacing"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/loginPasswordInput" />
+
+
         <Button
+            android:visibility="invisible"
             android:id="@+id/loginForgotPassword"
             style="@style/Widget.Vector.Button.Text.Login"
             android:layout_width="wrap_content"
@@ -210,17 +234,16 @@
 
         <Button
             android:id="@+id/loginSubmit"
-            style="@style/Widget.Vector.Button.Login"
+            android:background="@drawable/accent_color_rounded_bg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/login_signup_submit"
-            android:textAllCaps="true"
-            app:layout_constraintBottom_toTopOf="@id/ssoButtonsHeader"
+            android:text="Sign In"
+            android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
             app:layout_constraintTop_toBottomOf="@id/actionSpacing" />
 
-        <androidx.constraintlayout.widget.Group
+       <!-- <androidx.constraintlayout.widget.Group
             android:id="@+id/ssoGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -267,7 +290,7 @@
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
             app:layout_constraintTop_toBottomOf="@id/loginWithQrCode"
-            tools:signMode="signup" />
+            tools:signMode="signup" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
