@@ -39,7 +39,7 @@
         <activity-alias
             android:name=".im.vector.app.Alias"
             android:exported="true"
-            android:targetActivity="im.vector.app.timeshare.SplashActivity">
+            android:targetActivity="im.vector.app.features.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

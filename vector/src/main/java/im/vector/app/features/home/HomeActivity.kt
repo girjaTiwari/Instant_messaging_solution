@@ -83,6 +83,7 @@ import im.vector.app.features.spaces.share.ShareSpaceBottomSheet
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.usercode.UserCodeActivity
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
+import im.vector.app.timeshare.TSMainActivity
 import im.vector.lib.core.utils.compat.getParcelableExtraCompat
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -726,7 +727,7 @@ class HomeActivity :
                     inviteNotificationRoomId = inviteNotificationRoomId
             )
 
-            val intent = Intent(context, HomeActivity::class.java)
+            val intent = Intent(context, HomeActivity::class.java)//HomeActivity
                     .apply {
                         putExtra(Mavericks.KEY_ARG, args)
                     }

@@ -642,8 +642,7 @@ class OnboardingViewModel @AssistedInject constructor(
         val call: Call<LoginResponse> = mAPIService.login(loginRequest)
         call.enqueue(object : Callback<LoginResponse?> {
             override fun onResponse(call: Call<LoginResponse?>, response: Response<LoginResponse?>) {
-                System.out.println("login>>" + response.toString());
-                Toast.makeText(applicationContext,"success",Toast.LENGTH_SHORT).show()
+              //  System.out.println("login>>" + response.toString());
                 if (response.body() != null) {
                     val loginResponse = response.body()
                     val message = loginResponse?.msg

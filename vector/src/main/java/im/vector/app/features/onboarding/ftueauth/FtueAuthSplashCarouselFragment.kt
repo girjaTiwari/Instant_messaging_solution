@@ -17,6 +17,7 @@
 package im.vector.app.features.onboarding.ftueauth
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,7 @@ import im.vector.app.features.VectorFeatures
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingFlow
 import im.vector.app.features.settings.VectorPreferences
+import im.vector.app.timeshare.auth.TSLoginActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -101,6 +103,8 @@ class FtueAuthSplashCarouselFragment :
         views.splashCarousel.registerAutomaticUntilInteractionTransitions()
     }
 
+
+
     private fun ViewPager2.registerAutomaticUntilInteractionTransitions() {
         var scheduledTransition: Job? = null
         val pageChangingCallback = object : ViewPager2.OnPageChangeCallback() {
@@ -143,7 +147,7 @@ class FtueAuthSplashCarouselFragment :
     }
 
     private fun alreadyHaveAnAccount() {
-        viewModel.handle(OnboardingAction.SplashAction.OnIAlreadyHaveAnAccount(onboardingFlow = OnboardingFlow.SignIn))
+       viewModel.handle(OnboardingAction.SplashAction.OnIAlreadyHaveAnAccount(onboardingFlow = OnboardingFlow.SignIn))
     }
 
     override fun resetViewModel() {

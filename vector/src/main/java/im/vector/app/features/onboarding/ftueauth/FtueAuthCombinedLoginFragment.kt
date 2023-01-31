@@ -148,6 +148,8 @@ class FtueAuthCombinedLoginFragment :
 
         views.selectedServerName.text = state.selectedHomeserver.userFacingUrl.toReducedUrl()
 
+
+
         if (state.isLoading) {
             // Ensure password is hidden
             views.loginPasswordInput.editText().hidePassword()

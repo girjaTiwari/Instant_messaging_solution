@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2023 New Vector Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package im.vector.app.timeshare.menu;
 
 
@@ -25,11 +41,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import im.vector.app.R;
+import im.vector.app.features.MainActivity;
+import im.vector.app.features.workers.signout.SignOutUiWorker;
 import im.vector.app.timeshare.auth.TSLoginActivity;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.CommonRequest;
 import im.vector.app.timeshare.api_response_body.CommonResponse;
+import im.vector.app.timeshare.menu.ExpandableListAdapter;
+import im.vector.app.timeshare.menu.FollowActivity;
+import im.vector.app.timeshare.menu.MyActivity;
 import im.vector.app.timeshare.profile.MyProfileActivity;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
@@ -489,7 +510,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                     {
                         Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
                         tsSessionManager.logoutUser();
-                        startActivity(new Intent(getActivity(),TSLoginActivity.class));
+                        startActivity(new Intent(getActivity(), MainActivity.class));
                         getActivity().finish();
                     }else {
 
@@ -559,7 +580,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                     {
                         tsSessionManager.logoutUser();
                         Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), TSLoginActivity.class));
+                       // startActivity(new Intent(getActivity(), MainActivity.class));
+                       // new SignOutUiWorker(requireActivity()).perform();
                         getActivity().finish();
 
                     }else {

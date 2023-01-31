@@ -152,10 +152,10 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
 
     private fun renderState(state: StartAppViewState) {
         if (state.mayBeLongToProcess) {
-          //  views.status.setText(R.string.updating_your_data)
+            views.status.setText(R.string.updating_your_data)
             views.status.setText("")
         }
-      //  views.status.isVisible = state.mayBeLongToProcess
+        views.status.isVisible = state.mayBeLongToProcess
         views.status.isInvisible = state.mayBeLongToProcess
     }
 
