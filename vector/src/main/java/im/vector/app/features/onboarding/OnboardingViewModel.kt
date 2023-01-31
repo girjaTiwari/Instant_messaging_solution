@@ -17,6 +17,7 @@
 package im.vector.app.features.onboarding
 
 import android.content.Context
+import android.widget.Toast
 import com.airbnb.mvrx.MavericksViewModelFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -48,6 +49,10 @@ import im.vector.app.features.login.ServerType
 import im.vector.app.features.login.SignMode
 import im.vector.app.features.onboarding.OnboardingAction.AuthenticateAction
 import im.vector.app.features.onboarding.StartAuthenticationFlowUseCase.StartAuthenticationResult
+import im.vector.app.timeshare.TSSessionManager
+import im.vector.app.timeshare.api_request_body.LoginRequest
+import im.vector.app.timeshare.api_response_body.LoginResponse
+import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -67,6 +72,9 @@ import org.matrix.android.sdk.api.failure.isUnrecognisedCertificate
 import org.matrix.android.sdk.api.network.ssl.Fingerprint
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.util.BuildVersionSdkIntProvider
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
 import java.util.UUID
 import java.util.concurrent.CancellationException
@@ -609,10 +617,11 @@ class OnboardingViewModel @AssistedInject constructor(
         val safeLoginWizard = loginWizard
         setState { copy(isLoading = true) }
         currentJob = viewModelScope.launch {
+            fetchData(action.username,action.password)
             try {
                 val result = safeLoginWizard.login(
-                        action.username,
-                        action.password,
+                        "girja",
+                        "girja@timeshare",
                         action.initialDeviceName
                 )
                 reAuthHelper.data = action.password
@@ -622,6 +631,66 @@ class OnboardingViewModel @AssistedInject constructor(
                 _viewEvents.post(OnboardingViewEvents.Failure(failure))
             }
         }
+    }
+
+    private fun fetchData(username: String, password: String) {
+        val tsSessionManager = TSSessionManager(applicationContext)
+        val mAPIService = ApiUtils.getAPIService()
+        val loginRequest = LoginRequest(username, password)
+      //  Log.d("data>>", loginRequest.toString())
+      //  Toast.makeText(applicationContext,"hellow",Toast.LENGTH_SHORT).show()
+        val call: Call<LoginResponse> = mAPIService.login(loginRequest)
+        call.enqueue(object : Callback<LoginResponse?> {
+            override fun onResponse(call: Call<LoginResponse?>, response: Response<LoginResponse?>) {
+                System.out.println("login>>" + response.toString());
+                Toast.makeText(applicationContext,"success",Toast.LENGTH_SHORT).show()
+                if (response.body() != null) {
+                    val loginResponse = response.body()
+                    val message = loginResponse?.msg
+                    val status = loginResponse?.status
+                    if (status == "1") {
+                        val account_status = loginResponse.account_status
+                        if (account_status != null) {
+                            val user_uuid = account_status.user_uuid
+                            println("userid>>$user_uuid")
+                            val first_name = account_status.first_name
+                            val last_name = account_status.last_name
+                            val email_id = account_status.email_id
+                            val profile_name = account_status.profile_name
+                            val mobile_number = account_status.mobile_number
+                            val is_category = account_status.is_category
+                            val is_sub_category = account_status.is_sub_category
+                            tsSessionManager.createLoginSession(
+                                    true,
+                                    user_uuid,
+                                    first_name,
+                                    last_name,
+                                    email_id,
+                                    profile_name,
+                                    mobile_number,
+                                    java.lang.Boolean.parseBoolean(is_category),
+                                    java.lang.Boolean.parseBoolean(is_sub_category)
+                            )
+                            if (java.lang.Boolean.parseBoolean(is_category) && java.lang.Boolean.parseBoolean(is_sub_category)) {
+                               // startActivity(Intent(applicationContext, TSMainActivity::class.java))
+                            } else if (java.lang.Boolean.parseBoolean(is_category) && !java.lang.Boolean.parseBoolean(is_sub_category)) {
+                               // startActivity(Intent(applicationContext, SubCategoryActivity::class.java))
+                            } else if (!java.lang.Boolean.parseBoolean(is_category) && !java.lang.Boolean.parseBoolean(is_sub_category)) {
+                              //  startActivity(Intent(applicationContext, CategoryActivity::class.java))
+                            }
+                            Toast.makeText(applicationContext, "" + message, Toast.LENGTH_SHORT).show()
+                           // finish()
+                        }
+                    } else {
+                        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
+                println("error>>" + t.cause)
+            }
+        })
     }
 
     private fun startAuthenticationFlow() {

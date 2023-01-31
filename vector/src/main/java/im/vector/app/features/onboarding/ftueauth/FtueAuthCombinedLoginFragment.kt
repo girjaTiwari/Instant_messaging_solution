@@ -52,12 +52,7 @@ import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import reactivecircus.flowbinding.android.widget.textChanges
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Boolean
 import javax.inject.Inject
-import kotlin.String
 import kotlin.Throwable
 
 @AndroidEntryPoint
@@ -117,7 +112,6 @@ class FtueAuthCombinedLoginFragment :
     }
 
     private fun submit() {
-       // apiLogin();
         cleanupUi()
         loginFieldsValidation.validate(views.loginInput.content(), views.loginPasswordInput.content())
                 .onUsernameOrIdError { views.loginInput.error = it }
@@ -128,59 +122,6 @@ class FtueAuthCombinedLoginFragment :
                 }
     }
 
-  /*  private fun apiLogin() {
-
-        //  startActivity(new Intent(mActivity, MainActivity.class));
-       // val email: String = edt_username.getText().toString().trim { it <= ' ' }
-       // val pass: String = edt_password.getText().toString().trim { it <= ' ' }
-      //  if (validate(email, pass)) {
-            val loginRequest = LoginRequest("girja.tiwari@startelelogic.com", "qwerty")
-            val call = mAPIService.login(loginRequest)
-            call.enqueue(object : Callback<LoginResponse?> {
-                override fun onResponse(call: Call<LoginResponse?>, response: Response<LoginResponse?>) {
-                      System.out.println("login>>" + response.toString());
-                    if (response.body() != null) {
-                        val loginResponse = response.body()
-                        val message = loginResponse!!.msg
-                        val status = loginResponse!!.status
-                        if (status == "1") {
-                            val account_status = loginResponse!!.account_status
-                            if (account_status != null) {
-                                val user_uuid = account_status.user_uuid
-                                println("userid>>$user_uuid")
-                                val first_name = account_status.first_name
-                                val last_name = account_status.last_name
-                                val email_id = account_status.email_id
-                                val profile_name = account_status.profile_name
-                                val mobile_number = account_status.mobile_number
-                                val is_category = account_status.is_category
-                                val is_sub_category = account_status.is_sub_category
-                                *//*tsSessionManager.createLoginSession(
-                                        true, user_uuid, first_name, last_name,
-                                        email_id, profile_name, mobile_number, Boolean.parseBoolean(is_category), Boolean.parseBoolean(is_sub_category)
-                                )*//*
-                                if (Boolean.parseBoolean(is_category) && Boolean.parseBoolean(is_sub_category)) {
-                                  //  startActivity(Intent(mActivity, TSMainActivity::class.java))
-                                } else if (Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)) {
-                                   // startActivity(Intent(mActivity, SubCategoryActivity::class.java))
-                                } else if (!Boolean.parseBoolean(is_category) && !Boolean.parseBoolean(is_sub_category)) {
-                                   // startActivity(Intent(mActivity, CategoryActivity::class.java))
-                                }
-                               // Toast.makeText(mActivity, "" + message, Toast.LENGTH_SHORT).show()
-                               // finish()
-                            }
-                        } else {
-                            //Toast.makeText(this@TSLoginActivity, message, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
-                    println("error>>" + t.cause)
-                }
-            })
-      //  }
-    }*/
 
     private fun cleanupUi() {
         views.loginSubmit.hideKeyboard()

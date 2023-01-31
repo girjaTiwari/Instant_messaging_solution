@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.matrix.android.sdk.api.auth.login.LoginWizard;
+
 import im.vector.app.R;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
@@ -33,6 +36,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private boolean passShow = false;
     String firstname,lastname,profilename,email,password,mobilenumber;
     TSSessionManager tsSessionManager;
+
     MyDialog myDialog;
     private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     @Override
