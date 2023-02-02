@@ -109,7 +109,9 @@ public class RvEventsAdapter extends RecyclerView.Adapter<RvEventsAdapter.MyView
         holder.ll_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, EventDetailsActivity.class));
+                Intent intent = new Intent(mContext, TSRespondActivity.class);
+                intent.putExtra("activity_uuid",model.getActivity_uuid());
+                mContext.startActivity(intent);
             }
         });
 

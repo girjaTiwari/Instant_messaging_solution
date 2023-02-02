@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import im.vector.app.R;
+import im.vector.app.features.MainActivity;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.ResentOtpRequest;
 import im.vector.app.timeshare.api_request_body.VerifyEmailRequest;
@@ -81,7 +82,7 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                      String message = signupResponse.getMsg();
                     Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(mActivity, TSLoginActivity.class);
+                    Intent intent = new Intent(mActivity, MainActivity.class);
                     intent.putExtra("flag","1");
                     startActivity(intent);
                     finish();

@@ -1,5 +1,6 @@
 package im.vector.app.timeshare.filter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -21,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import im.vector.app.R;
+import im.vector.app.features.home.HomeActivity;
 import im.vector.app.timeshare.categ.Category;
 import im.vector.app.timeshare.categ.SubCategory;
 

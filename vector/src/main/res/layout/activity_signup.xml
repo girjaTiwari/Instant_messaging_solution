@@ -67,7 +67,7 @@
                 android:layout_height="1dp"/>
 
             <RelativeLayout
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
                 android:layout_width="match_parent"
@@ -102,7 +102,7 @@
 
 
             <RelativeLayout
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
                 android:layout_width="match_parent"
@@ -137,7 +137,7 @@
 
 
             <RelativeLayout
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
                 android:layout_width="match_parent"
@@ -173,7 +173,7 @@
             <RelativeLayout
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="0dp"
@@ -215,7 +215,7 @@
                 android:layout_height="1dp"/>
 
             <RelativeLayout
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
                 android:layout_weight="1"
@@ -264,9 +264,9 @@
             <Button
                 android:id="@+id/btn_signup"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
                 android:background="@drawable/primary_dark_bg"
@@ -290,7 +290,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
@@ -325,7 +325,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginBottom="8dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"

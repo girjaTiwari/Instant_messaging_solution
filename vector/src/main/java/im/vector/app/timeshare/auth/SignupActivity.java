@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.matrix.android.sdk.api.auth.login.LoginWizard;
 
 import im.vector.app.R;
+import im.vector.app.features.MainActivity;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.SignupRequest;
@@ -92,7 +93,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 userSignupApi(firstname, lastname, profilename, email, password, mobilenumber, device_type);
             }
         } else if (id == R.id.tv_already_account) {
-            startActivity(new Intent(SignupActivity.this, TSLoginActivity.class));
+            startActivity(new Intent(SignupActivity.this, MainActivity.class));
             finish();
         } else if (id == R.id.iv_gmail) {
           //  startActivity(new Intent(SignupActivity.this, GmailSignupActivity.class));

@@ -22,7 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.autofill.HintConstants
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -43,17 +43,12 @@ import im.vector.app.features.login.LoginMode
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingViewEvents
 import im.vector.app.features.onboarding.OnboardingViewState
-import im.vector.app.timeshare.TSMainActivity
-import im.vector.app.timeshare.api_request_body.LoginRequest
-import im.vector.app.timeshare.api_response_body.LoginResponse
-import im.vector.app.timeshare.categ.CategoryActivity
-import im.vector.app.timeshare.categ.SubCategoryActivity
+import im.vector.app.timeshare.auth.SignupActivity
 import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import reactivecircus.flowbinding.android.widget.textChanges
 import javax.inject.Inject
-import kotlin.Throwable
 
 @AndroidEntryPoint
 class FtueAuthCombinedLoginFragment :
@@ -63,6 +58,7 @@ class FtueAuthCombinedLoginFragment :
     @Inject lateinit var loginFieldsValidation: LoginFieldsValidation
     @Inject lateinit var loginErrorParser: LoginErrorParser
     @Inject lateinit var vectorFeatures: VectorFeatures
+
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentFtueCombinedLoginBinding {
         return FragmentFtueCombinedLoginBinding.inflate(inflater, container, false)
@@ -82,6 +78,14 @@ class FtueAuthCombinedLoginFragment :
         viewModel.onEach(OnboardingViewState::canLoginWithQrCode) {
           //  configureQrCodeLoginButtonVisibility(it)
         }
+
+        getView()?.findViewById<TextView>(R.id.tv_dont_account)?.setOnClickListener {
+            startActivity(Intent(requireContext(), SignupActivity::class.java))
+        }
+        getView()?.findViewById<TextView>(R.id.loginForgotPas)?.setOnClickListener {
+           // startActivity(Intent(requireContext(), SignupActivity::class.java))
+        }
+
 
     }
 

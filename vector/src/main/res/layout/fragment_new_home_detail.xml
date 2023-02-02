@@ -102,6 +102,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+
         android:id="@+id/newLayoutOpenSpacesButton"
         style="@style/Widget.Vector.FloatingActionButton"
         android:layout_width="wrap_content"
@@ -118,7 +119,7 @@
         app:layout_constraintStart_toStartOf="@id/newLayoutCreateChatButton"
         app:tint="?attr/colorPrimary"
         tools:targetApi="lollipop_mr1"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newLayoutCreateChatButton"

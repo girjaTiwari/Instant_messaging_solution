@@ -61,12 +61,15 @@
 
     <application android:supportsRtl="true">
         <activity android:name=".timeshare.myactivities.ImageViewerActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false"/>
         <activity android:name=".timeshare.details.GalleryActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false"/>
         <activity android:name=".timeshare.details.EventDetailsActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false"/>
         <activity android:name=".timeshare.home.TSRespondActivity"
@@ -75,15 +78,19 @@
         <activity android:name=".timeshare.profile.ProfileImageViewerActivity"
             android:exported="false"/>
         <activity android:name=".timeshare.profile.MyProfileActivity"
+            android:noHistory="true"
             android:exported="false"/>
         <activity android:name=".timeshare.menu.MyActivity"
             android:theme="@style/BasicTheme"
+            android:noHistory="true"
             android:exported="false"/>
         <activity android:name=".timeshare.menu.FollowActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false"/>
         <activity
             android:name=".timeshare.filter.FilterActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
@@ -92,23 +99,28 @@
             android:exported="false" />
         <activity
             android:name=".timeshare.auth.EmailVerifyActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
             android:name=".timeshare.auth.SignupActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:windowSoftInputMode="adjustResize|adjustPan"
             android:exported="false" />
         <activity
             android:name=".timeshare.categ.SubCategoryActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
             android:name=".timeshare.categ.CategoryActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity
             android:name=".timeshare.auth.TSLoginActivity"
+            android:noHistory="true"
             android:theme="@style/BasicTheme"
             android:exported="false" />
         <activity

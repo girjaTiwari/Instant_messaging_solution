@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import im.vector.app.R;
 import im.vector.app.timeshare.ApiClass;
+import im.vector.app.timeshare.details.EventDetailsActivity;
 import im.vector.app.timeshare.home.model.Event;
 
 public class RvOngoingAdapter extends RecyclerView.Adapter<RvOngoingAdapter.MyViewHolder> {
@@ -54,9 +55,9 @@ public class RvOngoingAdapter extends RecyclerView.Adapter<RvOngoingAdapter.MyVi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(mContext, EventDetailsActivity.class);
-//                intent.putExtra("activity_uuid",model.getActivity_uuid());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, EventDetailsActivity.class);
+                intent.putExtra("activity_uuid",model.getActivity_uuid());
+                mContext.startActivity(intent);
             }
         });
     }

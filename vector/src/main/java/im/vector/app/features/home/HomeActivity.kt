@@ -319,7 +319,8 @@ class HomeActivity :
 //                    mChatSelected?.visibility = View.VISIBLE
 //                    mMenuSelected?.visibility = View.GONE
                     views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    replaceFragment(views.homeDetailFragmentContainer, ChatFragment::class.java)
+                   // replaceFragment(views.homeDetailFragmentContainer, ChatFragment::class.java)
+                    replaceFragment(views.homeDetailFragmentContainer, NewHomeDetailFragment::class.java)
                 }
             }
         }
@@ -378,7 +379,7 @@ class HomeActivity :
         }
 
         homeActivityViewModel.observeViewEvents {
-            when (it) {
+          /*  when (it) {
                 is HomeActivityViewEvents.AskPasswordToInitCrossSigning -> handleAskPasswordToInitCrossSigning(it)
                 is HomeActivityViewEvents.CurrentSessionNotVerified -> handleOnNewSession(it)
                 is HomeActivityViewEvents.CurrentSessionCannotBeVerified -> handleCantVerify(it)
@@ -398,7 +399,7 @@ class HomeActivity :
                 HomeActivityViewEvents.NotifyUserForThreadsMigration -> handleNotifyUserForThreadsMigration()
                 is HomeActivityViewEvents.MigrateThreads -> migrateThreadsIfNeeded(it.checkSession)
                 is HomeActivityViewEvents.AskUserForPushDistributor -> askUserToSelectPushDistributor()
-            }
+            }*/
         }
         homeActivityViewModel.onEach { renderState(it) }
 

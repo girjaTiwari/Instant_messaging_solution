@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'dagger.hilt.android.plugin'
 
+
 if (project.hasProperty("coverage")) {
     apply plugin: 'jacoco'
 }

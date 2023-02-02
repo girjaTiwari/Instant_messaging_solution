@@ -211,7 +211,7 @@ class NewHomeDetailFragment :
 
     private fun showFABs() {
         views.newLayoutCreateChatButton.show()
-        views.newLayoutOpenSpacesButton.show()
+       // views.newLayoutOpenSpacesButton.show()
     }
 
     private fun setCurrentSpace(spaceId: String?) {

@@ -45,7 +45,6 @@ public class TSSessionManager {
         this.mContext = context;
         pref_login = mContext.getSharedPreferences(PREF_LOGIN, PRIVATE_MODE);
         editor_login = pref_login.edit();
-
     }
 
     public void createLoginSession(

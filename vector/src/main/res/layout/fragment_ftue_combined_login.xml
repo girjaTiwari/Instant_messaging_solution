@@ -244,6 +244,33 @@
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
             app:layout_constraintTop_toBottomOf="@id/actionSpacing" />
 
+        <LinearLayout
+            app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/loginSubmit"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:padding="4dp"
+                android:textColor="@color/palette_gray_150"
+                android:layout_gravity="left"
+                android:text="Don't have an account? "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_dont_account"
+                android:textSize="14sp"
+                android:textColor="@color/palette_white"
+                android:layout_gravity="left"
+                android:text="Sign Up"
+                android:padding="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
        <!-- <androidx.constraintlayout.widget.Group
             android:id="@+id/ssoGroup"
             android:layout_width="wrap_content"
