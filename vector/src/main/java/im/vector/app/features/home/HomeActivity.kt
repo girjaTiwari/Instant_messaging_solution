@@ -25,6 +25,8 @@ import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -83,7 +85,10 @@ import im.vector.app.features.spaces.share.ShareSpaceBottomSheet
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.usercode.UserCodeActivity
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
-import im.vector.app.timeshare.TSMainActivity
+import im.vector.app.timeshare.chat.ChatFragment
+import im.vector.app.timeshare.friends.FriendsFragment
+import im.vector.app.timeshare.home.HomeFragment
+import im.vector.app.timeshare.menu.MenuFragment
 import im.vector.lib.core.utils.compat.getParcelableExtraCompat
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -201,6 +206,19 @@ class HomeActivity :
 
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
 
+    var isHome = false
+    var isFriend = false
+    var isChat = false
+    var isMenu = false
+    var iv_home: ImageView? = null
+    var iv_users:ImageView? = null
+    var iv_chat:ImageView? = null
+    var iv_menu:ImageView? = null
+//    lateinit var mHomeSelected:View
+//    lateinit var mUsersSelected:View
+//    lateinit var mChatSelected:View
+//    lateinit var mMenuSelected:View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isNewAppLayoutEnabled = vectorPreferences.isNewAppLayoutEnabled()
@@ -208,17 +226,129 @@ class HomeActivity :
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
         sharedActionViewModel = viewModelProvider[HomeSharedActionViewModel::class.java]
         roomListSharedActionViewModel = viewModelProvider[RoomListSharedActionViewModel::class.java]
+
+
+        iv_home = findViewById(R.id.iv_home)
+        iv_users = findViewById(R.id.iv_users)
+        iv_chat = findViewById(R.id.iv_chat)
+        iv_menu = findViewById(R.id.iv_menu)
+
         views.drawerLayout.addDrawerListener(drawerListener)
         if (isFirstCreation()) {
             if (vectorPreferences.isNewAppLayoutEnabled()) {
                 views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                replaceFragment(views.homeDetailFragmentContainer, NewHomeDetailFragment::class.java)
+               // replaceFragment(views.homeDetailFragmentContainer, NewHomeDetailFragment::class.java)
+                replaceFragment(views.homeDetailFragmentContainer, HomeFragment::class.java)
             } else {
                 replaceFragment(views.homeDetailFragmentContainer, HomeDetailFragment::class.java)
                 replaceFragment(views.homeDrawerFragmentContainer, HomeDrawerFragment::class.java)
                 views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
         }
+
+
+        // Get view id's and perform listener's for Bottom items
+        val rl_home = findViewById<RelativeLayout>(R.id.rl_home)
+        rl_home.setOnClickListener {
+            if (isFirstCreation()) {
+                if (vectorPreferences.isNewAppLayoutEnabled()) {
+                    isHome = true
+                    isFriend = false
+                    isChat = false
+                    isMenu = false
+
+                    iv_home?.setImageResource(R.drawable.ic_home_selected)
+                    iv_users?.setImageResource(R.drawable.ic_users)
+                    iv_chat?.setImageResource(R.drawable.ic_chat_ts)
+                    iv_menu?.setImageResource(R.drawable.ic_menu)
+
+
+//                    mHomeSelected?.visibility = View.VISIBLE
+//                    mUsersSelected?.visibility = View.GONE
+//                    mChatSelected?.visibility = View.GONE
+//                    mMenuSelected?.visibility = View.GONE
+
+
+
+                    views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    replaceFragment(views.homeDetailFragmentContainer, HomeFragment::class.java)
+                }
+            }
+        }
+
+        val rl_users = findViewById<RelativeLayout>(R.id.rl_users);
+        rl_users.setOnClickListener {
+            if (isFirstCreation()) {
+                if (vectorPreferences.isNewAppLayoutEnabled()) {
+                    isHome = false
+                    isFriend = true
+                    isChat = false
+                    isMenu = false
+
+                    iv_home?.setImageResource(R.drawable.ic_home)
+                    iv_users?.setImageResource(R.drawable.ic_users_selected)
+                    iv_chat?.setImageResource(R.drawable.ic_chat_ts)
+                    iv_menu?.setImageResource(R.drawable.ic_menu)
+
+//                    mHomeSelected?.visibility = View.GONE
+//                    mUsersSelected?.visibility = View.VISIBLE
+//                    mChatSelected?.visibility = View.GONE
+//                    mMenuSelected?.visibility = View.GONE
+                    views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    replaceFragment(views.homeDetailFragmentContainer, FriendsFragment::class.java)
+                }
+            }
+        }
+        val rl_chat = findViewById<RelativeLayout>(R.id.rl_chat);
+        rl_chat.setOnClickListener {
+            if (isFirstCreation()) {
+                if (vectorPreferences.isNewAppLayoutEnabled()) {
+                    isHome = false
+                    isFriend = false
+                    isChat = true
+                    isMenu = false
+
+                    iv_home?.setImageResource(R.drawable.ic_home)
+                    iv_users?.setImageResource(R.drawable.ic_users)
+                    iv_chat?.setImageResource(R.drawable.ic_chat_selected)
+                    iv_menu?.setImageResource(R.drawable.ic_menu)
+
+
+//                    mHomeSelected?.visibility = View.GONE
+//                    mUsersSelected?.visibility = View.GONE
+//                    mChatSelected?.visibility = View.VISIBLE
+//                    mMenuSelected?.visibility = View.GONE
+                    views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    replaceFragment(views.homeDetailFragmentContainer, ChatFragment::class.java)
+                }
+            }
+        }
+
+        val rl_menu = findViewById<RelativeLayout>(R.id.rl_menu);
+        rl_menu.setOnClickListener {
+            if (isFirstCreation()) {
+                if (vectorPreferences.isNewAppLayoutEnabled()) {
+                    isHome = false
+                    isFriend = false
+                    isChat = false
+                    isMenu = true
+
+                    iv_home?.setImageResource(R.drawable.ic_home)
+                    iv_users?.setImageResource(R.drawable.ic_users)
+                    iv_chat?.setImageResource(R.drawable.ic_chat_ts)
+                    iv_menu?.setImageResource(R.drawable.ic_menu_selected)
+
+
+//                    mHomeSelected?.visibility = View.GONE
+//                    mUsersSelected?.visibility = View.GONE
+//                    mChatSelected?.visibility = View.GONE
+//                    mMenuSelected?.visibility = View.VISIBLE
+                    views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    replaceFragment(views.homeDetailFragmentContainer, MenuFragment::class.java)
+                }
+            }
+        }
+
 
         sharedActionViewModel
                 .stream()
@@ -278,6 +408,83 @@ class HomeActivity :
             handleIntent(intent)
         }
         homeActivityViewModel.handle(HomeActivityViewActions.ViewStarted)
+
+
+
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+
+        // fab.setVisibility(View.VISIBLE);
+        if (isHome) {
+            val newCase: Fragment = HomeFragment()
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, newCase)
+                    .addToBackStack(null)
+                    .commit()
+            iv_home?.setImageResource(R.drawable.ic_home_selected)
+            iv_users?.setImageResource(R.drawable.ic_users)
+            iv_chat?.setImageResource(R.drawable.ic_chat_ts)
+            iv_menu?.setImageResource(R.drawable.ic_menu)
+//            mHomeSelected?.setVisibility(View.VISIBLE)
+//            mUsersSelected?.setVisibility(View.GONE)
+//            mChatSelected?.setVisibility(View.GONE)
+//            mMenuSelected?.setVisibility(View.GONE)
+        } else if (isFriend) {
+            iv_home?.setImageResource(R.drawable.ic_home)
+            iv_users?.setImageResource(R.drawable.ic_users_selected)
+            iv_chat?.setImageResource(R.drawable.ic_chat_ts)
+            iv_menu?.setImageResource(R.drawable.ic_menu)
+//            mHomeSelected?.setVisibility(View.GONE)
+//            mUsersSelected?.setVisibility(View.VISIBLE)
+//            mChatSelected?.setVisibility(View.GONE)
+//            mMenuSelected?.setVisibility(View.GONE)
+
+            /* Fragment newCase = new FriendsFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, newCase)
+                    .addToBackStack(null)
+                    .commit();*/
+        } else if (isChat) {
+            iv_home?.setImageResource(R.drawable.ic_home)
+            iv_users?.setImageResource(R.drawable.ic_users)
+            iv_chat?.setImageResource(R.drawable.ic_chat_selected)
+            iv_menu?.setImageResource(R.drawable.ic_menu)
+//            mHomeSelected?.setVisibility(View.GONE)
+//            mUsersSelected?.setVisibility(View.GONE)
+//            mChatSelected?.setVisibility(View.VISIBLE)
+//            mMenuSelected?.setVisibility(View.GONE)
+          //  mActivity.startActivity(Intent(mActivity, MainActivity::class.java))
+
+            /* Fragment newCase = new ChatFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, newCase)
+                    .addToBackStack(null)
+                    .commit();*/
+        } else if (isMenu) {
+            iv_home?.setImageResource(R.drawable.ic_home)
+            iv_users?.setImageResource(R.drawable.ic_users)
+            iv_chat?.setImageResource(R.drawable.ic_chat_ts)
+            iv_menu?.setImageResource(R.drawable.ic_menu_selected)
+//            mHomeSelected?.setVisibility(View.GONE)
+//            mUsersSelected?.setVisibility(View.GONE)
+//            mChatSelected?.setVisibility(View.GONE)
+//            mMenuSelected?.setVisibility(View.VISIBLE)
+
+            /* Fragment newCase = new MenuFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, newCase)
+                    .addToBackStack(null)
+                    .commit();*/
+        }
     }
 
     private fun askUserToSelectPushDistributor() {
