@@ -28,7 +28,7 @@
         android:visible="false"
         app:iconTint="?colorPrimary"
         app:showAsAction="always"
-        tools:visible="true" />
+        tools:visible="false" />
 
     <!-- We always want to show this item as an icon -->
     <item
@@ -38,7 +38,7 @@
         android:visible="false"
         app:iconTint="?colorPrimary"
         app:showAsAction="always"
-        tools:visible="true" />
+        tools:visible="false" />
 
     <!-- We always want to show this item as an icon -->
     <item
