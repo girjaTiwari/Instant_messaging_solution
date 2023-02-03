@@ -43,6 +43,7 @@ import im.vector.app.features.login.LoginMode
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingViewEvents
 import im.vector.app.features.onboarding.OnboardingViewState
+import im.vector.app.timeshare.auth.ForgotPasswordActivity
 import im.vector.app.timeshare.auth.SignupActivity
 import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.flow.combine
@@ -83,7 +84,7 @@ class FtueAuthCombinedLoginFragment :
             startActivity(Intent(requireContext(), SignupActivity::class.java))
         }
         getView()?.findViewById<TextView>(R.id.loginForgotPas)?.setOnClickListener {
-           // startActivity(Intent(requireContext(), SignupActivity::class.java))
+            startActivity(Intent(requireContext(), ForgotPasswordActivity::class.java))
         }
 
 

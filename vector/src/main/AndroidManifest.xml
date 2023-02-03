@@ -97,6 +97,17 @@
             android:name=".timeshare.TSMainActivity"
             android:theme="@style/BasicTheme"
             android:exported="false" />
+
+        <activity
+            android:name=".timeshare.auth.ForgotPasswordActivity"
+            android:noHistory="true"
+            android:theme="@style/BasicTheme"
+            android:exported="false" />
+        <activity
+            android:name=".timeshare.auth.OTPVerifyActivity"
+            android:noHistory="true"
+            android:theme="@style/BasicTheme"
+            android:exported="false" />
         <activity
             android:name=".timeshare.auth.EmailVerifyActivity"
             android:noHistory="true"
@@ -250,7 +261,14 @@
 
         <activity
             android:name=".features.MainActivity"
-            android:theme="@style/BasicTheme" />
+            android:exported="true"
+            android:theme="@style/BasicTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".features.share.IncomingShareActivity"
             android:exported="true"

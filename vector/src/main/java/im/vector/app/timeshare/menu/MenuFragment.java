@@ -107,7 +107,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 }else if (expandableListAdapter.getGroup(groupPosition).equals("Category")){
                   //  startActivity(new Intent(getActivity(), CategoryActivity.class));
                 }else if (expandableListAdapter.getGroup(groupPosition).equals("Logout")){
-                    alertDialog();
+                    new SignOutUiWorker(requireActivity()).perform();
+                 //   alertDialog();
                 }else if (expandableListAdapter.getGroup(groupPosition).equals("Start Chat")){
                   //  startActivity(new Intent(getActivity(), ChatLoginActivity.class));
                 }
@@ -545,7 +546,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                             HashMap<String, String> user = new HashMap<>();
                             user = tsSessionManager.getUserDetails();
                            String uuid =  user.get(TSSessionManager.KEY_user_uuid);
-
                             logout(uuid);
                             logoutDialog.dismiss();
 
@@ -581,8 +581,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                         tsSessionManager.logoutUser();
                         Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
                        // startActivity(new Intent(getActivity(), MainActivity.class));
-                       // new SignOutUiWorker(requireActivity()).perform();
-                        getActivity().finish();
+                        new SignOutUiWorker(requireActivity()).perform();
+                       // getActivity().finish();
 
                     }else {
                         Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();

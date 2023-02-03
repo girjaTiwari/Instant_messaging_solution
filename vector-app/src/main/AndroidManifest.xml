@@ -25,7 +25,7 @@
             android:name=".features.Alias"
             android:exported="true"
             android:targetActivity="im.vector.app.features.MainActivity">
-           <!-- <intent-filter>
+          <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -40,11 +40,11 @@
             android:name=".im.vector.app.Alias"
             android:exported="true"
             android:targetActivity="im.vector.app.features.MainActivity">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
 
             <meta-data
                 android:name="android.app.shortcuts"
