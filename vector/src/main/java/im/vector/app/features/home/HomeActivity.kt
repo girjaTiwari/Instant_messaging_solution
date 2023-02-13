@@ -22,19 +22,28 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.viewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
@@ -85,7 +94,8 @@ import im.vector.app.features.spaces.share.ShareSpaceBottomSheet
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.usercode.UserCodeActivity
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
-import im.vector.app.timeshare.chat.ChatFragment
+import im.vector.app.timeshare.MovableFloatingActionButton
+import im.vector.app.timeshare.TSMainActivity.ll_content_area
 import im.vector.app.timeshare.friends.FriendsFragment
 import im.vector.app.timeshare.home.HomeFragment
 import im.vector.app.timeshare.menu.MenuFragment
@@ -94,6 +104,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import okhttp3.RequestBody
 import org.matrix.android.sdk.api.session.permalinks.PermalinkService
 import org.matrix.android.sdk.api.session.sync.InitialSyncStrategy
 import org.matrix.android.sdk.api.session.sync.SyncRequestState
@@ -205,6 +216,30 @@ class HomeActivity :
     override fun getCoordinatorLayout() = views.coordinatorLayout
 
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
+    lateinit var fab:MovableFloatingActionButton
+     lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
+    var activityName: String? = null
+    var activityDescription:String? = null
+    var numberOfFiles:String? = "1"
+    var categoryName:String? = ""
+    var subCategory:String? = ""
+    var userUuid:String? = null
+    var postLocation:String? = null
+    var startDate:String? = null
+    var endDate:String? = null
+
+    //multipart enstances
+    var activityname: RequestBody? = null
+    var activitydesc:okhttp3.RequestBody? = null
+    var numberoffiles:okhttp3.RequestBody? = null
+    var category:okhttp3.RequestBody? = null
+    var subcategory:okhttp3.RequestBody? = null
+    var user_uuid:okhttp3.RequestBody? = null
+    var location:okhttp3.RequestBody? = null
+    var start_date_and_time:okhttp3.RequestBody? = null
+    var end_date_and_time:okhttp3.RequestBody? = null
+
 
     var isHome = false
     var isFriend = false
@@ -232,6 +267,7 @@ class HomeActivity :
         iv_users = findViewById(R.id.iv_users)
         iv_chat = findViewById(R.id.iv_chat)
         iv_menu = findViewById(R.id.iv_menu)
+        fab = findViewById(R.id.fab_add_activity)
 
         views.drawerLayout.addDrawerListener(drawerListener)
         if (isFirstCreation()) {
@@ -246,6 +282,9 @@ class HomeActivity :
             }
         }
 
+        fab.setOnClickListener {
+            startCreatingNewEvents()
+        }
 
         // Get view id's and perform listener's for Bottom items
         val rl_home = findViewById<RelativeLayout>(R.id.rl_home)
@@ -412,6 +451,97 @@ class HomeActivity :
 
 
 
+    }
+
+    private fun startCreatingNewEvents() {
+
+         val builder = BottomSheetDialog(this);
+        builder.setCancelable(false);
+
+        val bottomSheet = LayoutInflater.from(this).inflate(R.layout.layout_start_activity, null);
+        builder.setContentView(bottomSheet);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+       // val displayMetrics:DisplayMetrics = getResources().getDisplayMetrics();
+     //   val height:Int = displayMetrics.heightPixels;
+      //  val maxHeight:Int = (height*0.93).toInt();
+      //  bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+       // bottomSheetBehavior.setPeekHeight(maxHeight);
+        val tv_continue = builder.findViewById<TextView>(R.id.tv_continue);
+        val iv_close = builder.findViewById<ImageView>(R.id.iv_close_activity);
+        val et_activity_name = builder.findViewById<EditText>(R.id.et_activity_name);
+        val et_activity_desc = builder.findViewById<EditText>(R.id.et_activity_desc);
+
+        tv_continue?.setOnClickListener {
+            activityName = et_activity_name?.getText().toString().trim();
+            activityDescription = et_activity_desc?.getText().toString().trim();
+            if (validateActivity(activityName.toString(), activityDescription.toString(),et_activity_name,et_activity_desc)) {
+               // activityname = RequestBody.create("text/plain".toMediaTypeOrNull(), activityName.toString());
+               // activitydesc = RequestBody.create("text/plain".toMediaTypeOrNull(), activityDescription.toString());
+                uploadMediaDialog();
+                builder.dismiss();
+            }
+            builder.dismiss();
+        }
+
+        iv_close?.setOnClickListener {
+
+            builder.dismiss()
+        }
+
+
+        builder.show();
+    }
+
+    private fun uploadMediaDialog() {
+        val builder = BottomSheetDialog(this);
+        builder.setCancelable(false);
+
+        val bottomSheet = LayoutInflater.from(this).inflate(R.layout.layout_upload_photo, null);
+        builder.setContentView(bottomSheet);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        // val displayMetrics:DisplayMetrics = getResources().getDisplayMetrics();
+        //   val height:Int = displayMetrics.heightPixels;
+        //  val maxHeight:Int = (height*0.93).toInt();
+        //  bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        // bottomSheetBehavior.setPeekHeight(maxHeight);
+     /*    tv_continue_upload_photo = builder.findViewById<TextView>(R.id.tv_continue_upload_photo);
+        val iv_close = builder.findViewById<ImageView>(R.id.iv_close_upload_media);
+        val recyclerView = builder.findViewById<RecyclerView>(R.id.rv_imageList);
+        val tv_add_media = builder.findViewById<EditText>(R.id.tv_add_media);
+         ll_content_area = builder.findViewById<LinearLayout>(R.id.ll_content_area);
+
+        tv_continue_upload_photo?.setOnClickListener {
+            activityName = et_activity_name?.getText().toString().trim();
+            activityDescription = et_activity_desc?.getText().toString().trim();
+            if (validateActivity(activityName.toString(), activityDescription.toString(),et_activity_name,et_activity_desc)) {
+                // activityname = RequestBody.create("text/plain".toMediaTypeOrNull(), activityName.toString());
+                // activitydesc = RequestBody.create("text/plain".toMediaTypeOrNull(), activityDescription.toString());
+                uploadMediaDialog();
+                builder.dismiss();
+            }
+            builder.dismiss();
+        }*/
+
+        iv_close?.setOnClickListener {
+
+            builder.dismiss()
+        }
+
+
+        builder.show();
+    }
+
+    private fun validateActivity(activityName: String, activityDescription: String, etActivityName: EditText?, etActivityDesc: EditText?): Boolean {
+        if (activityName.isEmpty()) {
+            etActivityName?.setError("Please enter activity name!")
+            etActivityName?.requestFocus()
+            return false
+        } else if (activityDescription == "") {
+            etActivityDesc?.setError("Please enter activity description!")
+            etActivityDesc?.requestFocus()
+            return false
+        }
+        return true
     }
 
     override fun onPostResume() {

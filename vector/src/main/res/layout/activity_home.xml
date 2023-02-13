@@ -27,6 +27,23 @@
                 android:id="@+id/waiting_view"
                 layout="@layout/merge_overlay_waiting_view" />
 
+            <im.vector.app.timeshare.MovableFloatingActionButton
+                android:id="@+id/fab_add_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="80dp"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_plus_icon"
+                app:tint="#FFFFFF"/>
+
             <LinearLayout
                 android:id="@+id/footer"
                 android:baselineAligned="false"

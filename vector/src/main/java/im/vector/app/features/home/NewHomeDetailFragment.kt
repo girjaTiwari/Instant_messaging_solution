@@ -210,7 +210,7 @@ class NewHomeDetailFragment :
     }
 
     private fun showFABs() {
-        views.newLayoutCreateChatButton.show()
+       // views.newLayoutCreateChatButton.show()
        // views.newLayoutOpenSpacesButton.show()
     }
 
