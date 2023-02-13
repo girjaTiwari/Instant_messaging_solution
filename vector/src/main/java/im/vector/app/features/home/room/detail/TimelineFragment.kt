@@ -344,7 +344,7 @@ class TimelineFragment :
         setupBackPressHandling()
 
         views.includeRoomToolbar.roomToolbarContentView.debouncedClicks {
-            navigator.openRoomProfile(requireActivity(), timelineArgs.roomId)
+         //   navigator.openRoomProfile(requireActivity(), timelineArgs.roomId)
         }
 
         sharedActionViewModel
@@ -874,6 +874,7 @@ class TimelineFragment :
                 true
             }
             R.id.video_call -> {
+
                 callActionsHandler.onVideoCallClicked()
                 true
             }

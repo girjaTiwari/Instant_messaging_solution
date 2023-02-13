@@ -159,7 +159,7 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.i("onViewCreated Fragment ${javaClass.simpleName}")
-        setupMenu()
+      //  setupMenu()
     }
 
     private fun setupMenu() {

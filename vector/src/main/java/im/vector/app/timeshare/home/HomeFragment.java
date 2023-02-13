@@ -63,6 +63,8 @@ public class HomeFragment extends Fragment {
      mContext = getActivity();
         tsSessionManager = new TSSessionManager(mContext);
         myDialog = new MyDialog(getActivity());
+
+
         iv_filter = view.findViewById(R.id.iv_filter);
         iv_filter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,34 +154,36 @@ public class HomeFragment extends Fragment {
                    EventResponse eventResponse = response.body();
                     String message = eventResponse.getMsg();
                      List<Event> events = eventResponse.getGet_timelines();
-                        if (events.size()>0){
-                            for (Event event:events){
-                                String activity_uuid = event.getActivity_uuid();
-                                String activity_name = event.getActivity_name();
-                                String activity_description = event.getActivity_description();
-                                String user_uuid = event.getUser_uuid();
-                                String profile_name = event.getProfile_name();
-                                String user_pic = event.getUser_pic();
-                                String first_name = event.getFirst_name();
-                                String last_name = event.getLast_name();
-                                String category_name = event.getCategory_name();
-                                String sub_category = event.getSub_category();
-                                String start_date_and_time = event.getStart_date_and_time();
-                                String end_date_and_time = event.getEnd_date_and_time();
-                                String post_path = event.getPost_path();
-                                String like_count = event.getLike_count();
-                                String is_like = event.getIs_like();
-                                String created_at = event.getCreated_at();
-                                String location = event.getLocation();
-                                List joiningUserList = event.getGetActivityJoinings();
+                            if (events!=null){
+                                if (events.size()>0){
+                                    for (Event event:events){
+                                        String activity_uuid = event.getActivity_uuid();
+                                        String activity_name = event.getActivity_name();
+                                        String activity_description = event.getActivity_description();
+                                        String user_uuid = event.getUser_uuid();
+                                        String profile_name = event.getProfile_name();
+                                        String user_pic = event.getUser_pic();
+                                        String first_name = event.getFirst_name();
+                                        String last_name = event.getLast_name();
+                                        String category_name = event.getCategory_name();
+                                        String sub_category = event.getSub_category();
+                                        String start_date_and_time = event.getStart_date_and_time();
+                                        String end_date_and_time = event.getEnd_date_and_time();
+                                        String post_path = event.getPost_path();
+                                        String like_count = event.getLike_count();
+                                        String is_like = event.getIs_like();
+                                        String created_at = event.getCreated_at();
+                                        String location = event.getLocation();
+                                        List joiningUserList = event.getGetActivityJoinings();
 
-                                // add data in eventlist
-                                eventList.add(new Event(activity_uuid,activity_name,activity_description,
-                                        user_uuid,profile_name,user_pic,first_name,last_name,category_name,sub_category,
-                                        start_date_and_time,end_date_and_time,post_path,like_count,is_like,created_at,location,joiningUserList));
+                                        // add data in eventlist
+                                        eventList.add(new Event(activity_uuid,activity_name,activity_description,
+                                                user_uuid,profile_name,user_pic,first_name,last_name,category_name,sub_category,
+                                                start_date_and_time,end_date_and_time,post_path,like_count,is_like,created_at,location,joiningUserList));
+                                    }
+
+                                }
                             }
-
-                        }
 
                         // set data in all events
                         rv_allevents.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -214,6 +218,7 @@ public class HomeFragment extends Fragment {
         iv_search = view.findViewById(R.id.iv_search);
         shimmer_ongoing_event = view.findViewById(R.id.shimmer_ongoing_event);
        shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
-
+        shimmerFrameLayout.startShimmer();
+        shimmer_ongoing_event.startShimmer();
     }
 }
