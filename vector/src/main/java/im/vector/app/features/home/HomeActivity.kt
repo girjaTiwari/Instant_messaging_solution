@@ -16,12 +16,17 @@
 
 package im.vector.app.features.home
 
+import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -29,17 +34,18 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.viewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -95,7 +101,6 @@ import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.usercode.UserCodeActivity
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
 import im.vector.app.timeshare.MovableFloatingActionButton
-import im.vector.app.timeshare.TSMainActivity.ll_content_area
 import im.vector.app.timeshare.friends.FriendsFragment
 import im.vector.app.timeshare.home.HomeFragment
 import im.vector.app.timeshare.menu.MenuFragment
@@ -128,6 +133,7 @@ class HomeActivity :
         SpaceInviteBottomSheet.InteractionListener,
         MatrixToBottomSheet.InteractionListener,
         VectorMenuProvider {
+
 
     private lateinit var sharedActionViewModel: HomeSharedActionViewModel
     private lateinit var roomListSharedActionViewModel: RoomListSharedActionViewModel
@@ -218,6 +224,8 @@ class HomeActivity :
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
     lateinit var fab:MovableFloatingActionButton
      lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    val REQUEST_CODE = 200
+    lateinit var logo: ImageView
 
     var activityName: String? = null
     var activityDescription:String? = null
@@ -254,6 +262,39 @@ class HomeActivity :
 //    lateinit var mChatSelected:View
 //    lateinit var mMenuSelected:View
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    if ((ContextCompat.checkSelfPermission(this@HomeActivity,
+                                    Manifest.permission.CAMERA) ===
+                                    PackageManager.PERMISSION_GRANTED)) {
+                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+                        capturePhoto()
+                    }
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+        }
+    }
+
+     fun capturePhoto() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null){
+           // logo = findViewById(R.id.iv)
+           // logo.setImageBitmap(data.extras?.get("data") as Bitmap)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isNewAppLayoutEnabled = vectorPreferences.isNewAppLayoutEnabled()
@@ -261,6 +302,21 @@ class HomeActivity :
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
         sharedActionViewModel = viewModelProvider[HomeSharedActionViewModel::class.java]
         roomListSharedActionViewModel = viewModelProvider[RoomListSharedActionViewModel::class.java]
+
+
+        if (ContextCompat.checkSelfPermission(this@HomeActivity,
+                        Manifest.permission.ACCESS_FINE_LOCATION) !==
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this@HomeActivity,
+                            Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions(this@HomeActivity,
+                        arrayOf(Manifest.permission.CAMERA), 1)
+            } else {
+                ActivityCompat.requestPermissions(this@HomeActivity,
+                        arrayOf(Manifest.permission.CAMERA), 1)
+            }
+        }
+
 
 
         iv_home = findViewById(R.id.iv_home)
@@ -478,9 +534,9 @@ class HomeActivity :
                // activityname = RequestBody.create("text/plain".toMediaTypeOrNull(), activityName.toString());
                // activitydesc = RequestBody.create("text/plain".toMediaTypeOrNull(), activityDescription.toString());
                 uploadMediaDialog();
-                builder.dismiss();
+
             }
-            builder.dismiss();
+          //  builder.dismiss();
         }
 
         iv_close?.setOnClickListener {
@@ -504,31 +560,40 @@ class HomeActivity :
         //  val maxHeight:Int = (height*0.93).toInt();
         //  bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         // bottomSheetBehavior.setPeekHeight(maxHeight);
-     /*    tv_continue_upload_photo = builder.findViewById<TextView>(R.id.tv_continue_upload_photo);
-        val iv_close = builder.findViewById<ImageView>(R.id.iv_close_upload_media);
-        val recyclerView = builder.findViewById<RecyclerView>(R.id.rv_imageList);
+       val tv_continue_upload_photo = builder.findViewById<TextView>(R.id.tv_continue_upload_photo);
+        val iv_back = builder.findViewById<ImageView>(R.id.iv_back_upload_media);
+     //   val recyclerView = builder.findViewById<RecyclerView>(R.id.rv_imageList);
         val tv_add_media = builder.findViewById<EditText>(R.id.tv_add_media);
-         ll_content_area = builder.findViewById<LinearLayout>(R.id.ll_content_area);
+      // val  ll_content_area = builder.findViewById<LinearLayout>(R.id.ll_content_area);
 
-        tv_continue_upload_photo?.setOnClickListener {
-            activityName = et_activity_name?.getText().toString().trim();
-            activityDescription = et_activity_desc?.getText().toString().trim();
-            if (validateActivity(activityName.toString(), activityDescription.toString(),et_activity_name,et_activity_desc)) {
-                // activityname = RequestBody.create("text/plain".toMediaTypeOrNull(), activityName.toString());
-                // activitydesc = RequestBody.create("text/plain".toMediaTypeOrNull(), activityDescription.toString());
-                uploadMediaDialog();
-                builder.dismiss();
-            }
-            builder.dismiss();
-        }*/
+        tv_continue_upload_photo?.setOnClickListener(View.OnClickListener {
+          //  moreInfoDialog()
+            builder.dismiss()
+        })
 
-        iv_close?.setOnClickListener {
+
+        tv_add_media?.setOnClickListener(View.OnClickListener {
+            choosePhoto()
+        })
+
+
+        iv_back?.setOnClickListener {
 
             builder.dismiss()
         }
 
 
         builder.show();
+    }
+
+    private fun choosePhoto() {
+        val builder = BottomSheetDialog(this);
+        builder.setCancelable(false);
+        builder.setContentView(R.layout.fragment_custom_dialog_image__camera_bottom_sheet)
+       // val tv_gallery = builder.findViewById<TextView>(R.id.tv_gallery)
+       // val tv_camera = builder.findViewById<TextView>(R.id.tv_camera)
+       // val tv_cancel_dialog = builder.findViewById<TextView>(R.id.tv_cancel_dialog)
+
     }
 
     private fun validateActivity(activityName: String, activityDescription: String, etActivityName: EditText?, etActivityDesc: EditText?): Boolean {
@@ -543,6 +608,8 @@ class HomeActivity :
         }
         return true
     }
+
+
 
     override fun onPostResume() {
         super.onPostResume()
