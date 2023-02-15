@@ -60,80 +60,90 @@
     </queries>
 
     <application android:supportsRtl="true">
-        <activity android:name=".timeshare.myactivities.ImageViewerActivity"
+        <activity
+            android:name=".timeshare.upload_event.PhotoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".timeshare.myactivities.ImageViewerActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false"/>
-        <activity android:name=".timeshare.details.GalleryActivity"
+            android:theme="@style/BasicTheme" />
+        <activity
+            android:name=".timeshare.details.GalleryActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false"/>
-        <activity android:name=".timeshare.details.EventDetailsActivity"
+            android:theme="@style/BasicTheme" />
+        <activity
+            android:name=".timeshare.details.EventDetailsActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false"/>
-        <activity android:name=".timeshare.home.TSRespondActivity"
-            android:theme="@style/BasicTheme"
-            android:exported="false"/>
-        <activity android:name=".timeshare.profile.ProfileImageViewerActivity"
-            android:exported="false"/>
-        <activity android:name=".timeshare.profile.MyProfileActivity"
+            android:theme="@style/BasicTheme" />
+        <activity
+            android:name=".timeshare.home.TSRespondActivity"
+            android:exported="false"
+            android:theme="@style/BasicTheme" />
+        <activity
+            android:name=".timeshare.profile.ProfileImageViewerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".timeshare.profile.MyProfileActivity"
+            android:exported="false"
+            android:noHistory="true" />
+        <activity
+            android:name=".timeshare.menu.MyActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:exported="false"/>
-        <activity android:name=".timeshare.menu.MyActivity"
-            android:theme="@style/BasicTheme"
+            android:theme="@style/BasicTheme" />
+        <activity
+            android:name=".timeshare.menu.FollowActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:exported="false"/>
-        <activity android:name=".timeshare.menu.FollowActivity"
-            android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false"/>
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.filter.FilterActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false" />
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.TSMainActivity"
-            android:theme="@style/BasicTheme"
-            android:exported="false" />
-
+            android:exported="false"
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.auth.ForgotPasswordActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false" />
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.auth.OTPVerifyActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false" />
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.auth.EmailVerifyActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false" />
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.auth.SignupActivity"
+            android:exported="false"
             android:noHistory="true"
             android:theme="@style/BasicTheme"
-            android:windowSoftInputMode="adjustResize|adjustPan"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".timeshare.categ.SubCategoryActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false" />
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.categ.CategoryActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false" />
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.auth.TSLoginActivity"
+            android:exported="false"
             android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:exported="false" />
+            android:theme="@style/BasicTheme" />
         <activity
             android:name=".timeshare.SplashActivity"
             android:exported="true"
@@ -258,7 +268,6 @@
                     android:scheme="element" />
             </intent-filter>
         </activity-alias> <!-- exported="true" is required for the share functionality -->
-
         <activity
             android:name=".features.MainActivity"
             android:exported="true"

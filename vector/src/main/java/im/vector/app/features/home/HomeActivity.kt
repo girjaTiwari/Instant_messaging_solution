@@ -16,12 +16,9 @@
 
 package im.vector.app.features.home
 
-import android.Manifest
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -34,12 +31,10 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -104,6 +99,7 @@ import im.vector.app.timeshare.MovableFloatingActionButton
 import im.vector.app.timeshare.friends.FriendsFragment
 import im.vector.app.timeshare.home.HomeFragment
 import im.vector.app.timeshare.menu.MenuFragment
+import im.vector.app.timeshare.myactivities.ImageListAdapter
 import im.vector.lib.core.utils.compat.getParcelableExtraCompat
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -133,6 +129,12 @@ class HomeActivity :
         SpaceInviteBottomSheet.InteractionListener,
         MatrixToBottomSheet.InteractionListener,
         VectorMenuProvider {
+
+
+    companion object{
+     @JvmField  var tv_continue_upload_photo: TextView? =null
+       @JvmField var ll_content_area: LinearLayout? =null
+    }
 
 
     private lateinit var sharedActionViewModel: HomeSharedActionViewModel
@@ -224,8 +226,10 @@ class HomeActivity :
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
     lateinit var fab:MovableFloatingActionButton
      lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
-    val REQUEST_CODE = 200
-    lateinit var logo: ImageView
+    val cameraRequest = 100
+    var imageListAdapter: ImageListAdapter? = null
+ /*   var tv_continue_upload_photo:TextView?=null
+    var ll_content_area:LinearLayout?=null*/
 
     var activityName: String? = null
     var activityDescription:String? = null
@@ -262,39 +266,8 @@ class HomeActivity :
 //    lateinit var mChatSelected:View
 //    lateinit var mMenuSelected:View
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            1 -> {
-                if (grantResults.isNotEmpty() && grantResults[0] ==
-                        PackageManager.PERMISSION_GRANTED) {
-                    if ((ContextCompat.checkSelfPermission(this@HomeActivity,
-                                    Manifest.permission.CAMERA) ===
-                                    PackageManager.PERMISSION_GRANTED)) {
-                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
-                        capturePhoto()
-                    }
-                } else {
-                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
-                }
-                return
-            }
-        }
-    }
 
-     fun capturePhoto() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, REQUEST_CODE)
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null){
-           // logo = findViewById(R.id.iv)
-           // logo.setImageBitmap(data.extras?.get("data") as Bitmap)
-        }
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isNewAppLayoutEnabled = vectorPreferences.isNewAppLayoutEnabled()
@@ -302,21 +275,6 @@ class HomeActivity :
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
         sharedActionViewModel = viewModelProvider[HomeSharedActionViewModel::class.java]
         roomListSharedActionViewModel = viewModelProvider[RoomListSharedActionViewModel::class.java]
-
-
-        if (ContextCompat.checkSelfPermission(this@HomeActivity,
-                        Manifest.permission.ACCESS_FINE_LOCATION) !==
-                PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this@HomeActivity,
-                            Manifest.permission.CAMERA)) {
-                ActivityCompat.requestPermissions(this@HomeActivity,
-                        arrayOf(Manifest.permission.CAMERA), 1)
-            } else {
-                ActivityCompat.requestPermissions(this@HomeActivity,
-                        arrayOf(Manifest.permission.CAMERA), 1)
-            }
-        }
-
 
 
         iv_home = findViewById(R.id.iv_home)
@@ -340,6 +298,8 @@ class HomeActivity :
 
         fab.setOnClickListener {
             startCreatingNewEvents()
+           // val intent = Intent(this, PhotoActivity::class.java)
+           // startActivity(intent)
         }
 
         // Get view id's and perform listener's for Bottom items
@@ -560,11 +520,11 @@ class HomeActivity :
         //  val maxHeight:Int = (height*0.93).toInt();
         //  bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         // bottomSheetBehavior.setPeekHeight(maxHeight);
-       val tv_continue_upload_photo = builder.findViewById<TextView>(R.id.tv_continue_upload_photo);
+        tv_continue_upload_photo = builder.findViewById<TextView>(R.id.tv_continue_upload_photo);
         val iv_back = builder.findViewById<ImageView>(R.id.iv_back_upload_media);
      //   val recyclerView = builder.findViewById<RecyclerView>(R.id.rv_imageList);
-        val tv_add_media = builder.findViewById<EditText>(R.id.tv_add_media);
-      // val  ll_content_area = builder.findViewById<LinearLayout>(R.id.ll_content_area);
+        val tv_add_media = builder.findViewById<TextView>(R.id.tv_add_media);
+         ll_content_area = builder.findViewById<LinearLayout>(R.id.ll_content_area);
 
         tv_continue_upload_photo?.setOnClickListener(View.OnClickListener {
           //  moreInfoDialog()
@@ -591,9 +551,38 @@ class HomeActivity :
         builder.setCancelable(false);
         builder.setContentView(R.layout.fragment_custom_dialog_image__camera_bottom_sheet)
        // val tv_gallery = builder.findViewById<TextView>(R.id.tv_gallery)
-       // val tv_camera = builder.findViewById<TextView>(R.id.tv_camera)
-       // val tv_cancel_dialog = builder.findViewById<TextView>(R.id.tv_cancel_dialog)
+        val tv_camera = builder.findViewById<TextView>(R.id.tv_camera)
+        val tv_cancel_dialog = builder.findViewById<TextView>(R.id.tv_cancel_dialog)
 
+        @Suppress("DEPRECATION")
+        tv_camera?.setOnClickListener {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraIntent, cameraRequest)
+            ll_content_area?.setVisibility(View.GONE)
+            builder.dismiss()
+        }
+
+        tv_cancel_dialog?.setOnClickListener {
+            builder.dismiss()
+        }
+
+        builder.show()
+
+    }
+    @Suppress("DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == cameraRequest) {
+            val imageBitmap: Bitmap = data?.extras?.get("data") as Bitmap
+            imageListAdapter?.addItem(imageBitmap)
+
+         /*   if (imageBitmap != null) {
+
+                // Bitmap scaledBitmap = Utils.scaleDown(imageBitmap, 180, true);
+                //Bitmap scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, 400, 180, true);
+                imageListAdapter?.addItem(imageBitmap)
+            }*/
+        }
     }
 
     private fun validateActivity(activityName: String, activityDescription: String, etActivityName: EditText?, etActivityDesc: EditText?): Boolean {
