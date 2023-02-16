@@ -54,10 +54,6 @@ import java.util.Random;
 import java.util.TimeZone;
 
 
-/*
- * Created by pratik on 02-08-2018.
- */
-
 public class MYUtil {
 
     private static MYUtil instance;

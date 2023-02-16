@@ -6,7 +6,7 @@
         <item quantity="one">%1$d selected</item>
         <item quantity="other">%1$d selected</item>
     </plurals>
-
+    <string name="select_image">Select Image</string>
     <!-- Notice -->
     <string name="notice_room_invite_no_invitee">%s\'s invitation</string>
     <string name="notice_room_invite_no_invitee_by_you">Your invitation</string>

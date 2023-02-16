@@ -352,6 +352,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.sharetarget:sharetarget:1.2.0"
    // implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+   // implementation 'com.applandeo:material-calendar-view:1.7.0'
     // Flipper, debug builds only
     debugImplementation(libs.flipper.flipper) {
         exclude group: 'com.facebook.fbjni', module: 'fbjni'

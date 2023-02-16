@@ -18,7 +18,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_gallery"
+            android:id="@+id/tv_gallery_multiple"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="47dp"

@@ -36,8 +36,6 @@ import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSMainActivity;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
-import im.vector.app.timeshare.api_request_body.GetCategoryRequest;
-import im.vector.app.timeshare.api_response_body.GetCategoryResponse;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
 import retrofit2.Call;

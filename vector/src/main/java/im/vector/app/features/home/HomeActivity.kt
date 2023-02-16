@@ -24,16 +24,22 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.MediaStore
+import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.Switch
 import android.widget.TextView
+import android.widget.TimePicker
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -41,6 +47,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.viewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -96,22 +104,40 @@ import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.usercode.UserCodeActivity
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
 import im.vector.app.timeshare.MovableFloatingActionButton
+import im.vector.app.timeshare.TSSessionManager
+import im.vector.app.timeshare.TSUtils.MYUtil.random
+import im.vector.app.timeshare.api_request_body.GetCategoryRequest
+import im.vector.app.timeshare.api_request_body.ResentOtpRequest
+import im.vector.app.timeshare.api_response_body.CommonResponse
+import im.vector.app.timeshare.api_response_body.GetCategoryResponse
+import im.vector.app.timeshare.categ.Category
+import im.vector.app.timeshare.categ.SingleRecyclerViewAdapter
+import im.vector.app.timeshare.categ.SubCategory
+import im.vector.app.timeshare.categ.SubCategorySingleSelectionAdapter
 import im.vector.app.timeshare.friends.FriendsFragment
 import im.vector.app.timeshare.home.HomeFragment
 import im.vector.app.timeshare.menu.MenuFragment
 import im.vector.app.timeshare.myactivities.ImageListAdapter
+import im.vector.app.timeshare.webservices.ApiUtils
 import im.vector.lib.core.utils.compat.getParcelableExtraCompat
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.matrix.android.sdk.api.session.permalinks.PermalinkService
 import org.matrix.android.sdk.api.session.sync.InitialSyncStrategy
 import org.matrix.android.sdk.api.session.sync.SyncRequestState
 import org.matrix.android.sdk.api.session.sync.initialSyncStrategy
 import org.matrix.android.sdk.api.util.MatrixItem
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.util.Date
 import javax.inject.Inject
 
 @Parcelize
@@ -131,10 +157,7 @@ class HomeActivity :
         VectorMenuProvider {
 
 
-    companion object{
-     @JvmField  var tv_continue_upload_photo: TextView? =null
-       @JvmField var ll_content_area: LinearLayout? =null
-    }
+
 
 
     private lateinit var sharedActionViewModel: HomeSharedActionViewModel
@@ -224,12 +247,53 @@ class HomeActivity :
     override fun getCoordinatorLayout() = views.coordinatorLayout
 
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
+    var tsSessionManager: TSSessionManager? = null
+    val mAPIService = ApiUtils.getAPIService()
     lateinit var fab:MovableFloatingActionButton
      lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     val cameraRequest = 100
-    var imageListAdapter: ImageListAdapter? = null
- /*   var tv_continue_upload_photo:TextView?=null
-    var ll_content_area:LinearLayout?=null*/
+    val PICK_IMAGE_MULTIPLE = 101
+    var gallerybitmap: Bitmap? = null
+    var filePart: MultipartBody.Part? = null
+    var filePartList: List<MultipartBody.Part> = ArrayList<MultipartBody.Part>()
+
+
+    var edit_venu: EditText? = null
+    var calendarView_startdate: CalendarView? = null
+    var calendarView_enddate: CalendarView? = null
+    var rl_select_category: RelativeLayout? = null
+    var rl_select_subcategory:RelativeLayout? = null
+    var ll_category_space: LinearLayout? = null
+    var ll_subcategory_space:LinearLayout? = null
+    var ll_start_time: LinearLayout? = null
+    var ll_end_time:LinearLayout? = null
+    var timePicker1: TimePicker? = null
+    var timePicker2:TimePicker? = null
+    var tv_time_cancel1: TextView? = null
+    var tv_time_cancel2:TextView? = null
+    var tv_time_ok1:TextView? = null
+    var tv_time_ok2:TextView? = null
+    var ll_calendar_view_start_date: LinearLayout? = null
+    var ll_calendar_view_end_date:android.widget.LinearLayout? = null
+    var tv_calendar_cancel1: TextView? = null
+    var tv_calendar_ok1:TextView? = null
+    var tv_calendar_cancel2:TextView? = null
+    var tv_calendar_ok2:TextView? = null
+    var tv_activity_start_date: TextView? = null
+    var tv_activity_end_date:TextView? = null
+    var iv_close: ImageView? = null
+    var img_select_start_date:ImageView? = null
+    var img_select_end_date:ImageView? = null
+
+    var rv_category: RecyclerView? = null
+    var rv_spinnersubcategory:RecyclerView? = null
+    var categoryList: ArrayList<Category> = ArrayList<Category>()
+    var subCategoryList: ArrayList<SubCategory> = ArrayList<SubCategory>()
+    var singleRecyclerViewAdapter: SingleRecyclerViewAdapter? = null
+    var subCategorySingleSelectionAdapter: SubCategorySingleSelectionAdapter? = null
+    var et_limits: EditText? = null
+    var switch_limits: Switch? = null
+    var switch_make_public:Switch? = null
 
     var activityName: String? = null
     var activityDescription:String? = null
@@ -237,6 +301,7 @@ class HomeActivity :
     var categoryName:String? = ""
     var subCategory:String? = ""
     var userUuid:String? = null
+    var email_id:String? = null
     var postLocation:String? = null
     var startDate:String? = null
     var endDate:String? = null
@@ -276,7 +341,7 @@ class HomeActivity :
         sharedActionViewModel = viewModelProvider[HomeSharedActionViewModel::class.java]
         roomListSharedActionViewModel = viewModelProvider[RoomListSharedActionViewModel::class.java]
 
-
+        tsSessionManager = TSSessionManager(this@HomeActivity)
         iv_home = findViewById(R.id.iv_home)
         iv_users = findViewById(R.id.iv_users)
         iv_chat = findViewById(R.id.iv_chat)
@@ -295,6 +360,14 @@ class HomeActivity :
                 views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
         }
+
+        var user:HashMap<String,String>
+        user = tsSessionManager!!.getUserDetails()
+        userUuid = user.get(TSSessionManager.KEY_user_uuid)
+        email_id = user.get(TSSessionManager.KEY_email_id)
+
+       // Log.d("userid>>",""+userUuid)
+      //  Log.d("email_id>>",""+email_id)
 
         fab.setOnClickListener {
             startCreatingNewEvents()
@@ -494,9 +567,9 @@ class HomeActivity :
                // activityname = RequestBody.create("text/plain".toMediaTypeOrNull(), activityName.toString());
                // activitydesc = RequestBody.create("text/plain".toMediaTypeOrNull(), activityDescription.toString());
                 uploadMediaDialog();
-
+                builder.dismiss()
             }
-          //  builder.dismiss();
+
         }
 
         iv_close?.setOnClickListener {
@@ -522,12 +595,17 @@ class HomeActivity :
         // bottomSheetBehavior.setPeekHeight(maxHeight);
         tv_continue_upload_photo = builder.findViewById<TextView>(R.id.tv_continue_upload_photo);
         val iv_back = builder.findViewById<ImageView>(R.id.iv_back_upload_media);
-     //   val recyclerView = builder.findViewById<RecyclerView>(R.id.rv_imageList);
+        val recyclerView = builder.findViewById<RecyclerView>(R.id.rv_imageList);
         val tv_add_media = builder.findViewById<TextView>(R.id.tv_add_media);
          ll_content_area = builder.findViewById<LinearLayout>(R.id.ll_content_area);
 
+
+        recyclerView?.layoutManager = LinearLayoutManager(this@HomeActivity)
+        imageListAdapter = ImageListAdapter(this@HomeActivity)
+        recyclerView?.setAdapter(imageListAdapter)
+
         tv_continue_upload_photo?.setOnClickListener(View.OnClickListener {
-          //  moreInfoDialog()
+            moreInfoDialog()
             builder.dismiss()
         })
 
@@ -546,18 +624,127 @@ class HomeActivity :
         builder.show();
     }
 
+    private fun moreInfoDialog() {
+        val builder = BottomSheetDialog(this);
+        builder.setCancelable(false);
+
+        val bottomSheet = LayoutInflater.from(this).inflate(R.layout.layout_more_details, null);
+        builder.setContentView(bottomSheet);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        // val displayMetrics:DisplayMetrics = getResources().getDisplayMetrics();
+        //   val height:Int = displayMetrics.heightPixels;
+        //  val maxHeight:Int = (height*0.93).toInt();
+        //  bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        // bottomSheetBehavior.setPeekHeight(maxHeight);
+        val iv_back = builder.findViewById<ImageView>(R.id.iv_close_more_details);
+         edit_venu = builder.findViewById<EditText>(R.id.edit_venu);
+        val tv_continue = builder.findViewById<TextView>(R.id.tv_continue);
+         calendarView_startdate = builder.findViewById<CalendarView>(R.id.calendarView_startdate);
+         calendarView_enddate = builder.findViewById<CalendarView>(R.id.calendarView_enddate);
+
+        rl_select_category = builder.findViewById<RelativeLayout>(R.id.rl_select_category)
+        rl_select_subcategory = builder.findViewById<RelativeLayout>(R.id.rl_select_subcategory)
+
+        ll_category_space = builder.findViewById<LinearLayout>(R.id.ll_category_space)
+        ll_subcategory_space = builder.findViewById<LinearLayout>(R.id.ll_subcategory_space)
+
+        rv_category = builder.findViewById<RecyclerView>(R.id.rv_spinnercategory)
+        rv_spinnersubcategory = builder.findViewById<RecyclerView>(R.id.rv_spinnersubcategory)
+
+        ll_calendar_view_start_date = builder.findViewById<LinearLayout>(R.id.ll_calendar_view_start_date)
+        ll_calendar_view_end_date = builder.findViewById<LinearLayout>(R.id.ll_calendar_view_end_date)
+
+
+        img_select_start_date = builder.findViewById<ImageView>(R.id.img_select_start_date)
+        img_select_end_date = builder.findViewById<ImageView>(R.id.img_select_end_date)
+
+        tv_calendar_cancel1 = builder.findViewById<TextView>(R.id.tv_calendar_cancel1)
+        tv_calendar_cancel2 = builder.findViewById<TextView>(R.id.tv_calendar_cancel2)
+
+        tv_calendar_ok1 = builder.findViewById<TextView>(R.id.tv_calendar_ok1)
+        tv_calendar_ok2 = builder.findViewById<TextView>(R.id.tv_calendar_ok2)
+
+        tv_activity_start_date = builder.findViewById<TextView>(R.id.tv_activity_start_date)
+        tv_activity_end_date = builder.findViewById<TextView>(R.id.tv_activity_end_date)
+
+
+        ll_start_time = builder.findViewById<LinearLayout>(R.id.ll_start_time)
+        ll_end_time = builder.findViewById<LinearLayout>(R.id.ll_end_time)
+
+        timePicker1 = builder.findViewById<TimePicker>(R.id.timePicker1)
+        timePicker2 = builder.findViewById<TimePicker>(R.id.timePicker2)
+
+        tv_time_cancel1 = builder.findViewById<TextView>(R.id.tv_time_cancel1)
+        tv_time_cancel2 = builder.findViewById<TextView>(R.id.tv_time_cancel2)
+        tv_time_ok1 = builder.findViewById<TextView>(R.id.tv_time_ok1)
+        tv_time_ok2 = builder.findViewById<TextView>(R.id.tv_time_ok2)
+
+        et_limits = builder.findViewById<EditText>(R.id.et_limits)
+
+        switch_limits = builder.findViewById<Switch>(R.id.switch_limits)
+        switch_make_public = builder.findViewById<Switch>(R.id.switch_make_public)
+
+        getCategories(email_id)
+
+        tv_continue?.setOnClickListener {
+
+        }
+
+        iv_back?.setOnClickListener {
+            builder.dismiss()
+        }
+
+        builder.show()
+    }
+
+    private fun getCategories(emailId: String?) {
+        Log.d("email_id>>",""+emailId)
+        val getCategoryRequest = GetCategoryRequest(emailId)
+        val call: Call<GetCategoryResponse> = mAPIService.getCategory(getCategoryRequest)
+        call.enqueue(object : Callback<GetCategoryResponse?> {
+            override fun onResponse(call: Call<GetCategoryResponse?>, response: Response<GetCategoryResponse?>) {
+                //  System.out.println("error>>  response " + response.toString());
+                if (response.body() != null) {
+                    val categoryResponse = response.body()
+                    val message = categoryResponse?.msg
+                    val status = categoryResponse?.status
+                    if (status == "1") {
+                        Toast.makeText(this@HomeActivity, "" + message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@HomeActivity, "" + message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetCategoryResponse?>, t: Throwable) {
+                println("error>>" + t.cause)
+            }
+        })
+    }
+
     private fun choosePhoto() {
         val builder = BottomSheetDialog(this);
         builder.setCancelable(false);
         builder.setContentView(R.layout.fragment_custom_dialog_image__camera_bottom_sheet)
-       // val tv_gallery = builder.findViewById<TextView>(R.id.tv_gallery)
+        val tv_gallery = builder.findViewById<TextView>(R.id.tv_gallery_multiple)
         val tv_camera = builder.findViewById<TextView>(R.id.tv_camera)
         val tv_cancel_dialog = builder.findViewById<TextView>(R.id.tv_cancel_dialog)
+
 
         @Suppress("DEPRECATION")
         tv_camera?.setOnClickListener {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(cameraIntent, cameraRequest)
+            ll_content_area?.setVisibility(View.GONE)
+            builder.dismiss()
+        }
+        @Suppress("DEPRECATION")
+        tv_gallery?.setOnClickListener {
+            val intentGallery = Intent()
+            intentGallery.type = "image/*"
+            intentGallery.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intentGallery.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intentGallery, getString(R.string.select_image)), PICK_IMAGE_MULTIPLE)
             ll_content_area?.setVisibility(View.GONE)
             builder.dismiss()
         }
@@ -572,17 +759,79 @@ class HomeActivity :
     @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == cameraRequest) {
+        if (requestCode == cameraRequest && resultCode == RESULT_OK) {
             val imageBitmap: Bitmap = data?.extras?.get("data") as Bitmap
             imageListAdapter?.addItem(imageBitmap)
 
-         /*   if (imageBitmap != null) {
-
-                // Bitmap scaledBitmap = Utils.scaleDown(imageBitmap, 180, true);
-                //Bitmap scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, 400, 180, true);
-                imageListAdapter?.addItem(imageBitmap)
-            }*/
+        }else if(requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK){
+            try {
+                if (data!!.clipData != null) {
+                    val cout = data.clipData!!.itemCount
+                    for (i in 0 until cout) {
+                        val imageUrl = data.clipData!!.getItemAt(i).uri
+                        gallerybitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUrl)
+                        imageListAdapter?.addItem(gallerybitmap)
+                        val defaultFile = File(getExternalFilesDir(null), "XXX" + "XXX")
+                        if (!defaultFile.exists()) defaultFile.mkdirs()
+                        val random: String = random() //need to random file name
+                        val fileName = "IMG_$random"
+                        //   System.out.println("filename>>"+fileName);
+                        var file = File(defaultFile, fileName)
+                        if (file.exists()) {
+                            file.delete()
+                            file = File(defaultFile, fileName)
+                        }
+                        uploadPhoto(file, defaultFile, fileName)
+                    }
+                } else {
+                    val imageUrl = data.data
+                    gallerybitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUrl)
+                    imageListAdapter?.addItem(gallerybitmap)
+                    val defaultFile = File(getExternalFilesDir(null), "XXX" + "XXX")
+                    if (!defaultFile.exists()) defaultFile.mkdirs()
+                    val d = Date()
+                    val s = DateFormat.format("dd-MM-yyyy_hh:mm:ss", d.time)
+                    val fileName = "IMG_$s" //need to implement
+                    //   System.out.println("filename>>"+fileName);
+                    var file = File(defaultFile, fileName)
+                    if (file.exists()) {
+                        file.delete()
+                        file = File(defaultFile, fileName)
+                    }
+                    val output = FileOutputStream(file)
+                   // gallerybitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
+                    output.flush()
+                    output.close()
+                    val imgFile = File(defaultFile.absolutePath + "/" + fileName)
+                    if (imgFile.exists()) {
+                       // filePart = MultipartBody.Part.createFormData.createFormData("media_file", imgFile.name, RequestBody.create(MediaType.parse("image/*"), imgFile))
+                    }
+                }
+            }catch(e: Exception){
+            }
         }
+    }
+
+    private fun uploadPhoto(file: File, defaultFile: File, fileName: String) {
+        val thread: Thread = object : Thread() {
+            override fun run() {
+                try {
+                    val output = FileOutputStream(file)
+                    gallerybitmap!!.compress(Bitmap.CompressFormat.PNG, 100, output)
+                    output.flush()
+                    output.close()
+                    val imgFile = File(defaultFile.absolutePath + "/" + fileName)
+                    if (imgFile.exists()) {
+                      //  filePart = MultipartBody.Part.createFormData("media_file", imgFile.name, RequestBody.create(MediaType.parse("image/*"), imgFile))
+                      //  filePartList.add(filePart)
+                    }
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        thread.start()
     }
 
     private fun validateActivity(activityName: String, activityDescription: String, etActivityName: EditText?, etActivityDesc: EditText?): Boolean {
@@ -1106,6 +1355,9 @@ class HomeActivity :
     }
 
     companion object {
+        var imageListAdapter: ImageListAdapter? = null
+        @JvmField  var tv_continue_upload_photo: TextView? =null
+        @JvmField var ll_content_area: LinearLayout? =null
         fun newIntent(
                 context: Context,
                 firstStartMainActivity: Boolean,
