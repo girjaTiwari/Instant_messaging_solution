@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.mvrx.Mavericks;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import im.vector.app.R;
+import im.vector.app.features.MainActivity;
+import im.vector.app.features.home.HomeActivity;
 import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSMainActivity;
 import im.vector.app.timeshare.TSSessionManager;
@@ -378,7 +381,6 @@ public class SubCategoryActivity extends AppCompatActivity {
                         tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,isCategory,true);
 
                         Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(mActivity, TSMainActivity.class));
                         finish();
 
                     }else {

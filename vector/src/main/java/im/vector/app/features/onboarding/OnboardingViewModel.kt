@@ -16,8 +16,12 @@
 
 package im.vector.app.features.onboarding
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.MavericksViewModelFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -27,6 +31,7 @@ import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.di.MavericksAssistedViewModelFactory
 import im.vector.app.core.di.hiltMavericksViewModelFactory
 import im.vector.app.core.extensions.cancelCurrentOnSet
+import im.vector.app.core.extensions.content
 import im.vector.app.core.extensions.inferNoConnectivity
 import im.vector.app.core.extensions.isMatrixId
 import im.vector.app.core.extensions.toReducedUrl
@@ -41,6 +46,7 @@ import im.vector.app.features.VectorOverrides
 import im.vector.app.features.analytics.AnalyticsTracker
 import im.vector.app.features.analytics.extensions.toTrackingValue
 import im.vector.app.features.analytics.plan.UserProperties
+import im.vector.app.features.home.HomeActivity
 import im.vector.app.features.login.HomeServerConnectionConfigFactory
 import im.vector.app.features.login.LoginConfig
 import im.vector.app.features.login.LoginMode
@@ -52,6 +58,8 @@ import im.vector.app.features.onboarding.StartAuthenticationFlowUseCase.StartAut
 import im.vector.app.timeshare.TSSessionManager
 import im.vector.app.timeshare.api_request_body.LoginRequest
 import im.vector.app.timeshare.api_response_body.LoginResponse
+import im.vector.app.timeshare.categ.CategoryActivity
+import im.vector.app.timeshare.categ.SubCategoryActivity
 import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.firstOrNull
@@ -616,31 +624,17 @@ class OnboardingViewModel @AssistedInject constructor(
     private fun handleLogin(action: AuthenticateAction.Login) {
         val safeLoginWizard = loginWizard
         setState { copy(isLoading = true) }
-        currentJob = viewModelScope.launch {
-            fetchData(action.username,action.password)
-            try {
-                val result = safeLoginWizard.login(
-                        "girja",
-                        "girja@timeshare",
-                        action.initialDeviceName
-                )
-                reAuthHelper.data = action.password
-                onSessionCreated(result, authenticationDescription = AuthenticationDescription.Login)
-            } catch (failure: Throwable) {
-                setState { copy(isLoading = false) }
-                _viewEvents.post(OnboardingViewEvents.Failure(failure))
-            }
-        }
+      // handle(OnboardingAction.HomeServerChange.EditHomeServer("https://chat.telemo.io"))
+        fetchData(action.username,action.password,safeLoginWizard,action)
     }
 
-    private fun fetchData(username: String, password: String) {
+    private fun fetchData(username: String, password: String,safeLoginWizard:LoginWizard,action: AuthenticateAction.Login) {
         val tsSessionManager = TSSessionManager(applicationContext)
         val mAPIService = ApiUtils.getAPIService()
         val loginRequest = LoginRequest(username, password)
-      //  Log.d("data>>", loginRequest.toString())
-      //  Toast.makeText(applicationContext,"hellow",Toast.LENGTH_SHORT).show()
         val call: Call<LoginResponse> = mAPIService.login(loginRequest)
         call.enqueue(object : Callback<LoginResponse?> {
+            @SuppressLint("SuspiciousIndentation")
             override fun onResponse(call: Call<LoginResponse?>, response: Response<LoginResponse?>) {
               //  System.out.println("login>>" + response.toString());
                 if (response.body() != null) {
@@ -672,15 +666,64 @@ class OnboardingViewModel @AssistedInject constructor(
                             )
                             if (java.lang.Boolean.parseBoolean(is_category) && java.lang.Boolean.parseBoolean(is_sub_category)) {
                                // startActivity(Intent(applicationContext, TSMainActivity::class.java))
+                                currentJob = viewModelScope.launch {
+                                    try {
+                                        val result = safeLoginWizard.login(
+                                                "girja",
+                                                "girja@timeshare",
+                                                action.initialDeviceName
+                                        )
+                                        reAuthHelper.data = action.password
+                                        onSessionCreated(result, authenticationDescription = AuthenticationDescription.Login)
+                                    } catch (failure: Throwable) {
+                                        setState { copy(isLoading = false) }
+                                        _viewEvents.post(OnboardingViewEvents.Failure(failure))
+                                    }
+                                }
+
                             } else if (java.lang.Boolean.parseBoolean(is_category) && !java.lang.Boolean.parseBoolean(is_sub_category)) {
-                               // startActivity(Intent(applicationContext, SubCategoryActivity::class.java))
+                               /* val intent = Intent(applicationContext, SubCategoryActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                                applicationContext.startActivity(intent)*/
+                                currentJob = viewModelScope.launch {
+                                    try {
+                                        val result = safeLoginWizard.login(
+                                                "girja",
+                                                "girja@timeshare",
+                                                action.initialDeviceName
+                                        )
+                                        reAuthHelper.data = action.password
+                                        onSessionCreated(result, authenticationDescription = AuthenticationDescription.Login)
+                                    } catch (failure: Throwable) {
+                                        setState { copy(isLoading = false) }
+                                        _viewEvents.post(OnboardingViewEvents.Failure(failure))
+                                    }
+                                }
                             } else if (!java.lang.Boolean.parseBoolean(is_category) && !java.lang.Boolean.parseBoolean(is_sub_category)) {
-                              //  startActivity(Intent(applicationContext, CategoryActivity::class.java))
+                              /*  val categIntent = Intent(applicationContext, CategoryActivity::class.java)
+                                categIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                                       applicationContext.startActivity(categIntent)*/
+
+                                currentJob = viewModelScope.launch {
+                                    try {
+                                        val result = safeLoginWizard.login(
+                                                "girja",
+                                                "girja@timeshare",
+                                                action.initialDeviceName
+                                        )
+                                        reAuthHelper.data = action.password
+                                        onSessionCreated(result, authenticationDescription = AuthenticationDescription.Login)
+                                    } catch (failure: Throwable) {
+                                        setState { copy(isLoading = false) }
+                                        _viewEvents.post(OnboardingViewEvents.Failure(failure))
+                                    }
+                                }
                             }
                             Toast.makeText(applicationContext, "" + message, Toast.LENGTH_SHORT).show()
                            // finish()
                         }
                     } else {
+                        setState { copy(isLoading = false) }
                         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }

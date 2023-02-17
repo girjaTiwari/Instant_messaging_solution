@@ -108,7 +108,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                   //  startActivity(new Intent(getActivity(), CategoryActivity.class));
                 }else if (expandableListAdapter.getGroup(groupPosition).equals("Logout")){
                     new SignOutUiWorker(requireActivity()).perform();
-                 //   alertDialog();
+                   //alertDialog();
                 }else if (expandableListAdapter.getGroup(groupPosition).equals("Start Chat")){
                   //  startActivity(new Intent(getActivity(), ChatLoginActivity.class));
                 }
@@ -146,7 +146,17 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                         "You clicked : " + expandableListAdapter.getChild(groupPos, childPos),
                         Toast.LENGTH_SHORT).show();*/
                 if (expandableListAdapter.getChild(groupPos,childPos).equals("Delete This Account")){
-                    alertDialog_deleteAccount();
+                    if (tsSessionManager.isLoggedIn()) {
+                        HashMap<String, String> user = new HashMap<>();
+                        user = tsSessionManager.getUserDetails();
+                        String uuid =  user.get(TSSessionManager.KEY_user_uuid);
+
+                        delete_account(uuid,deleteDialog);
+                        new SignOutUiWorker(requireActivity()).perform();
+
+                    }
+                    //alertDialog_deleteAccount();
+
                 }else if (expandableListAdapter.getChild(groupPos,childPos).equals("Rate Timeshare")){
                  //   startActivity(new Intent(getActivity(), AddReviewActivity.class));
                 }
@@ -478,6 +488,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                             String uuid =  user.get(TSSessionManager.KEY_user_uuid);
 
                             delete_account(uuid,deleteDialog);
+
                             deleteDialog.dismiss();
                         }
 
@@ -511,8 +522,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                     {
                         Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
                         tsSessionManager.logoutUser();
-                        startActivity(new Intent(getActivity(), MainActivity.class));
-                        getActivity().finish();
+
                     }else {
 
                         Toast.makeText(getActivity(), ""+message, Toast.LENGTH_SHORT).show();
@@ -564,6 +574,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     }
 
     private void logout(String uuid) {
+
         myDialog.showProgresbar(getActivity());
         CommonRequest logoutRequest = new CommonRequest(uuid);
         Call<CommonResponse> call = mAPIService.logout(logoutRequest);
