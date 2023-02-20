@@ -148,8 +148,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void userSignupApi(String firstname, String lastname, String profilename, String email, String password, String mobilenumber,String device_type)
     {
             myDialog.showProgresbar(mActivity);
+          /*  Note:chat_id == profilename and chat_password == password*/
 
-            SignupRequest signupRequest = new SignupRequest(firstname,lastname,email,profilename,password,mobilenumber,"android",device_type);
+            SignupRequest signupRequest = new SignupRequest(firstname,lastname,email,profilename,password,mobilenumber,"android",device_type,profilename,password);
             Call<CommonResponse> call = mAPIService.signup(signupRequest);
             call.enqueue(new Callback<CommonResponse>() {
                 @Override
@@ -197,6 +198,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if(password.equals("")) {
             edt_password.setError("Please enter password");
+            edt_password.requestFocus();
+            return false;
+        }else if (password.length()<8){
+            edt_password.setError("Please enter minimum 8 char for password");
             edt_password.requestFocus();
             return false;
         }

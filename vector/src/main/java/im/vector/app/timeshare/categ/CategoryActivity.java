@@ -54,7 +54,7 @@ public class CategoryActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     Button btn_continue;
   public static ArrayList<String>selectedCategoryList = new ArrayList<>();
-  String user_uuid,first_name,last_name,email_id,profile_name,mobile_number;
+  String user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password;
     private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,8 @@ public class CategoryActivity extends AppCompatActivity {
             email_id =  user.get(TSSessionManager.KEY_email_id);
             profile_name =  user.get(TSSessionManager.KEY_profile_name);
             mobile_number =  user.get(TSSessionManager.KEY_mobile_number);
+            chat_id =  user.get(TSSessionManager.KEY_chat_id);
+            chat_password =  user.get(TSSessionManager.KEY_chat_password);
 
            // getCategories(email_id);
 
@@ -253,7 +255,7 @@ public class CategoryActivity extends AppCompatActivity {
                     String mesage = response.getString("Msg");
                     if (status.equals("1"))
                     {
-                        tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,true,false);
+                        tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password,true,false);
                         Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(mActivity, SubCategoryActivity.class));
                         finish();

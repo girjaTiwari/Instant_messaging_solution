@@ -17,15 +17,18 @@
 package im.vector.app.timeshare.webservices;
 
 public class AccountStatus {
-    String user_uuid,first_name,last_name,email_id,profile_name,mobile_number,is_category,is_sub_category;
+    String user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password,is_category,is_sub_category;
 
-    public AccountStatus(String user_uuid, String first_name, String last_name, String email_id, String profile_name, String mobile_number, String is_category, String is_sub_category) {
+
+    public AccountStatus(String user_uuid, String first_name, String last_name, String email_id, String profile_name, String mobile_number, String chat_id, String chat_password, String is_category, String is_sub_category) {
         this.user_uuid = user_uuid;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email_id = email_id;
         this.profile_name = profile_name;
         this.mobile_number = mobile_number;
+        this.chat_id = chat_id;
+        this.chat_password = chat_password;
         this.is_category = is_category;
         this.is_sub_category = is_sub_category;
     }
@@ -52,6 +55,14 @@ public class AccountStatus {
 
     public String getMobile_number() {
         return mobile_number;
+    }
+
+    public String getChat_id() {
+        return chat_id;
+    }
+
+    public String getChat_password() {
+        return chat_password;
     }
 
     public String getIs_category() {

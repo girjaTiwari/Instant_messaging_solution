@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/LoginFormScrollView"
     android:layout_height="match_parent"
-    android:background="?android:colorBackground"
+    android:background="@drawable/main_bg"
     android:fillViewport="true"
     android:paddingTop="0dp"
     android:paddingBottom="0dp">
@@ -31,41 +31,26 @@
         <Space
             android:id="@+id/headerSpacing"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            app:layout_constraintBottom_toTopOf="@id/createAccountHeaderIcon"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toTopOf="@id/createAccountHeaderTitle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintVertical_bias="0" />
 
-        <ImageView
-            android:id="@+id/createAccountHeaderIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/circle"
-            android:backgroundTint="?colorSecondary"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_user_fg"
-            app:layout_constraintBottom_toTopOf="@id/createAccountHeaderTitle"
-            app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
-            app:layout_constraintHeight_percent="0.10"
-            app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/headerSpacing"
-            app:tint="@color/palette_white" />
 
         <TextView
             android:id="@+id/createAccountHeaderTitle"
             style="@style/Widget.Vector.TextView.Title.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="0dp"
             android:gravity="center"
             android:text="@string/ftue_auth_create_account_title"
-            android:textColor="?vctr_content_primary"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@id/titleContentSpacing"
             app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
             app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/createAccountHeaderIcon" />
+            app:layout_constraintTop_toBottomOf="@id/headerSpacing" />
 
         <Space
             android:id="@+id/titleContentSpacing"
@@ -83,7 +68,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="4dp"
             android:text="@string/ftue_auth_create_account_choose_server_header"
-            android:textColor="?vctr_content_secondary"
+            android:textColor="@color/grey"
             app:layout_constraintBottom_toTopOf="@id/selectedServerName"
             app:layout_constraintEnd_toStartOf="@id/editServerButton"
             app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
@@ -95,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:textColor="?vctr_content_primary"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@id/serverSelectionSpacing"
             app:layout_constraintEnd_toStartOf="@id/editServerButton"
             app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
@@ -111,6 +96,7 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:text="@string/ftue_auth_create_account_edit_server_selection"
+            android:textColor="@color/white"
             android:textAllCaps="true"
             app:layout_constraintBottom_toBottomOf="@id/selectedServerName"
             app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
@@ -134,6 +120,78 @@
             app:layout_constraintTop_toTopOf="@id/serverSelectionSpacing" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/first_name_createAccountInput"
+            style="@style/Widget.Vector.TextInputLayout.Username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/first_name"
+            app:layout_constraintBottom_toTopOf="@id/last_name_createAccountInput"
+            app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/serverSelectionSpacing">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionNext"
+                android:textColor="@color/white"
+                android:nextFocusForward="@id/createAccountPasswordInput"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="8dp"
+            android:id="@+id/last_name_createAccountInput"
+            style="@style/Widget.Vector.TextInputLayout.Username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/last_name"
+            app:layout_constraintBottom_toTopOf="@id/profile_name_createAccountInput"
+            app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/first_name_createAccountInput">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionNext"
+                android:textColor="@color/white"
+                android:nextFocusForward="@id/createAccountPasswordInput"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="16dp"
+            android:id="@+id/profile_name_createAccountInput"
+            style="@style/Widget.Vector.TextInputLayout.Username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/profile_name"
+            app:layout_constraintBottom_toTopOf="@id/createAccountInput"
+            app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/first_name_createAccountInput">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_profile_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionNext"
+                android:textColor="@color/white"
+                android:nextFocusForward="@id/createAccountPasswordInput"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="8dp"
             android:id="@+id/createAccountInput"
             style="@style/Widget.Vector.TextInputLayout.Username"
             android:layout_width="0dp"
@@ -142,13 +200,14 @@
             app:layout_constraintBottom_toTopOf="@id/createAccountEntryFooter"
             app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
             app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/serverSelectionSpacing">
+            app:layout_constraintTop_toBottomOf="@id/profile_name_createAccountInput">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/createAccountEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:imeOptions="actionNext"
+                android:textColor="@color/white"
                 android:nextFocusForward="@id/createAccountPasswordInput"
                 android:inputType="textNoSuggestions"
                 android:maxLines="1" />
@@ -192,6 +251,7 @@
                 android:layout_height="match_parent"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
+                android:textColor="@color/white"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -203,10 +263,44 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/ftue_auth_create_account_password_entry_footer"
-            app:layout_constraintBottom_toTopOf="@id/actionSpacing"
+            app:layout_constraintBottom_toTopOf="@id/createAccounPhoneInput"
             app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
             app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
             app:layout_constraintTop_toBottomOf="@id/createAccountPasswordInput" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/createAccounPhoneInput"
+            style="@style/Widget.Vector.TextInputLayout.Password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/login_signup_phone_hint"
+            app:layout_constraintBottom_toTopOf="@id/createAccountPasswordEntryFooter"
+            app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/createAccountPasswordEntryFooter">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/createAccountPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:textColor="@color/white"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/createAccountPhoneEntryFooter"
+            style="@style/Widget.Vector.TextView.Micro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/ftue_auth_create_account_phone_entry_footer"
+            app:layout_constraintBottom_toTopOf="@id/actionSpacing"
+            app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/createAccounPhoneInput" />
 
         <Space
             android:id="@+id/actionSpacing"
@@ -223,12 +317,11 @@
             android:layout_height="wrap_content"
             android:text="@string/login_signup_submit"
             android:textAllCaps="true"
-            app:layout_constraintBottom_toTopOf="@id/ssoButtonsHeader"
             app:layout_constraintEnd_toEndOf="@id/createAccountGutterEnd"
             app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
             app:layout_constraintTop_toBottomOf="@id/actionSpacing" />
 
-        <androidx.constraintlayout.widget.Group
+      <!--  <androidx.constraintlayout.widget.Group
             android:id="@+id/ssoGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -262,7 +355,7 @@
             app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
             app:layout_constraintTop_toBottomOf="@id/ssoButtonsHeader"
             tools:signMode="signup" />
-
+-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

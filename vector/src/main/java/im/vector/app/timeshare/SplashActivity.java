@@ -26,12 +26,7 @@ import android.view.Window;
 
 
 import im.vector.app.R;
-import im.vector.app.features.MainActivity;
-import im.vector.app.features.login.LoginActivity;
 import im.vector.app.features.onboarding.OnboardingActivity;
-import im.vector.app.timeshare.auth.TSLoginActivity;
-import im.vector.app.timeshare.categ.CategoryActivity;
-import im.vector.app.timeshare.categ.SubCategoryActivity;
 
 public class SplashActivity extends AppCompatActivity {
     TSSessionManager tsSessionManager;

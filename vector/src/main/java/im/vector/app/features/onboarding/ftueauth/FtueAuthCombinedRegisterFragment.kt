@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.autofill.HintConstants
 import androidx.core.text.isDigitsOnly
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.mvrx.withState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -42,10 +41,6 @@ import im.vector.app.core.extensions.setOnFocusLostListener
 import im.vector.app.core.extensions.setOnImeDoneListener
 import im.vector.app.core.extensions.toReducedUrl
 import im.vector.app.databinding.FragmentFtueCombinedRegisterBinding
-import im.vector.app.features.login.LoginMode
-import im.vector.app.features.login.SSORedirectRouterActivity
-import im.vector.app.features.login.SocialLoginButtonsView
-import im.vector.app.features.login.SsoState
 import im.vector.app.features.login.render
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingAction.AuthenticateAction
@@ -63,6 +58,7 @@ import org.matrix.android.sdk.api.failure.isWeakPassword
 import reactivecircus.flowbinding.android.widget.textChanges
 
 private const val MINIMUM_PASSWORD_LENGTH = 8
+private const val MINIMUM_PHONE_LENGTH = 10
 
 @AndroidEntryPoint
 class FtueAuthCombinedRegisterFragment :
@@ -96,28 +92,54 @@ class FtueAuthCombinedRegisterFragment :
     private fun canSubmit(account: CharSequence, password: CharSequence): Boolean {
         val accountIsValid = account.isNotEmpty()
         val passwordIsValid = password.length >= MINIMUM_PASSWORD_LENGTH
+
         return accountIsValid && passwordIsValid
     }
 
     private fun setupSubmitButton() {
         views.createAccountSubmit.setOnClickListener { submit() }
+        views.firstNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
+        views.lastNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
+        views.profileNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
         views.createAccountInput.clearErrorOnChange(viewLifecycleOwner)
         views.createAccountPasswordInput.clearErrorOnChange(viewLifecycleOwner)
+        views.createAccounPhoneInput.clearErrorOnChange(viewLifecycleOwner)
 
-        combine(views.createAccountInput.editText().textChanges(), views.createAccountPasswordInput.editText().textChanges()) { account, password ->
+        combine(views.createAccountInput.editText().textChanges(),
+                views.createAccountPasswordInput.editText().textChanges()) { account, password ->
             views.createAccountSubmit.isEnabled = canSubmit(account, password)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
+
+
     private fun submit() {
         withState(viewModel) { state ->
             cleanupUi()
-
-            val login = views.createAccountInput.content()
-            val password = views.createAccountPasswordInput.content()
-
             // This can be called by the IME action, so deal with empty cases
             var error = 0
+            val firstname = views.firstNameCreateAccountInput.content()
+            val lastname = views.lastNameCreateAccountInput.content()
+            val profilename = views.profileNameCreateAccountInput.content()
+
+            val login = views.createAccountPasswordInput.content()
+            val password = views.createAccountPasswordInput.content()
+
+
+            if (firstname.isEmpty()) {
+                views.firstNameCreateAccountInput.error = getString(R.string.error_empty_field_choose_first_name)
+                error++
+            }
+            if (lastname.isEmpty()) {
+                views.lastNameCreateAccountInput.error = getString(R.string.error_empty_field_choose_last_name)
+                error++
+            }
+
+            if (profilename.isEmpty()) {
+                views.profileNameCreateAccountInput.error = getString(R.string.error_empty_field_choose_profile_name)
+                error++
+            }
+
             if (login.isEmpty()) {
                 views.createAccountInput.error = getString(R.string.error_empty_field_choose_user_name)
                 error++
@@ -134,8 +156,8 @@ class FtueAuthCombinedRegisterFragment :
             if (error == 0) {
                 val initialDeviceName = getString(R.string.login_default_session_public_name)
                 val registerAction = when {
-                    login.isMatrixId() -> AuthenticateAction.RegisterWithMatrixId(login, password, initialDeviceName)
-                    else -> AuthenticateAction.Register(login, password, initialDeviceName)
+                   // login.isMatrixId() -> AuthenticateAction.RegisterWithMatrixId(login, password, initialDeviceName)
+                    else -> AuthenticateAction.Register(firstname,lastname,profilename,login, password, initialDeviceName)
                 }
                 viewModel.handle(registerAction)
             }
@@ -144,6 +166,9 @@ class FtueAuthCombinedRegisterFragment :
 
     private fun cleanupUi() {
         views.createAccountSubmit.hideKeyboard()
+        views.firstNameCreateAccountInput.error = null
+        views.lastNameCreateAccountInput.error = null
+        views.profileNameCreateAccountInput.error = null
         views.createAccountInput.error = null
         views.createAccountPasswordInput.error = null
     }
@@ -206,13 +231,13 @@ class FtueAuthCombinedRegisterFragment :
             else -> ""
         }
 
-        when (state.selectedHomeserver.preferredLoginMode) {
+       /* when (state.selectedHomeserver.preferredLoginMode) {
             is LoginMode.SsoAndPassword -> renderSsoProviders(state.deviceId, state.selectedHomeserver.preferredLoginMode.ssoState)
             else -> hideSsoProviders()
-        }
+        }*/
     }
 
-    private fun renderSsoProviders(deviceId: String?, ssoState: SsoState) {
+/*    private fun renderSsoProviders(deviceId: String?, ssoState: SsoState) {
         views.ssoGroup.isVisible = true
         views.ssoButtons.render(ssoState, SocialLoginButtonsView.Mode.MODE_CONTINUE) { provider ->
             viewModel.fetchSsoUrl(
@@ -221,12 +246,12 @@ class FtueAuthCombinedRegisterFragment :
                     provider = provider
             )?.let { openInCustomTab(it) }
         }
-    }
+    }*/
 
-    private fun hideSsoProviders() {
+/*    private fun hideSsoProviders() {
         views.ssoGroup.isVisible = false
         views.ssoButtons.ssoIdentityProviders = null
-    }
+    }*/
 
     private fun setupAutoFill() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -18,6 +18,7 @@
             android:layout_height="match_parent">
 
             <androidx.fragment.app.FragmentContainerView
+                android:background="@color/white"
                 android:layout_above="@+id/footer"
                 android:id="@+id/homeDetailFragmentContainer"
                 android:layout_width="match_parent"

@@ -156,7 +156,7 @@ class FtueAuthLoginFragment :
 
             if (error == 0) {
                 val initialDeviceName = getString(R.string.login_default_session_public_name)
-                viewModel.handle(state.signMode.toAuthenticateAction(login, password, initialDeviceName))
+                viewModel.handle(state.signMode.toAuthenticateAction("","","",login, password, initialDeviceName))
             }
         }
     }

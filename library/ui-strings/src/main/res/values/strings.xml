@@ -507,11 +507,15 @@
     <string name="send_bug_report_progress">Progress (%s%%)</string>
 
     <string name="join_room">Join Room</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="profile_name">Profile Name</string>
     <string name="username">Username</string>
     <string name="logout">Sign out</string>
     <string name="hs_url">Homeserver URL</string>
     <string name="hs_client_url">Homeserver API URL</string>
     <string name="search">Search</string>
+
 
     <string name="start_voice_call">Start Voice Call</string>
     <string name="start_video_call">Start Video Call</string>
@@ -1989,10 +1993,11 @@
     <string name="ftue_account_created_congratulations_title">Congratulations!</string>
     <string name="ftue_account_created_subtitle">Your account %s has been created</string>
 
-    <string name="ftue_auth_create_account_title">Create your account</string>
+    <string name="ftue_auth_create_account_title">Get Started</string>
     <!-- Note for translators, %s is the full matrix of the account being created, eg @hello:matrix.org -->
     <string name="ftue_auth_create_account_username_entry_footer">Others can discover you %s</string>
     <string name="ftue_auth_create_account_password_entry_footer">Must be 8 characters or more</string>
+    <string name="ftue_auth_create_account_phone_entry_footer">Must be 10 characters or more</string>
     <string name="ftue_auth_create_account_choose_server_header">Where your conversations will live</string>
     <string name="ftue_auth_sign_in_choose_server_header">Where your conversations live</string>
     <string name="ftue_auth_create_account_sso_section_header">Or</string>
@@ -2169,6 +2174,7 @@
     <string name="login_signin_username_hint">Username or email</string>
     <string name="login_signup_username_hint">Username</string>
     <string name="login_signup_password_hint">Password</string>
+    <string name="login_signup_phone_hint">Phone</string>
     <string name="login_signup_submit">Next</string>
     <string name="login_signup_error_user_in_use">That username is taken</string>
     <string name="login_signup_cancel_confirmation_title">Warning</string>
@@ -2669,6 +2675,9 @@
 
     <string name="failed_to_initialize_cross_signing">Failed to set up Cross Signing</string>
 
+    <string name="error_empty_field_choose_first_name">Please enter firstname</string>
+    <string name="error_empty_field_choose_last_name">Please enter lastname</string>
+    <string name="error_empty_field_choose_profile_name">Please enter profilename</string>
     <string name="error_empty_field_choose_user_name">Please choose a username.</string>
     <string name="error_empty_field_choose_password">Please choose a password.</string>
     <string name="error_forbidden_digits_only_username">"The homeserver does not accept username with only digits."</string>

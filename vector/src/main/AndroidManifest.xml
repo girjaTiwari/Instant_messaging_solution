@@ -140,11 +140,6 @@
             android:noHistory="true"
             android:theme="@style/BasicTheme" />
         <activity
-            android:name=".timeshare.auth.TSLoginActivity"
-            android:exported="false"
-            android:noHistory="true"
-            android:theme="@style/BasicTheme" />
-        <activity
             android:name=".timeshare.SplashActivity"
             android:exported="true"
             android:theme="@style/BasicTheme" /> <!-- Sentry auto-initialization disable -->

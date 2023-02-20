@@ -18,10 +18,7 @@ package im.vector.app.features.onboarding
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.MavericksViewModelFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -31,7 +28,6 @@ import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.di.MavericksAssistedViewModelFactory
 import im.vector.app.core.di.hiltMavericksViewModelFactory
 import im.vector.app.core.extensions.cancelCurrentOnSet
-import im.vector.app.core.extensions.content
 import im.vector.app.core.extensions.inferNoConnectivity
 import im.vector.app.core.extensions.isMatrixId
 import im.vector.app.core.extensions.toReducedUrl
@@ -46,7 +42,6 @@ import im.vector.app.features.VectorOverrides
 import im.vector.app.features.analytics.AnalyticsTracker
 import im.vector.app.features.analytics.extensions.toTrackingValue
 import im.vector.app.features.analytics.plan.UserProperties
-import im.vector.app.features.home.HomeActivity
 import im.vector.app.features.login.HomeServerConnectionConfigFactory
 import im.vector.app.features.login.LoginConfig
 import im.vector.app.features.login.LoginMode
@@ -58,8 +53,6 @@ import im.vector.app.features.onboarding.StartAuthenticationFlowUseCase.StartAut
 import im.vector.app.timeshare.TSSessionManager
 import im.vector.app.timeshare.api_request_body.LoginRequest
 import im.vector.app.timeshare.api_response_body.LoginResponse
-import im.vector.app.timeshare.categ.CategoryActivity
-import im.vector.app.timeshare.categ.SubCategoryActivity
 import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.firstOrNull
@@ -84,6 +77,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.lang.Boolean.parseBoolean
 import java.util.UUID
 import java.util.concurrent.CancellationException
 
@@ -260,8 +254,8 @@ class OnboardingViewModel @AssistedInject constructor(
 
     private fun handleAuthenticateAction(action: AuthenticateAction) {
         when (action) {
-            is AuthenticateAction.Register -> handleRegisterWith(action.username, action.password, action.initialDeviceName)
-            is AuthenticateAction.RegisterWithMatrixId -> handleRegisterWith(
+            is AuthenticateAction.Register -> handleRegisterWith(action.firstname,action.lastname,action.profilename,action.username, action.password, action.initialDeviceName)
+            is AuthenticateAction.RegisterWithMatrixId -> handleRegisterWith(action.firstname,action.lastname,action.profilename,
                     MatrixPatterns.extractUserNameFromId(action.matrixId) ?: throw IllegalStateException("unexpected non matrix id"),
                     action.password,
                     action.initialDeviceName
@@ -346,6 +340,7 @@ class OnboardingViewModel @AssistedInject constructor(
     }
 
     private fun handleRegisterAction(action: RegisterAction) {
+       // userSignupApi(firstname, lastname, profilename, email, password, mobilenumber, device_type)
         val job = viewModelScope.launch {
             if (action.hasLoadingState()) {
                 setState { copy(isLoading = true) }
@@ -399,14 +394,18 @@ class OnboardingViewModel @AssistedInject constructor(
         )
     }
 
-    private fun handleRegisterWith(userName: String, password: String, initialDeviceName: String) {
+    private fun handleRegisterWith(firstname:String,lastname:String,profilename:String,userName: String, password: String, initialDeviceName: String) {
         setState {
             val authDescription = AuthenticationDescription.Register(AuthenticationDescription.AuthenticationType.Password)
             copy(selectedAuthenticationState = SelectedAuthenticationState(authDescription))
         }
+
         reAuthHelper.data = password
         handleRegisterAction(
                 RegisterAction.CreateAccount(
+                        firstname,
+                        lastname,
+                        profilename,
                         userName,
                         password,
                         initialDeviceName
@@ -651,6 +650,8 @@ class OnboardingViewModel @AssistedInject constructor(
                             val email_id = account_status.email_id
                             val profile_name = account_status.profile_name
                             val mobile_number = account_status.mobile_number
+                            val chat_id = account_status.chat_id
+                            val chat_password = account_status.chat_password
                             val is_category = account_status.is_category
                             val is_sub_category = account_status.is_sub_category
                             tsSessionManager.createLoginSession(
@@ -661,16 +662,19 @@ class OnboardingViewModel @AssistedInject constructor(
                                     email_id,
                                     profile_name,
                                     mobile_number,
-                                    java.lang.Boolean.parseBoolean(is_category),
-                                    java.lang.Boolean.parseBoolean(is_sub_category)
+                                    chat_id,
+                                    chat_password,
+                                    parseBoolean(is_category),
+                                    parseBoolean(is_sub_category)
                             )
-                            if (java.lang.Boolean.parseBoolean(is_category) && java.lang.Boolean.parseBoolean(is_sub_category)) {
+                            if (parseBoolean(is_category) && parseBoolean(is_sub_category)) {
+
                                // startActivity(Intent(applicationContext, TSMainActivity::class.java))
                                 currentJob = viewModelScope.launch {
                                     try {
                                         val result = safeLoginWizard.login(
-                                                "girja",
-                                                "girja@timeshare",
+                                                chat_id,
+                                                chat_password,
                                                 action.initialDeviceName
                                         )
                                         reAuthHelper.data = action.password
@@ -681,15 +685,16 @@ class OnboardingViewModel @AssistedInject constructor(
                                     }
                                 }
 
-                            } else if (java.lang.Boolean.parseBoolean(is_category) && !java.lang.Boolean.parseBoolean(is_sub_category)) {
+                            } else if (parseBoolean(is_category) && !parseBoolean(is_sub_category)) {
+
                                /* val intent = Intent(applicationContext, SubCategoryActivity::class.java)
                                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                                 applicationContext.startActivity(intent)*/
                                 currentJob = viewModelScope.launch {
                                     try {
                                         val result = safeLoginWizard.login(
-                                                "girja",
-                                                "girja@timeshare",
+                                                chat_id,
+                                                chat_password,
                                                 action.initialDeviceName
                                         )
                                         reAuthHelper.data = action.password
@@ -699,7 +704,7 @@ class OnboardingViewModel @AssistedInject constructor(
                                         _viewEvents.post(OnboardingViewEvents.Failure(failure))
                                     }
                                 }
-                            } else if (!java.lang.Boolean.parseBoolean(is_category) && !java.lang.Boolean.parseBoolean(is_sub_category)) {
+                            } else if (!parseBoolean(is_category) && !parseBoolean(is_sub_category)) {
                               /*  val categIntent = Intent(applicationContext, CategoryActivity::class.java)
                                 categIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                                        applicationContext.startActivity(categIntent)*/
@@ -707,8 +712,8 @@ class OnboardingViewModel @AssistedInject constructor(
                                 currentJob = viewModelScope.launch {
                                     try {
                                         val result = safeLoginWizard.login(
-                                                "girja",
-                                                "girja@timeshare",
+                                                chat_id,
+                                                chat_password,
                                                 action.initialDeviceName
                                         )
                                         reAuthHelper.data = action.password

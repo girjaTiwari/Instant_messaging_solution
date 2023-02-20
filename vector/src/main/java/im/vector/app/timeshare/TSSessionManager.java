@@ -35,6 +35,8 @@ public class TSSessionManager {
     public static String KEY_email_id = "email_id";
     public static String KEY_profile_name = "profile_name";
     public static String KEY_mobile_number = "mobile_number";
+    public static String KEY_chat_id = "chat_id";
+    public static String KEY_chat_password = "chat_password";
 
     public static String KEY_isCategory = "is_category";
     public static String KEY_isSubCategory = "is_sub_category";
@@ -48,7 +50,7 @@ public class TSSessionManager {
     }
 
     public void createLoginSession(
-            boolean isLogin, String user_uuid, String first_name, String last_name,String email_id,String profile_name,String mobile_number,boolean is_category,boolean is_sub_category) {
+            boolean isLogin, String user_uuid, String first_name, String last_name,String email_id,String profile_name,String mobile_number,String chat_id,String chat_password,boolean is_category,boolean is_sub_category) {
         editor_login.putBoolean(IS_LOGIN, isLogin);
         editor_login.putString(KEY_user_uuid, user_uuid);
         editor_login.putString(KEY_first_name, first_name);
@@ -56,6 +58,8 @@ public class TSSessionManager {
         editor_login.putString(KEY_email_id, email_id);
         editor_login.putString(KEY_profile_name, profile_name);
         editor_login.putString(KEY_mobile_number, mobile_number);
+        editor_login.putString(KEY_chat_id, chat_id);
+        editor_login.putString(KEY_chat_password, chat_password);
         editor_login.putBoolean(KEY_isCategory,is_category);
         editor_login.putBoolean(KEY_isSubCategory,is_sub_category);
         editor_login.apply();
@@ -69,6 +73,8 @@ public class TSSessionManager {
         user.put(KEY_email_id, pref_login.getString(KEY_email_id, null));
         user.put(KEY_profile_name, pref_login.getString(KEY_profile_name, null));
         user.put(KEY_mobile_number, pref_login.getString(KEY_mobile_number, null));
+        user.put(KEY_chat_id, pref_login.getString(KEY_chat_id, null));
+        user.put(KEY_chat_password, pref_login.getString(KEY_chat_password, null));
 
         return user;
     }

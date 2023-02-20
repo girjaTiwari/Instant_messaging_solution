@@ -54,7 +54,7 @@ public class SubCategoryActivity extends AppCompatActivity {
     ArrayList<Category> categoryList = new ArrayList<>();
     RvSubCategoryAdapter rvSubCategoryAdapter;
     ImageView iv_close_subcategory;
-    String user_uuid,first_name,last_name,email_id,profile_name,mobile_number;
+    String user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password;
     boolean isCategory;
     private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     public static ArrayList<String>selectedSubCategoryList1 = new ArrayList<>();
@@ -80,6 +80,8 @@ public class SubCategoryActivity extends AppCompatActivity {
             email_id =  user.get(TSSessionManager.KEY_email_id);
             profile_name =  user.get(TSSessionManager.KEY_profile_name);
             mobile_number =  user.get(TSSessionManager.KEY_mobile_number);
+            chat_id =  user.get(TSSessionManager.KEY_chat_id);
+            chat_password =  user.get(TSSessionManager.KEY_chat_password);
             if (tsSessionManager.isCategory()){
                 isCategory=true;
             }
@@ -378,7 +380,7 @@ public class SubCategoryActivity extends AppCompatActivity {
                     String mesage = response.getString("Msg");
                     if (status.equals("1"))
                     {
-                        tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,isCategory,true);
+                        tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password,isCategory,true);
 
                         Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
                         finish();

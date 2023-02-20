@@ -21,10 +21,10 @@ import im.vector.app.features.login.SignMode
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.themes.ThemeProvider
 
-fun SignMode.toAuthenticateAction(login: String, password: String, initialDeviceName: String): OnboardingAction.AuthenticateAction {
+fun SignMode.toAuthenticateAction(firstname:String,lastname:String,profilename:String,login: String, password: String, initialDeviceName: String): OnboardingAction.AuthenticateAction {
     return when (this) {
         SignMode.Unknown -> error("developer error")
-        SignMode.SignUp -> OnboardingAction.AuthenticateAction.Register(username = login, password, initialDeviceName)
+        SignMode.SignUp -> OnboardingAction.AuthenticateAction.Register(firstname,lastname,profilename,username = login, password, initialDeviceName)
         SignMode.SignIn -> OnboardingAction.AuthenticateAction.Login(username = login, password, initialDeviceName)
         SignMode.SignInWithMatrixId -> OnboardingAction.AuthenticateAction.LoginDirect(matrixId = login, password, initialDeviceName)
     }

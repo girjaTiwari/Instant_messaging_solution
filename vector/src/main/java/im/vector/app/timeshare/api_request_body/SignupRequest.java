@@ -17,9 +17,9 @@
 package im.vector.app.timeshare.api_request_body;
 
 public class SignupRequest {
-    String first_name,last_name,email_id,profile_name,password,mobile_number,device_os,device_type;
+    String first_name,last_name,email_id,profile_name,password,mobile_number,device_os,device_type,chat_id,chat_password;
 
-    public SignupRequest(String first_name, String last_name, String email_id, String profile_name, String password, String mobile_number, String device_os, String device_type) {
+    public SignupRequest(String first_name, String last_name, String email_id, String profile_name, String password, String mobile_number, String device_os, String device_type, String chat_id, String chat_password) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.email_id = email_id;
@@ -28,6 +28,8 @@ public class SignupRequest {
         this.mobile_number = mobile_number;
         this.device_os = device_os;
         this.device_type = device_type;
+        this.chat_id = chat_id;
+        this.chat_password = chat_password;
     }
 }
 
