@@ -100,7 +100,7 @@ class FtueAuthCombinedRegisterFragment :
         views.createAccountSubmit.setOnClickListener { submit() }
         views.firstNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
         views.lastNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
-        views.profileNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
+        views.emailInput.clearErrorOnChange(viewLifecycleOwner)
         views.createAccountInput.clearErrorOnChange(viewLifecycleOwner)
         views.createAccountPasswordInput.clearErrorOnChange(viewLifecycleOwner)
         views.createAccounPhoneInput.clearErrorOnChange(viewLifecycleOwner)
@@ -120,10 +120,11 @@ class FtueAuthCombinedRegisterFragment :
             var error = 0
             val firstname = views.firstNameCreateAccountInput.content()
             val lastname = views.lastNameCreateAccountInput.content()
-            val profilename = views.profileNameCreateAccountInput.content()
+            val email = views.emailInput.content()
 
-            val login = views.createAccountPasswordInput.content()
+            val login = views.createAccountInput.content()
             val password = views.createAccountPasswordInput.content()
+            val phone = views.createAccounPhoneInput.content()
 
 
             if (firstname.isEmpty()) {
@@ -135,8 +136,8 @@ class FtueAuthCombinedRegisterFragment :
                 error++
             }
 
-            if (profilename.isEmpty()) {
-                views.profileNameCreateAccountInput.error = getString(R.string.error_empty_field_choose_profile_name)
+            if (email.isEmpty()) {
+                views.emailInput.error = getString(R.string.error_empty_field_choose_email_name)
                 error++
             }
 
@@ -157,7 +158,7 @@ class FtueAuthCombinedRegisterFragment :
                 val initialDeviceName = getString(R.string.login_default_session_public_name)
                 val registerAction = when {
                    // login.isMatrixId() -> AuthenticateAction.RegisterWithMatrixId(login, password, initialDeviceName)
-                    else -> AuthenticateAction.Register(firstname,lastname,profilename,login, password, initialDeviceName)
+                    else -> AuthenticateAction.Register(firstname,lastname,email,login, password, phone, initialDeviceName)
                 }
                 viewModel.handle(registerAction)
             }
@@ -168,7 +169,7 @@ class FtueAuthCombinedRegisterFragment :
         views.createAccountSubmit.hideKeyboard()
         views.firstNameCreateAccountInput.error = null
         views.lastNameCreateAccountInput.error = null
-        views.profileNameCreateAccountInput.error = null
+        views.emailInput.error = null
         views.createAccountInput.error = null
         views.createAccountPasswordInput.error = null
     }

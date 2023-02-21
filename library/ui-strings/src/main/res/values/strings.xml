@@ -510,7 +510,7 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="profile_name">Profile Name</string>
-    <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="logout">Sign out</string>
     <string name="hs_url">Homeserver URL</string>
     <string name="hs_client_url">Homeserver API URL</string>
@@ -2677,7 +2677,7 @@
 
     <string name="error_empty_field_choose_first_name">Please enter firstname</string>
     <string name="error_empty_field_choose_last_name">Please enter lastname</string>
-    <string name="error_empty_field_choose_profile_name">Please enter profilename</string>
+    <string name="error_empty_field_choose_email_name">Please enter email</string>
     <string name="error_empty_field_choose_user_name">Please choose a username.</string>
     <string name="error_empty_field_choose_password">Please choose a password.</string>
     <string name="error_forbidden_digits_only_username">"The homeserver does not accept username with only digits."</string>

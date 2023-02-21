@@ -18,7 +18,6 @@ package im.vector.app.features.home
 
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -41,7 +40,6 @@ import android.widget.Switch
 import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -109,9 +107,8 @@ import im.vector.app.timeshare.MovableFloatingActionButton
 import im.vector.app.timeshare.TSSessionManager
 import im.vector.app.timeshare.TSUtils.MYUtil.random
 import im.vector.app.timeshare.api_request_body.GetCategoryRequest
-import im.vector.app.timeshare.api_request_body.ResentOtpRequest
-import im.vector.app.timeshare.api_response_body.CommonResponse
 import im.vector.app.timeshare.api_response_body.GetCategoryResponse
+import im.vector.app.timeshare.auth.EmailVerifyActivity
 import im.vector.app.timeshare.categ.Category
 import im.vector.app.timeshare.categ.CategoryActivity
 import im.vector.app.timeshare.categ.SingleRecyclerViewAdapter
@@ -309,6 +306,7 @@ class HomeActivity :
     var postLocation:String? = null
     var startDate:String? = null
     var endDate:String? = null
+    var email:String? = null
 
     //multipart enstances
     var activityname: RequestBody? = null
@@ -365,36 +363,54 @@ class HomeActivity :
             }
         }
 
+            if (tsSessionManager!!.isEmailVerified()){
 
-        if (tsSessionManager!!.isLoggedIn()){
-            var user:HashMap<String,String>
-            user = tsSessionManager!!.getUserDetails()
-            userUuid = user.get(TSSessionManager.KEY_user_uuid)
-            email_id = user.get(TSSessionManager.KEY_email_id)
+                if (tsSessionManager!!.isLoggedIn()){
+                    var user:HashMap<String,String>
+                    user = tsSessionManager!!.getUserDetails()
+                    userUuid = user.get(TSSessionManager.KEY_user_uuid)
+                    email_id = user.get(TSSessionManager.KEY_email_id)
 
-            if (tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
+                    if (tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
+                        MaterialAlertDialogBuilder(this@HomeActivity)
+                                .setTitle("Alert!")
+                                .setMessage("Please click on 'continue' to add category and sub-category.")
+                                .setPositiveButton("Continue") { _, _ ->
+                                    val intent = Intent(applicationContext, SubCategoryActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    applicationContext.startActivity(intent)
+                                }
+                                .show()
+
+                    }else if (!tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
+                        MaterialAlertDialogBuilder(this@HomeActivity)
+                                .setTitle("Alert!")
+                                .setMessage("Please click on 'continue' to add category and sub-category.")
+                                .setPositiveButton("Continue") { _, _ ->
+                                    val categIntent = Intent(applicationContext, EmailVerifyActivity::class.java)
+                                    categIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    applicationContext.startActivity(categIntent)
+                                }
+                                .show()
+                    }
+                }
+            }else{
+                var emailId:HashMap<String,String>
+                emailId = tsSessionManager!!.getUserEmail()
+                email = emailId.get(TSSessionManager.KEY_email_id)
+                Log.d("email>>",""+email)
                 MaterialAlertDialogBuilder(this@HomeActivity)
                         .setTitle("Alert!")
-                        .setMessage("Please click on 'continue' to add category and sub-category.")
+                        .setMessage("Please verify your email")
                         .setPositiveButton("Continue") { _, _ ->
-                            val intent = Intent(applicationContext, SubCategoryActivity::class.java)
+                            val intent = Intent(applicationContext, EmailVerifyActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                            intent.putExtra("email", email)
                             applicationContext.startActivity(intent)
                         }
                         .show()
-
-            }else if (!tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
-                MaterialAlertDialogBuilder(this@HomeActivity)
-                        .setTitle("Alert!")
-                        .setMessage("Please click on 'continue' to add category and sub-category.")
-                        .setPositiveButton("Continue") { _, _ ->
-                            val categIntent = Intent(applicationContext, CategoryActivity::class.java)
-                            categIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                            applicationContext.startActivity(categIntent)
-                        }
-                        .show()
             }
-        }
+
 
        // Log.d("userid>>",""+userUuid)
       //  Log.d("email_id>>",""+email_id)

@@ -126,7 +126,7 @@ class UnrecognizedCertificateDialog @Inject constructor(
         if (userId != null) {
             views.sslUserId.text = stringProvider.getString(
                     R.string.generic_label_and_value,
-                    stringProvider.getString(R.string.username),
+                    stringProvider.getString(R.string.email),
                     userId
             )
         } else {

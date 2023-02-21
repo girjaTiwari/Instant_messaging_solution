@@ -23,11 +23,13 @@ import java.util.HashMap;
 
 public class TSSessionManager {
     SharedPreferences pref_login;
+    SharedPreferences pref_emailverify;
     SharedPreferences.Editor editor_login;
+    SharedPreferences.Editor editor_emailverify;
     Context mContext;
     int PRIVATE_MODE = 0;
     private static final String PREF_LOGIN = "login";
-    private static final String PREF_FCM = "fcm";
+    private static final String PREF_EmailVerify = "fcm";
 
     public static String KEY_user_uuid = "userid";
     public static String KEY_first_name = "first_name";
@@ -42,11 +44,15 @@ public class TSSessionManager {
     public static String KEY_isSubCategory = "is_sub_category";
 
     private static final String IS_LOGIN = "isLogedIn";
+    private static final String IS_EmailVerified = "isEmailVerified";
+
 
     public TSSessionManager(Context context) {
         this.mContext = context;
         pref_login = mContext.getSharedPreferences(PREF_LOGIN, PRIVATE_MODE);
         editor_login = pref_login.edit();
+        pref_emailverify = mContext.getSharedPreferences(PREF_EmailVerify, PRIVATE_MODE);
+        editor_emailverify = pref_emailverify.edit();
     }
 
     public void createLoginSession(
@@ -65,6 +71,12 @@ public class TSSessionManager {
         editor_login.apply();
     }
 
+    public void createEmailVerify(boolean isEmailverify,String email){
+        editor_emailverify.putBoolean(IS_EmailVerified,isEmailverify);
+        editor_emailverify.putString(KEY_email_id, email);
+        editor_emailverify.apply();
+    }
+
     public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
         user.put(KEY_user_uuid, pref_login.getString(KEY_user_uuid, null));
@@ -79,6 +91,13 @@ public class TSSessionManager {
         return user;
     }
 
+    public HashMap<String, String> getUserEmail() {
+        HashMap<String, String> email = new HashMap<String, String>();
+        email.put(KEY_email_id, pref_emailverify.getString(KEY_email_id, null));
+
+        return email;
+    }
+
     public void logoutUser() {
         // Clearing all data from Shared Preferences
         editor_login.clear();
@@ -90,6 +109,9 @@ public class TSSessionManager {
         return pref_login.getBoolean(IS_LOGIN, false);
     }
 
+    public boolean isEmailVerified() {
+        return pref_emailverify.getBoolean(IS_EmailVerified, false);
+    }
     public boolean isCategory(){
         return pref_login.getBoolean(KEY_isCategory,false);
     }

@@ -18,7 +18,7 @@ package im.vector.app.features.onboarding
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
+import android.content.Intent
 import android.widget.Toast
 import com.airbnb.mvrx.MavericksViewModelFactory
 import dagger.assisted.Assisted
@@ -53,7 +53,10 @@ import im.vector.app.features.onboarding.OnboardingAction.AuthenticateAction
 import im.vector.app.features.onboarding.StartAuthenticationFlowUseCase.StartAuthenticationResult
 import im.vector.app.timeshare.TSSessionManager
 import im.vector.app.timeshare.api_request_body.LoginRequest
+import im.vector.app.timeshare.api_request_body.SignupRequest
+import im.vector.app.timeshare.api_response_body.CommonResponse
 import im.vector.app.timeshare.api_response_body.LoginResponse
+import im.vector.app.timeshare.auth.EmailVerifyActivity
 import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.firstOrNull
@@ -255,10 +258,11 @@ class OnboardingViewModel @AssistedInject constructor(
 
     private fun handleAuthenticateAction(action: AuthenticateAction) {
         when (action) {
-            is AuthenticateAction.Register -> handleRegisterWith(action.firstname,action.lastname,action.profilename,action.username,
+            is AuthenticateAction.Register -> handleRegisterWith(action.firstname,action.lastname,action.username,action.email,
                     action.password,action.phone, action.initialDeviceName)
-            is AuthenticateAction.RegisterWithMatrixId -> handleRegisterWith(action.firstname,action.lastname,action.profilename,
+            is AuthenticateAction.RegisterWithMatrixId -> handleRegisterWith(action.firstname,action.lastname,
                     MatrixPatterns.extractUserNameFromId(action.matrixId) ?: throw IllegalStateException("unexpected non matrix id"),
+                    action.email,
                     action.password,
                     action.phone,
                     action.initialDeviceName
@@ -397,8 +401,9 @@ class OnboardingViewModel @AssistedInject constructor(
         )
     }
 
-    private fun handleRegisterWith(firstname:String,lastname:String,profilename:String,userName: String,
-                                   password: String,phone:String, initialDeviceName: String) {
+    @SuppressLint("SuspiciousIndentation")
+    private fun handleRegisterWith(firstname:String, lastname:String, userName: String, email: String,
+                                   password: String, phone:String, initialDeviceName: String) {
         setState {
             val authDescription = AuthenticationDescription.Register(AuthenticationDescription.AuthenticationType.Password)
             copy(selectedAuthenticationState = SelectedAuthenticationState(authDescription))
@@ -406,11 +411,10 @@ class OnboardingViewModel @AssistedInject constructor(
 
         reAuthHelper.data = password
         val device_type: String = android.os.Build.MODEL
-        val device_os: String = android.os.Build.MODEL
 
-        //  userSignupApi(firstname, lastname, profilename, userName, password, phone, device_type,device_os)
+          userSignupApi(firstname, lastname, userName, email,password, phone, device_type,"android",initialDeviceName)
 
-        handleRegisterAction(
+       /* handleRegisterAction(
                 RegisterAction.CreateAccount(
                         firstname,
                         lastname,
@@ -420,10 +424,54 @@ class OnboardingViewModel @AssistedInject constructor(
                         phone,
                         initialDeviceName
                 )
-        )
+        )*/
     }
 
+    private fun userSignupApi(firstname: String, lastname: String, userName: String,email: String,
+                              password: String, phone: String, deviceType: String, device_os: String, initialDeviceName: String) {
+        val tsSessionManager = TSSessionManager(applicationContext)
+        val mAPIService = ApiUtils.getAPIService()
+        val signupRequest = SignupRequest(firstname, lastname, userName,email, password, phone, device_os, deviceType, userName, password)
+        val call: Call<CommonResponse> = mAPIService.signup(signupRequest)
+        call.enqueue(object : Callback<CommonResponse?> {
+            override fun onResponse(call: Call<CommonResponse?>, response: Response<CommonResponse?>) {
+                //  System.out.println("error>>  response " + response.toString());
+                if (response.body() != null) {
+                   val signupResponse = response.body()
+                    val message = signupResponse?.msg
+                    val status = signupResponse?.status
+                  if (status.equals("1")){
+                      Toast.makeText(applicationContext, "" + message, Toast.LENGTH_SHORT).show()
+                      tsSessionManager.createEmailVerify(false,email)
+                      handleRegisterAction(
+                              RegisterAction.CreateAccount(
+                                      firstname,
+                                      lastname,
+                                      userName,
+                                      email,
+                                      password,
+                                      phone,
+                                      initialDeviceName
+                              )
+                      )
+                  }else{
+                      Toast.makeText(applicationContext, "" + message, Toast.LENGTH_SHORT).show()
+                  }
 
+                  /*  val intent = Intent(applicationContext, EmailVerifyActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                    intent.putExtra("email", userName)
+                    applicationContext.startActivity(intent)
+*/
+
+                }
+            }
+
+            override fun onFailure(call: Call<CommonResponse?>, t: Throwable) {
+                println("error>>" + t.cause)
+            }
+        })
+    }
 
     private fun handleResetAction(action: OnboardingAction.ResetAction) {
         // Cancel any request

@@ -98,7 +98,7 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
     }
 
     private boolean validate(String strEmail, String otp) {
-        if (strEmail.equals("")) {
+        if (strEmail.isEmpty()) {
             Toast.makeText(mActivity, "Email is empty!", Toast.LENGTH_SHORT).show();
             return false;
 
