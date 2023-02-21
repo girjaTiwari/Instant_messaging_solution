@@ -18,6 +18,7 @@ package im.vector.app.features.onboarding
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
 import com.airbnb.mvrx.MavericksViewModelFactory
 import dagger.assisted.Assisted
@@ -254,10 +255,12 @@ class OnboardingViewModel @AssistedInject constructor(
 
     private fun handleAuthenticateAction(action: AuthenticateAction) {
         when (action) {
-            is AuthenticateAction.Register -> handleRegisterWith(action.firstname,action.lastname,action.profilename,action.username, action.password, action.initialDeviceName)
+            is AuthenticateAction.Register -> handleRegisterWith(action.firstname,action.lastname,action.profilename,action.username,
+                    action.password,action.phone, action.initialDeviceName)
             is AuthenticateAction.RegisterWithMatrixId -> handleRegisterWith(action.firstname,action.lastname,action.profilename,
                     MatrixPatterns.extractUserNameFromId(action.matrixId) ?: throw IllegalStateException("unexpected non matrix id"),
                     action.password,
+                    action.phone,
                     action.initialDeviceName
             )
             is AuthenticateAction.Login -> handleLogin(action)
@@ -340,7 +343,7 @@ class OnboardingViewModel @AssistedInject constructor(
     }
 
     private fun handleRegisterAction(action: RegisterAction) {
-       // userSignupApi(firstname, lastname, profilename, email, password, mobilenumber, device_type)
+      //  userSignupApi(firstname, lastname, profilename, email, password, mobilenumber, device_type)
         val job = viewModelScope.launch {
             if (action.hasLoadingState()) {
                 setState { copy(isLoading = true) }
@@ -394,13 +397,19 @@ class OnboardingViewModel @AssistedInject constructor(
         )
     }
 
-    private fun handleRegisterWith(firstname:String,lastname:String,profilename:String,userName: String, password: String, initialDeviceName: String) {
+    private fun handleRegisterWith(firstname:String,lastname:String,profilename:String,userName: String,
+                                   password: String,phone:String, initialDeviceName: String) {
         setState {
             val authDescription = AuthenticationDescription.Register(AuthenticationDescription.AuthenticationType.Password)
             copy(selectedAuthenticationState = SelectedAuthenticationState(authDescription))
         }
 
         reAuthHelper.data = password
+        val device_type: String = android.os.Build.MODEL
+        val device_os: String = android.os.Build.MODEL
+
+        //  userSignupApi(firstname, lastname, profilename, userName, password, phone, device_type,device_os)
+
         handleRegisterAction(
                 RegisterAction.CreateAccount(
                         firstname,
@@ -408,10 +417,13 @@ class OnboardingViewModel @AssistedInject constructor(
                         profilename,
                         userName,
                         password,
+                        phone,
                         initialDeviceName
                 )
         )
     }
+
+
 
     private fun handleResetAction(action: OnboardingAction.ResetAction) {
         // Cancel any request
