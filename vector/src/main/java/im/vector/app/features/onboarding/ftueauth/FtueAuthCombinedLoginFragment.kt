@@ -47,6 +47,7 @@ import im.vector.app.timeshare.auth.ForgotPasswordActivity
 import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import org.matrix.android.sdk.api.session.events.model.toContent
 import reactivecircus.flowbinding.android.widget.textChanges
 import javax.inject.Inject
 
@@ -150,8 +151,8 @@ class FtueAuthCombinedLoginFragment :
         setupUi(state)
         setupAutoFill()
 
-        views.selectedServerName.text = state.selectedHomeserver.userFacingUrl.toReducedUrl()
-
+       // views.selectedServerName.text = state.selectedHomeserver.userFacingUrl.toReducedUrl()
+        views.selectedServerName.text = "chat.telemo.io"
 
 
         if (state.isLoading) {

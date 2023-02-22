@@ -31,7 +31,7 @@
         <Space
             android:id="@+id/headerSpacing"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="10dp"
             app:layout_constraintBottom_toTopOf="@id/loginHeaderTitle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
@@ -56,10 +56,45 @@
             android:text="TimeShare"
             android:fontFamily="@font/ubuntu_regular"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/titleContentSpacing"
+            app:layout_constraintBottom_toTopOf="@id/chooseServerInput"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
             app:layout_constraintTop_toBottomOf="@id/logo_img" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/chooseServerInput"
+            style="@style/Widget.Vector.TextInputLayout.Username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/ftue_auth_choose_server_entry_hint"
+            app:layout_constraintBottom_toTopOf="@id/titleContentSpacing"
+            app:layout_constraintEnd_toEndOf="@id/editServerButton"
+            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/loginHeaderTitle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:text="chat.telemo.io"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionDone"
+                android:inputType="textUri"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/chooseServerSubmit"
+            style="@style/Widget.Vector.Button.Login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/login_signup_submit"
+            android:textAllCaps="true"
+            app:layout_constraintBottom_toTopOf="@id/chooseYourServerHeader"
+            app:layout_constraintEnd_toEndOf="@id/editServerButton"
+            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/chooseServerInput" />
 
         <Space
             android:id="@+id/titleContentSpacing"
@@ -68,6 +103,7 @@
             app:layout_constraintBottom_toTopOf="@id/chooseYourServerHeader"
             app:layout_constraintHeight_percent="0.03"
             app:layout_constraintTop_toBottomOf="@id/loginHeaderTitle" />
+
 
         <TextView
             android:id="@+id/chooseYourServerHeader"
@@ -87,6 +123,7 @@
             android:id="@+id/selectedServerName"
             style="@style/Widget.Vector.TextView.Subtitle"
             android:layout_width="0dp"
+            android:text="chat.telemo.io"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:textColor="@color/white"
