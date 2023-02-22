@@ -1,6 +1,8 @@
 package im.vector.app.timeshare.auth;
 
 
+import static java.lang.Boolean.parseBoolean;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -26,6 +28,9 @@ import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.ResentOtpRequest;
 import im.vector.app.timeshare.api_request_body.VerifyEmailRequest;
 import im.vector.app.timeshare.api_response_body.CommonResponse;
+import im.vector.app.timeshare.api_response_body.LoginResponse;
+import im.vector.app.timeshare.categ.CategoryActivity;
+import im.vector.app.timeshare.webservices.AccountStatus;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
 import retrofit2.Call;
@@ -75,26 +80,53 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
     private void verifyEmail(String strEmail, String otp) {
       myDialog.showProgresbar(mActivity);
         VerifyEmailRequest verify_email_req = new VerifyEmailRequest(strEmail,otp);
-        Call<CommonResponse> call = mAPIService.verifyEmail(verify_email_req);
-        call.enqueue(new Callback<CommonResponse>() {
+        Call<LoginResponse> call = mAPIService.verifyEmail(verify_email_req);
+        call.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
+            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
                 //  System.out.println("error>>  response " + response.toString());
                 myDialog.hideDialog(mActivity);
                 if(response.body()!=null){
-                    CommonResponse signupResponse = response.body();
-                     String message = signupResponse.getMsg();
-                    tsSessionManager.createEmailVerify(true,strEmail);
-                    Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
+                    LoginResponse verifyEmailResponse = response.body();
+                     String message = verifyEmailResponse.getMsg();
 
-                   /* Intent intent = new Intent(mActivity, HomeActivity.class);
-                    startActivity(intent);*/
-                    finish();
+                    AccountStatus account_status = verifyEmailResponse.getAccount_status();
+                    if (account_status != null) {
+                        String user_uuid = account_status.getUser_uuid();
+                        String first_name = account_status.getFirst_name();
+                        String last_name = account_status.getLast_name();
+                        String email_id = account_status.getEmail_id();
+                        String profile_name = account_status.getProfile_name();
+                        String mobile_number = account_status.getMobile_number();
+                        String chat_id = account_status.getChat_id();
+                        String chat_password = account_status.getChat_password();
+                        String is_category = account_status.getIs_category();
+                        String is_sub_category = account_status.getIs_sub_category();
+                        tsSessionManager.createLoginSession(
+                                true,
+                                user_uuid,
+                                first_name,
+                                last_name,
+                                email_id,
+                                profile_name,
+                                mobile_number,
+                                chat_id,
+                                chat_password,
+                                parseBoolean("false"),
+                                parseBoolean("false")
+                        );
+                    }
+
+                          tsSessionManager.createEmailVerify(true,strEmail);
+                          Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
+                          Intent categIntent = new Intent(mActivity, CategoryActivity.class);
+                          startActivity(categIntent);
+                          finish();
                 }
             }
 
             @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 System.out.println("error>>" + t.getCause());
                 myDialog.hideDialog(mActivity);
             }

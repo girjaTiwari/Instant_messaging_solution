@@ -376,12 +376,12 @@ class HomeActivity :
                                 .setTitle("Alert!")
                                 .setCancelable(false)
                                 .setMessage("Please click on 'continue' to add category and sub-category.")
-                                .setPositiveButton("Continue") {  dialog, _ ->
+                                .setPositiveButton("Continue", {  dialog, _ ->
                                     val intent = Intent(applicationContext, SubCategoryActivity::class.java)
                                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                                     applicationContext.startActivity(intent)
                                     dialog.dismiss()
-                                }
+                                })
                                 .show()
 
                     }else if (!tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
@@ -389,12 +389,12 @@ class HomeActivity :
                                 .setTitle("Alert!")
                                 .setCancelable(false)
                                 .setMessage("Please click on 'continue' to add category and sub-category.")
-                                .setPositiveButton("Continue") { dialog, _ ->
+                                .setPositiveButton("Continue",{ dialog, _ ->
                                     val categIntent = Intent(applicationContext, CategoryActivity::class.java)
                                     categIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                                     applicationContext.startActivity(categIntent)
                                     dialog.dismiss()
-                                }
+                                })
                                 .show()
                     }
                 }else{

@@ -19,6 +19,7 @@ package im.vector.app.features.onboarding
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import com.airbnb.mvrx.MavericksViewModelFactory
 import dagger.assisted.Assisted
@@ -412,6 +413,7 @@ class OnboardingViewModel @AssistedInject constructor(
         reAuthHelper.data = password
         val device_type: String = android.os.Build.MODEL
 
+
           userSignupApi(firstname, lastname, email,userName,password, phone,"android", device_type,userName,password,initialDeviceName)
 
        /* handleRegisterAction(
@@ -738,8 +740,9 @@ class OnboardingViewModel @AssistedInject constructor(
                                     parseBoolean(is_sub_category)
                             )
                             if (parseBoolean(is_category) && parseBoolean(is_sub_category)) {
+                                Log.d("chat_id>>",""+chat_id);
+                                Log.d("chat_password>>",""+chat_password);
 
-                               // startActivity(Intent(applicationContext, TSMainActivity::class.java))
                                 currentJob = viewModelScope.launch {
                                     try {
                                         val result = safeLoginWizard.login(
@@ -757,9 +760,6 @@ class OnboardingViewModel @AssistedInject constructor(
 
                             } else if (parseBoolean(is_category) && !parseBoolean(is_sub_category)) {
 
-                               /* val intent = Intent(applicationContext, SubCategoryActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                                applicationContext.startActivity(intent)*/
                                 currentJob = viewModelScope.launch {
                                     try {
                                         val result = safeLoginWizard.login(

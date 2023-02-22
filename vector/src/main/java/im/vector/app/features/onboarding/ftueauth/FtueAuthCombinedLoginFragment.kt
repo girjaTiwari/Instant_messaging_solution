@@ -80,7 +80,7 @@ class FtueAuthCombinedLoginFragment :
         }
 
         getView()?.findViewById<TextView>(R.id.tv_dont_account)?.setOnClickListener {
-            startActivity(Intent(requireContext(), SignupActivity::class.java))
+           // startActivity(Intent(requireContext(), SignupActivity::class.java))
         }
         getView()?.findViewById<TextView>(R.id.loginForgotPas)?.setOnClickListener {
             startActivity(Intent(requireContext(), ForgotPasswordActivity::class.java))

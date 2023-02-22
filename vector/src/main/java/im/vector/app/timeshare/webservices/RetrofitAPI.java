@@ -71,7 +71,7 @@ public interface RetrofitAPI {
     Call<CommonResponse> signup(@Body SignupRequest body);
 
     @POST("verify_email")
-    Call<CommonResponse> verifyEmail(@Body VerifyEmailRequest body);
+    Call<LoginResponse> verifyEmail(@Body VerifyEmailRequest body);
 
     @POST("resend_otp")
     Call<CommonResponse> resendOtp(@Body ResentOtpRequest body);
