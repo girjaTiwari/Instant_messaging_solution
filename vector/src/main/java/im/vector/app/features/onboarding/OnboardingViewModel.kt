@@ -412,7 +412,7 @@ class OnboardingViewModel @AssistedInject constructor(
         reAuthHelper.data = password
         val device_type: String = android.os.Build.MODEL
 
-          userSignupApi(firstname, lastname, userName, email,password, phone, device_type,"android",initialDeviceName)
+          userSignupApi(firstname, lastname, email,userName,password, phone,"android", device_type,userName,password,initialDeviceName)
 
        /* handleRegisterAction(
                 RegisterAction.CreateAccount(
@@ -427,30 +427,40 @@ class OnboardingViewModel @AssistedInject constructor(
         )*/
     }
 
-    private fun userSignupApi(firstname: String, lastname: String, userName: String,email: String,
-                              password: String, phone: String, deviceType: String, device_os: String, initialDeviceName: String) {
+    private fun userSignupApi(first_name: String, last_name: String,email_id: String, profile_name: String,
+                              password: String, mobile_number: String, device_os: String, device_type: String,chat_id:String,chat_password:String,
+                              initialDeviceName: String) {
         val tsSessionManager = TSSessionManager(applicationContext)
         val mAPIService = ApiUtils.getAPIService()
-        val signupRequest = SignupRequest(firstname, lastname, userName,email, password, phone, device_os, deviceType, userName, password)
+        val signupRequest = SignupRequest(first_name, last_name,email_id,profile_name, password, mobile_number, device_os, device_type, chat_id, chat_password)
         val call: Call<CommonResponse> = mAPIService.signup(signupRequest)
         call.enqueue(object : Callback<CommonResponse?> {
             override fun onResponse(call: Call<CommonResponse?>, response: Response<CommonResponse?>) {
-                //  System.out.println("error>>  response " + response.toString());
+                //  System.out.println("response>>" + response.toString());
                 if (response.body() != null) {
                    val signupResponse = response.body()
                     val message = signupResponse?.msg
                     val status = signupResponse?.status
                   if (status.equals("1")){
                       Toast.makeText(applicationContext, "" + message, Toast.LENGTH_SHORT).show()
-                      tsSessionManager.createEmailVerify(false,email)
+                    /*  tsSessionManager.createLoginSession(
+                              true,
+                              user_uuid,
+                              first_name,
+                              last_name,
+                              email_id,
+                              profile_name,
+                              mobile_number,
+                              chat_id,
+                              chat_password,
+                              parseBoolean("false"),
+                              parseBoolean("false")
+                      )*/
+                      tsSessionManager.createEmailVerify(false,email_id)
                       handleRegisterAction(
                               RegisterAction.CreateAccount(
-                                      firstname,
-                                      lastname,
-                                      userName,
-                                      email,
+                                      profile_name,
                                       password,
-                                      phone,
                                       initialDeviceName
                               )
                       )

@@ -102,7 +102,7 @@ sealed interface RegistrationResult {
 
 sealed interface RegisterAction {
     object StartRegistration : RegisterAction
-    data class CreateAccount(val firstname:String,val lastname:String,val profilename:String,val username: String, val password: String,val phone:String,val initialDeviceName: String) : RegisterAction
+    data class CreateAccount(val username: String, val password: String,val initialDeviceName: String) : RegisterAction
 
     data class AddThreePid(val threePid: RegisterThreePid) : RegisterAction
     object SendAgainThreePid : RegisterAction

@@ -374,40 +374,48 @@ class HomeActivity :
                     if (tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
                         MaterialAlertDialogBuilder(this@HomeActivity)
                                 .setTitle("Alert!")
+                                .setCancelable(false)
                                 .setMessage("Please click on 'continue' to add category and sub-category.")
-                                .setPositiveButton("Continue") { _, _ ->
+                                .setPositiveButton("Continue") {  dialog, _ ->
                                     val intent = Intent(applicationContext, SubCategoryActivity::class.java)
                                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                                     applicationContext.startActivity(intent)
+                                    dialog.dismiss()
                                 }
                                 .show()
 
                     }else if (!tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
                         MaterialAlertDialogBuilder(this@HomeActivity)
                                 .setTitle("Alert!")
+                                .setCancelable(false)
                                 .setMessage("Please click on 'continue' to add category and sub-category.")
-                                .setPositiveButton("Continue") { _, _ ->
-                                    val categIntent = Intent(applicationContext, EmailVerifyActivity::class.java)
+                                .setPositiveButton("Continue") { dialog, _ ->
+                                    val categIntent = Intent(applicationContext, CategoryActivity::class.java)
                                     categIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                                     applicationContext.startActivity(categIntent)
+                                    dialog.dismiss()
                                 }
                                 .show()
                     }
+                }else{
+                    Toast.makeText(applicationContext, "Not Login" , Toast.LENGTH_SHORT).show()
                 }
             }else{
                 var emailId:HashMap<String,String>
                 emailId = tsSessionManager!!.getUserEmail()
                 email = emailId.get(TSSessionManager.KEY_email_id)
-                Log.d("email>>",""+email)
+               // Log.d("email>>",""+email)
                 MaterialAlertDialogBuilder(this@HomeActivity)
                         .setTitle("Alert!")
+                        .setCancelable(false)
                         .setMessage("Please verify your email")
-                        .setPositiveButton("Continue") { _, _ ->
-                            val intent = Intent(applicationContext, EmailVerifyActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                            intent.putExtra("email", email)
-                            applicationContext.startActivity(intent)
-                        }
+                         .setPositiveButton("Continue", { dialog, _ ->
+                             val intent = Intent(applicationContext, EmailVerifyActivity::class.java)
+                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                             intent.putExtra("email", email)
+                             applicationContext.startActivity(intent)
+                               dialog.dismiss()
+                          })
                         .show()
             }
 

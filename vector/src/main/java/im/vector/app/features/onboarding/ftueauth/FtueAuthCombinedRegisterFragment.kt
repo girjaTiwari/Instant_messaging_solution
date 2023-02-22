@@ -120,9 +120,8 @@ class FtueAuthCombinedRegisterFragment :
             var error = 0
             val firstname = views.firstNameCreateAccountInput.content()
             val lastname = views.lastNameCreateAccountInput.content()
+            val username = views.createAccountInput.content()
             val email = views.emailInput.content()
-
-            val login = views.createAccountInput.content()
             val password = views.createAccountPasswordInput.content()
             val phone = views.createAccounPhoneInput.content()
 
@@ -141,11 +140,11 @@ class FtueAuthCombinedRegisterFragment :
                 error++
             }
 
-            if (login.isEmpty()) {
+            if (username.isEmpty()) {
                 views.createAccountInput.error = getString(R.string.error_empty_field_choose_user_name)
                 error++
             }
-            if (state.isNumericOnlyUserIdForbidden() && login.isDigitsOnly()) {
+            if (state.isNumericOnlyUserIdForbidden() && username.isDigitsOnly()) {
                 views.createAccountInput.error = getString(R.string.error_forbidden_digits_only_username)
                 error++
             }
@@ -158,7 +157,7 @@ class FtueAuthCombinedRegisterFragment :
                 val initialDeviceName = getString(R.string.login_default_session_public_name)
                 val registerAction = when {
                    // login.isMatrixId() -> AuthenticateAction.RegisterWithMatrixId(login, password, initialDeviceName)
-                    else -> AuthenticateAction.Register(firstname,lastname,email,login, password, phone, initialDeviceName)
+                    else -> AuthenticateAction.Register(firstname,lastname,username,email, password, phone, initialDeviceName)
                 }
                 viewModel.handle(registerAction)
             }

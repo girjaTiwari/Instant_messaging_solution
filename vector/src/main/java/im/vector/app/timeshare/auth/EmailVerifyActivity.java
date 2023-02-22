@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 import im.vector.app.R;
 import im.vector.app.features.MainActivity;
+import im.vector.app.features.home.HomeActivity;
+import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.ResentOtpRequest;
 import im.vector.app.timeshare.api_request_body.VerifyEmailRequest;
@@ -38,6 +40,7 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
     EditText et_otp;
     Button btn_verify_email;
     MyDialog myDialog;
+    TSSessionManager tsSessionManager;
 
     private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     @Override
@@ -46,6 +49,7 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_email_verify);
         mActivity = EmailVerifyActivity.this;
         myDialog = new MyDialog(mActivity);
+        tsSessionManager = new TSSessionManager(mActivity);
         findView();
         Intent intent = getIntent();
         strEmail = intent.getStringExtra("email");
@@ -80,11 +84,11 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                 if(response.body()!=null){
                     CommonResponse signupResponse = response.body();
                      String message = signupResponse.getMsg();
+                    tsSessionManager.createEmailVerify(true,strEmail);
                     Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(mActivity, MainActivity.class);
-                    intent.putExtra("flag","1");
-                    startActivity(intent);
+                   /* Intent intent = new Intent(mActivity, HomeActivity.class);
+                    startActivity(intent);*/
                     finish();
                 }
             }

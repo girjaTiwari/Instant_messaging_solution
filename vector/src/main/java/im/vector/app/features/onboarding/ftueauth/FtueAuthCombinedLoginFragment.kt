@@ -44,7 +44,6 @@ import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingViewEvents
 import im.vector.app.features.onboarding.OnboardingViewState
 import im.vector.app.timeshare.auth.ForgotPasswordActivity
-import im.vector.app.timeshare.auth.SignupActivity
 import im.vector.app.timeshare.webservices.ApiUtils
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn

@@ -105,10 +105,6 @@
             android:noHistory="true"
             android:theme="@style/BasicTheme" />
         <activity
-            android:name=".timeshare.TSMainActivity"
-            android:exported="false"
-            android:theme="@style/BasicTheme" />
-        <activity
             android:name=".timeshare.auth.ForgotPasswordActivity"
             android:exported="false"
             android:noHistory="true"
@@ -123,12 +119,6 @@
             android:exported="false"
             android:noHistory="true"
             android:theme="@style/BasicTheme" />
-        <activity
-            android:name=".timeshare.auth.SignupActivity"
-            android:exported="false"
-            android:noHistory="true"
-            android:theme="@style/BasicTheme"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".timeshare.categ.SubCategoryActivity"
             android:exported="false"

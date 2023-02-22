@@ -5,7 +5,6 @@ package im.vector.app.timeshare.categ;
 import static im.vector.app.timeshare.ApiClass.add_sub_category;
 import static im.vector.app.timeshare.ApiClass.get_category;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.mvrx.Mavericks;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,16 +31,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import im.vector.app.R;
-import im.vector.app.features.MainActivity;
-import im.vector.app.features.home.HomeActivity;
 import im.vector.app.timeshare.ApiClass;
-import im.vector.app.timeshare.TSMainActivity;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class SubCategoryActivity extends AppCompatActivity {
     AppCompatActivity mActivity;
