@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.autofill.HintConstants
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -37,6 +38,8 @@ import im.vector.app.core.extensions.realignPercentagesToParent
 import im.vector.app.core.extensions.setOnFocusLostListener
 import im.vector.app.core.extensions.setOnImeDoneListener
 import im.vector.app.core.extensions.toReducedUrl
+import im.vector.app.core.utils.ensureProtocol
+import im.vector.app.core.utils.ensureTrailingSlash
 import im.vector.app.databinding.FragmentFtueCombinedLoginBinding
 import im.vector.app.features.VectorFeatures
 import im.vector.app.features.login.LoginMode
@@ -67,6 +70,8 @@ class FtueAuthCombinedLoginFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateServerUrl()
+      //  views.chooseServerSubmit.debouncedClicks { updateServerUrl() }
         setupSubmitButton()
         views.loginRoot.realignPercentagesToParent()
         views.editServerButton.debouncedClicks { viewModel.handle(OnboardingAction.PostViewEvent(OnboardingViewEvents.EditServerSelection)) }
@@ -88,6 +93,11 @@ class FtueAuthCombinedLoginFragment :
         }
 
 
+    }
+
+    private fun updateServerUrl() {
+
+        viewModel.handle(OnboardingAction.HomeServerChange.EditHomeServer("chat.telemo.io".ensureProtocol().ensureTrailingSlash()))
     }
 
    /* private fun configureQrCodeLoginButtonVisibility(canLoginWithQrCode: Boolean) {
@@ -151,9 +161,7 @@ class FtueAuthCombinedLoginFragment :
         setupUi(state)
         setupAutoFill()
 
-       // views.selectedServerName.text = state.selectedHomeserver.userFacingUrl.toReducedUrl()
-        views.selectedServerName.text = "chat.telemo.io"
-
+        views.selectedServerName.text = state.selectedHomeserver.userFacingUrl.toReducedUrl()
 
         if (state.isLoading) {
             // Ensure password is hidden

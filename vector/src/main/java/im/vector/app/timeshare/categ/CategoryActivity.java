@@ -54,6 +54,7 @@ public class CategoryActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     Button btn_continue;
   public static ArrayList<String>selectedCategoryList = new ArrayList<>();
+  String email;
   String user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password;
     private RetrofitAPI mAPIService = ApiUtils.getAPIService();
     @Override
@@ -63,6 +64,9 @@ public class CategoryActivity extends AppCompatActivity {
         mActivity = CategoryActivity.this;
         tsSessionManager = new TSSessionManager(mActivity);
         findView();
+
+        Intent intent = getIntent();
+        email=intent.getStringExtra("email");
 
         if (tsSessionManager.isLoggedIn()){
             HashMap<String, String> user = new HashMap<>();
@@ -78,22 +82,22 @@ public class CategoryActivity extends AppCompatActivity {
 
            // getCategories(email_id);
 
-            //add static category statically for some time
-
-            rv_category.setLayoutManager(new GridLayoutManager(mActivity,2));
-            rv_category.setHasFixedSize(true);
-            // add static data in eventlist
-            categoryList.add(new Category(R.drawable.ic_ideas,"Travelling"));
-            categoryList.add(new Category(R.drawable.ic_ideas,"Education"));
-            categoryList.add(new Category(R.drawable.ic_ideas,"Sports"));
-            categoryList.add(new Category(R.drawable.ic_ideas,"Cars"));
-            categoryList.add(new Category(R.drawable.ic_ideas,"Movie"));
-
-            rvCategoryAdapter = new RvCategoryAdapter(mActivity, categoryList);
-            rv_category.setAdapter(rvCategoryAdapter);
-
-
         }
+
+
+
+        //add static category statically for some time
+        rv_category.setLayoutManager(new GridLayoutManager(mActivity,2));
+        rv_category.setHasFixedSize(true);
+        // add static data in eventlist
+        categoryList.add(new Category(R.drawable.ic_ideas,"Travelling"));
+        categoryList.add(new Category(R.drawable.ic_ideas,"Education"));
+        categoryList.add(new Category(R.drawable.ic_ideas,"Sports"));
+        categoryList.add(new Category(R.drawable.ic_ideas,"Cars"));
+        categoryList.add(new Category(R.drawable.ic_ideas,"Movie"));
+
+        rvCategoryAdapter = new RvCategoryAdapter(mActivity, categoryList);
+        rv_category.setAdapter(rvCategoryAdapter);
 
     }
 
@@ -189,17 +193,14 @@ public class CategoryActivity extends AppCompatActivity {
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("email_id>>"+email);
 
-                if (tsSessionManager.isLoggedIn()){
-                    HashMap<String, String> user = new HashMap<>();
-                    user = tsSessionManager.getUserDetails();
-                    String email_id =  user.get(TSSessionManager.KEY_email_id);
+                if (email!=null){
                     if (selectedCategoryList.size()>0){
-                        addCategory(email_id,selectedCategoryList.size());
+                        addCategory(email,selectedCategoryList.size());
                     } else {
                         Toast.makeText(mActivity, "Select Category", Toast.LENGTH_SHORT).show();
                     }
-
                 }
 
             }
@@ -255,7 +256,7 @@ public class CategoryActivity extends AppCompatActivity {
                     String mesage = response.getString("Msg");
                     if (status.equals("1"))
                     {
-                        tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password,true,false);
+                        tsSessionManager.createLoginSession(true,true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password,true,false);
                         Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(mActivity, SubCategoryActivity.class));
                         finish();

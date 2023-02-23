@@ -89,13 +89,15 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                 if(response.body()!=null){
                     LoginResponse verifyEmailResponse = response.body();
                      String message = verifyEmailResponse.getMsg();
+                     String email_id="";
 
                     AccountStatus account_status = verifyEmailResponse.getAccount_status();
                     if (account_status != null) {
                         String user_uuid = account_status.getUser_uuid();
+                        System.out.println("user_uuid_>>" + user_uuid);
                         String first_name = account_status.getFirst_name();
                         String last_name = account_status.getLast_name();
-                        String email_id = account_status.getEmail_id();
+                         email_id = account_status.getEmail_id();
                         String profile_name = account_status.getProfile_name();
                         String mobile_number = account_status.getMobile_number();
                         String chat_id = account_status.getChat_id();
@@ -103,6 +105,7 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                         String is_category = account_status.getIs_category();
                         String is_sub_category = account_status.getIs_sub_category();
                         tsSessionManager.createLoginSession(
+                                true,
                                 true,
                                 user_uuid,
                                 first_name,
@@ -115,13 +118,15 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                                 parseBoolean("false"),
                                 parseBoolean("false")
                         );
+
                     }
 
-                          tsSessionManager.createEmailVerify(true,strEmail);
-                          Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
-                          Intent categIntent = new Intent(mActivity, CategoryActivity.class);
-                          startActivity(categIntent);
-                          finish();
+                    Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mActivity, CategoryActivity.class);
+                    intent.putExtra("email",strEmail);
+                    startActivity(intent);
+                    finish();
+
                 }
             }
 

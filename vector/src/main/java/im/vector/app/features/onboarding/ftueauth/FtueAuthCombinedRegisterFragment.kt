@@ -40,6 +40,8 @@ import im.vector.app.core.extensions.realignPercentagesToParent
 import im.vector.app.core.extensions.setOnFocusLostListener
 import im.vector.app.core.extensions.setOnImeDoneListener
 import im.vector.app.core.extensions.toReducedUrl
+import im.vector.app.core.utils.ensureProtocol
+import im.vector.app.core.utils.ensureTrailingSlash
 import im.vector.app.databinding.FragmentFtueCombinedRegisterBinding
 import im.vector.app.features.login.render
 import im.vector.app.features.onboarding.OnboardingAction
@@ -70,6 +72,7 @@ class FtueAuthCombinedRegisterFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateServerUrl()
         setupSubmitButton()
         views.createAccountRoot.realignPercentagesToParent()
         views.editServerButton.debouncedClicks { viewModel.handle(OnboardingAction.PostViewEvent(OnboardingViewEvents.EditServerSelection)) }
@@ -87,6 +90,11 @@ class FtueAuthCombinedRegisterFragment :
         views.createAccountInput.setOnFocusLostListener(viewLifecycleOwner) {
             viewModel.handle(OnboardingAction.UserNameEnteredAction.Registration(views.createAccountInput.content()))
         }
+    }
+
+    private fun updateServerUrl() {
+
+        viewModel.handle(OnboardingAction.HomeServerChange.EditHomeServer("chat.telemo.io".ensureProtocol().ensureTrailingSlash()))
     }
 
     private fun canSubmit(account: CharSequence, password: CharSequence): Boolean {

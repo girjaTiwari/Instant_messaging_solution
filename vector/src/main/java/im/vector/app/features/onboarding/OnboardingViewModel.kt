@@ -445,20 +445,8 @@ class OnboardingViewModel @AssistedInject constructor(
                     val status = signupResponse?.status
                   if (status.equals("1")){
                       Toast.makeText(applicationContext, "" + message, Toast.LENGTH_SHORT).show()
-                    /*  tsSessionManager.createLoginSession(
-                              true,
-                              user_uuid,
-                              first_name,
-                              last_name,
-                              email_id,
-                              profile_name,
-                              mobile_number,
-                              chat_id,
-                              chat_password,
-                              parseBoolean("false"),
-                              parseBoolean("false")
-                      )*/
-                      tsSessionManager.createEmailVerify(false,email_id)
+                      tsSessionManager.createEmailSession(email_id)
+                     // Log.d("email-atmodel>>",""+email_id)
                       handleRegisterAction(
                               RegisterAction.CreateAccount(
                                       profile_name,
@@ -466,6 +454,8 @@ class OnboardingViewModel @AssistedInject constructor(
                                       initialDeviceName
                               )
                       )
+
+
                   }else{
                       Toast.makeText(applicationContext, "" + message, Toast.LENGTH_SHORT).show()
                   }
@@ -728,6 +718,7 @@ class OnboardingViewModel @AssistedInject constructor(
                             val is_sub_category = account_status.is_sub_category
                             tsSessionManager.createLoginSession(
                                     true,
+                                    true,
                                     user_uuid,
                                     first_name,
                                     last_name,
@@ -740,8 +731,8 @@ class OnboardingViewModel @AssistedInject constructor(
                                     parseBoolean(is_sub_category)
                             )
                             if (parseBoolean(is_category) && parseBoolean(is_sub_category)) {
-                                Log.d("chat_id>>",""+chat_id);
-                                Log.d("chat_password>>",""+chat_password);
+                              //  Log.d("chat_id>>",""+chat_id);
+                              //  Log.d("chat_password>>",""+chat_password);
 
                                 currentJob = viewModelScope.launch {
                                     try {

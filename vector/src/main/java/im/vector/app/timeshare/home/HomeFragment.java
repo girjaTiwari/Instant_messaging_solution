@@ -153,11 +153,13 @@ public class HomeFragment extends Fragment {
 
                    EventResponse eventResponse = response.body();
                     String message = eventResponse.getMsg();
+                    System.out.println("activity_uuid>>"+message);
                      List<Event> events = eventResponse.getGet_timelines();
                             if (events!=null){
                                 if (events.size()>0){
                                     for (Event event:events){
                                         String activity_uuid = event.getActivity_uuid();
+                                        System.out.println("activity_uuid>>"+activity_uuid);
                                         String activity_name = event.getActivity_name();
                                         String activity_description = event.getActivity_description();
                                         String user_uuid = event.getUser_uuid();

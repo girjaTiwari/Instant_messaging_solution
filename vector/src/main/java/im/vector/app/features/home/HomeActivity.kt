@@ -363,61 +363,64 @@ class HomeActivity :
             }
         }
 
-            if (tsSessionManager!!.isEmailVerified()){
+        if(tsSessionManager!!.isEmailVerified()) {
 
-                if (tsSessionManager!!.isLoggedIn()){
-                    var user:HashMap<String,String>
-                    user = tsSessionManager!!.getUserDetails()
-                    userUuid = user.get(TSSessionManager.KEY_user_uuid)
-                    email_id = user.get(TSSessionManager.KEY_email_id)
+            if (tsSessionManager!!.isLoggedIn()) {
 
-                    if (tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
-                        MaterialAlertDialogBuilder(this@HomeActivity)
-                                .setTitle("Alert!")
-                                .setCancelable(false)
-                                .setMessage("Please click on 'continue' to add category and sub-category.")
-                                .setPositiveButton("Continue", {  dialog, _ ->
-                                    val intent = Intent(applicationContext, SubCategoryActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                                    applicationContext.startActivity(intent)
-                                    dialog.dismiss()
-                                })
-                                .show()
+                var user: HashMap<String, String>
+                user = tsSessionManager!!.getUserDetails()
+                userUuid = user.get(TSSessionManager.KEY_user_uuid)
+                email_id = user.get(TSSessionManager.KEY_email_id)
 
-                    }else if (!tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory){
-                        MaterialAlertDialogBuilder(this@HomeActivity)
-                                .setTitle("Alert!")
-                                .setCancelable(false)
-                                .setMessage("Please click on 'continue' to add category and sub-category.")
-                                .setPositiveButton("Continue",{ dialog, _ ->
-                                    val categIntent = Intent(applicationContext, CategoryActivity::class.java)
-                                    categIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                                    applicationContext.startActivity(categIntent)
-                                    dialog.dismiss()
-                                })
-                                .show()
-                    }
-                }else{
-                    Toast.makeText(applicationContext, "Not Login" , Toast.LENGTH_SHORT).show()
+              //  System.out.println("email_id>>" + email_id)
+               // System.out.println("subcateg>>" + tsSessionManager!!.isSubCategory)
+
+                if (tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory) {
+                    MaterialAlertDialogBuilder(this@HomeActivity)
+                            .setTitle("Alert!")
+                            .setCancelable(false)
+                            .setMessage("Please click on 'continue' to add category and sub-category.")
+                            .setPositiveButton("Continue", { dialog, _ ->
+                                val intent = Intent(applicationContext, SubCategoryActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                               // intent.putExtra("email",email_id)
+                                applicationContext.startActivity(intent)
+                                dialog.dismiss()
+                            })
+                            .show()
+                } else if (!tsSessionManager!!.isCategory && !tsSessionManager!!.isSubCategory) {
+                    MaterialAlertDialogBuilder(this@HomeActivity)
+                            .setTitle("Alert!")
+                            .setCancelable(false)
+                            .setMessage("Please click on 'continue' to add category and sub-category.")
+                            .setPositiveButton("Continue", { dialog, _ ->
+                                val intent = Intent(applicationContext, CategoryActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                                intent.putExtra("email",email_id)
+                                applicationContext.startActivity(intent)
+                                dialog.dismiss()
+                            })
+                            .show()
                 }
-            }else{
-                var emailId:HashMap<String,String>
-                emailId = tsSessionManager!!.getUserEmail()
-                email = emailId.get(TSSessionManager.KEY_email_id)
-               // Log.d("email>>",""+email)
-                MaterialAlertDialogBuilder(this@HomeActivity)
-                        .setTitle("Alert!")
-                        .setCancelable(false)
-                        .setMessage("Please verify your email")
-                         .setPositiveButton("Continue", { dialog, _ ->
-                             val intent = Intent(applicationContext, EmailVerifyActivity::class.java)
-                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                             intent.putExtra("email", email)
-                             applicationContext.startActivity(intent)
-                               dialog.dismiss()
-                          })
-                        .show()
             }
+        } else {
+            var user: HashMap<String, String>
+            user = tsSessionManager!!.getUserEmail()
+           val email = user.get(TSSessionManager.KEY_email)
+            Log.d("email>>",""+email)
+            MaterialAlertDialogBuilder(this@HomeActivity)
+                    .setTitle("Alert!")
+                    .setCancelable(false)
+                    .setMessage("Please verify your email")
+                    .setPositiveButton("Continue", { dialog, _ ->
+                        val intent = Intent(applicationContext, EmailVerifyActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.putExtra("email", email)
+                        applicationContext.startActivity(intent)
+                        dialog.dismiss()
+                    })
+                    .show()
+        }
 
 
        // Log.d("userid>>",""+userUuid)
@@ -1270,6 +1273,8 @@ class HomeActivity :
 
     override fun onResume() {
         super.onResume()
+
+        Toast.makeText(this@HomeActivity, "onResume called", Toast.LENGTH_SHORT).show()
 
         if (vectorUncaughtExceptionHandler.didAppCrash()) {
             vectorUncaughtExceptionHandler.clearAppCrashStatus()

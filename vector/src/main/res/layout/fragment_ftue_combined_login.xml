@@ -31,7 +31,7 @@
         <Space
             android:id="@+id/headerSpacing"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="52dp"
             app:layout_constraintBottom_toTopOf="@id/loginHeaderTitle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
@@ -43,8 +43,8 @@
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
             app:layout_constraintTop_toBottomOf="@id/headerSpacing"
             android:src="@drawable/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"/>
+            android:layout_width="90dp"
+            android:layout_height="90dp"/>
 
         <TextView
             android:id="@+id/loginHeaderTitle"
@@ -56,45 +56,10 @@
             android:text="TimeShare"
             android:fontFamily="@font/ubuntu_regular"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/chooseServerInput"
+            app:layout_constraintBottom_toTopOf="@id/titleContentSpacing"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
             app:layout_constraintTop_toBottomOf="@id/logo_img" />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/chooseServerInput"
-            style="@style/Widget.Vector.TextInputLayout.Username"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/ftue_auth_choose_server_entry_hint"
-            app:layout_constraintBottom_toTopOf="@id/titleContentSpacing"
-            app:layout_constraintEnd_toEndOf="@id/editServerButton"
-            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/loginHeaderTitle">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:text="chat.telemo.io"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:imeOptions="actionDone"
-                android:inputType="textUri"
-                android:maxLines="1" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:layout_marginTop="10dp"
-            android:id="@+id/chooseServerSubmit"
-            style="@style/Widget.Vector.Button.Login"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/login_signup_submit"
-            android:textAllCaps="true"
-            app:layout_constraintBottom_toTopOf="@id/chooseYourServerHeader"
-            app:layout_constraintEnd_toEndOf="@id/editServerButton"
-            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/chooseServerInput" />
 
         <Space
             android:id="@+id/titleContentSpacing"
@@ -104,8 +69,8 @@
             app:layout_constraintHeight_percent="0.03"
             app:layout_constraintTop_toBottomOf="@id/loginHeaderTitle" />
 
-
         <TextView
+            android:visibility="gone"
             android:id="@+id/chooseYourServerHeader"
             style="@style/Widget.Vector.TextView.Caption"
             android:layout_width="0dp"
@@ -120,10 +85,10 @@
             app:layout_constraintTop_toBottomOf="@id/titleContentSpacing" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/selectedServerName"
             style="@style/Widget.Vector.TextView.Subtitle"
             android:layout_width="0dp"
-            android:text="chat.telemo.io"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:textColor="@color/white"
@@ -133,6 +98,7 @@
             app:layout_constraintTop_toBottomOf="@id/chooseYourServerHeader" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/selectedServerDescription"
             style="@style/Widget.Vector.TextView.Micro"
             android:layout_width="0dp"
@@ -145,6 +111,7 @@
             app:layout_constraintTop_toBottomOf="@id/selectedServerName" />
 
         <Button
+            android:visibility="gone"
             android:id="@+id/editServerButton"
             style="@style/Widget.Vector.Button.Outlined"
             android:layout_width="wrap_content"
@@ -167,14 +134,6 @@
             app:layout_constraintHeight_percent="0.05"
             app:layout_constraintTop_toBottomOf="@id/selectedServerDescription" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="?vctr_content_quaternary"
-            app:layout_constraintBottom_toBottomOf="@id/serverSelectionSpacing"
-            app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
-            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
-            app:layout_constraintTop_toTopOf="@id/serverSelectionSpacing" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/loginEntryGroup"
@@ -188,6 +147,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Email"
+            app:hintTextColor="@color/grey_light0"
             app:layout_constraintBottom_toTopOf="@id/entrySpacing"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
@@ -218,6 +178,7 @@
             style="@style/Widget.Vector.TextInputLayout.Password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:hintTextColor="@color/grey_light0"
             android:hint="@string/login_signup_password_hint"
             app:layout_constraintBottom_toTopOf="@id/loginForgotPassword"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
@@ -308,54 +269,54 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
-       <!-- <androidx.constraintlayout.widget.Group
-            android:id="@+id/ssoGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="ssoButtonsHeader,ssoButtons"
-            app:layout_constraintBottom_toTopOf="@id/ssoButtonsHeader"
-            app:layout_constraintTop_toBottomOf="@id/loginSubmit"
-            tools:visibility="visible" />
+        <!-- <androidx.constraintlayout.widget.Group
+             android:id="@+id/ssoGroup"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:visibility="gone"
+             app:constraint_referenced_ids="ssoButtonsHeader,ssoButtons"
+             app:layout_constraintBottom_toTopOf="@id/ssoButtonsHeader"
+             app:layout_constraintTop_toBottomOf="@id/loginSubmit"
+             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/ssoButtonsHeader"
-            style="@style/Widget.Vector.TextView.Subtitle.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/ftue_auth_create_account_sso_section_header"
-            android:textColor="?vctr_content_secondary"
-            app:layout_constraintBottom_toTopOf="@id/ssoButtons"
-            app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
-            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/loginSubmit" />
+         <TextView
+             android:id="@+id/ssoButtonsHeader"
+             style="@style/Widget.Vector.TextView.Subtitle.Medium"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="16dp"
+             android:layout_marginBottom="16dp"
+             android:text="@string/ftue_auth_create_account_sso_section_header"
+             android:textColor="?vctr_content_secondary"
+             app:layout_constraintBottom_toTopOf="@id/ssoButtons"
+             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
+             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+             app:layout_constraintTop_toBottomOf="@id/loginSubmit" />
 
-        <Button
-            android:id="@+id/loginWithQrCode"
-            style="@style/Widget.Vector.Button.Outlined.Login"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/login_scan_qr_code"
-            android:visibility="gone"
-            app:drawableLeftCompat="@drawable/ic_qr_code"
-            app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
-            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/ssoButtonsHeader"
-            tools:visibility="visible" />
+         <Button
+             android:id="@+id/loginWithQrCode"
+             style="@style/Widget.Vector.Button.Outlined.Login"
+             android:layout_width="0dp"
+             android:layout_height="60dp"
+             android:layout_marginTop="12dp"
+             android:text="@string/login_scan_qr_code"
+             android:visibility="gone"
+             app:drawableLeftCompat="@drawable/ic_qr_code"
+             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
+             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+             app:layout_constraintTop_toBottomOf="@id/ssoButtonsHeader"
+             tools:visibility="visible" />
 
-        <im.vector.app.features.login.SocialLoginButtonsView
-            android:id="@+id/ssoButtons"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
-            app:layout_constraintStart_toStartOf="@id/loginGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/loginWithQrCode"
-            tools:signMode="signup" />-->
+         <im.vector.app.features.login.SocialLoginButtonsView
+             android:id="@+id/ssoButtons"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="16dp"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
+             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
+             app:layout_constraintTop_toBottomOf="@id/loginWithQrCode"
+             tools:signMode="signup" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

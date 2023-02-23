@@ -182,6 +182,8 @@ public class SubCategoryActivity extends AppCompatActivity {
                     user = tsSessionManager.getUserDetails();
                     String user_uuid =  user.get(TSSessionManager.KEY_user_uuid);
                     String email_id =  user.get(TSSessionManager.KEY_email_id);
+                    System.out.println("user_uuid>>" + user_uuid);
+                    System.out.println("email_>>" + email_id);
                    if (selectedSubCategoryList1.size()>0 ||
                            selectedSubCategoryList2.size()>0 ||
                            selectedSubCategoryList3.size()>0 ||
@@ -373,7 +375,7 @@ public class SubCategoryActivity extends AppCompatActivity {
                     String mesage = response.getString("Msg");
                     if (status.equals("1"))
                     {
-                        tsSessionManager.createLoginSession(true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password,isCategory,true);
+                        tsSessionManager.createLoginSession(true,true,user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password,isCategory,true);
 
                         Toast.makeText(mActivity, ""+mesage, Toast.LENGTH_SHORT).show();
                         finish();
