@@ -46,7 +46,7 @@
 
     <!-- For timeshare color -->
     <color name="primary_color">#FF6027</color>
-    <color name="primary_dark">#BF0222</color>
+    <color name="primary_dark">#F4F4F4</color>
     <color name="color_acent">#BF0222</color>
     <color name="floating_bg_color">#E18113</color>
     <color name="primary_light">#FFA76A</color>

@@ -159,7 +159,7 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.i("onViewCreated Fragment ${javaClass.simpleName}")
-      //  setupMenu()
+        setupMenu()
     }
 
     private fun setupMenu() {
@@ -170,7 +170,7 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
                 object : MenuProvider {
                     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                         menuInflater.inflate(getMenuRes(), menu)
-                        handlePostCreateMenu(menu)
+                       // handlePostCreateMenu(menu)
                     }
 
                     override fun onPrepareMenu(menu: Menu) {

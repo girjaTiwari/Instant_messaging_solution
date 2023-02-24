@@ -47,7 +47,7 @@
         android:visible="false"
         app:actionLayout="@layout/view_thread_notification_badge"
         app:iconTint="?colorPrimary"
-        app:showAsAction="always"
+        app:showAsAction="never"
         tools:visible="true" />
 
     <item
@@ -60,7 +60,8 @@
         android:id="@+id/open_matrix_apps"
         android:title="@string/room_add_matrix_apps"
         app:actionLayout="@layout/custom_action_item_layout_badge"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never"
+        android:visible="false"/>
 
     <item
         android:id="@+id/dev_tools"

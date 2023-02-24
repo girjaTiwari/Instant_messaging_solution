@@ -143,7 +143,9 @@
             app:constraint_referenced_ids="loginInput,loginPasswordInput,entrySpacing,actionSpacing,loginSubmit" />
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Vector.TextInputLayout.Username"
             android:id="@+id/loginInput"
+            app:boxStrokeColor="@color/grey_light0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Email"
@@ -160,7 +162,10 @@
                 android:imeOptions="actionNext"
                 android:inputType="textNoSuggestions"
                 android:textColor="@color/white"
+                app:boxStrokeColor="@color/grey_light0"
+                android:textColorHint="@color/grey_light0"
                 android:maxLines="1"
+                android:fontFamily="@font/poppins_medium"
                 android:nextFocusForward="@id/loginPasswordInput" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -192,11 +197,14 @@
                 android:imeOptions="actionDone"
                 android:textColor="@color/white"
                 android:inputType="textPassword"
+                android:fontFamily="@font/poppins_medium"
+                android:textColorHint="@color/grey_light0"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:fontFamily="@font/poppins_medium"
             android:id="@+id/loginForgotPas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,6 +217,7 @@
 
 
         <Button
+
             android:visibility="invisible"
             android:id="@+id/loginForgotPassword"
             style="@style/Widget.Vector.Button.Text.Login"
@@ -237,6 +246,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Sign In"
+            android:fontFamily="@font/poppins_medium"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
             app:layout_constraintStart_toStartOf="@id/loginGutterStart"
@@ -252,6 +262,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
+                android:fontFamily="@font/poppins_medium"
                 android:padding="4dp"
                 android:textColor="@color/palette_gray_150"
                 android:layout_gravity="left"
@@ -259,6 +270,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:fontFamily="@font/poppins_medium"
                 android:id="@+id/tv_dont_account"
                 android:textSize="14sp"
                 android:textColor="@color/palette_white"

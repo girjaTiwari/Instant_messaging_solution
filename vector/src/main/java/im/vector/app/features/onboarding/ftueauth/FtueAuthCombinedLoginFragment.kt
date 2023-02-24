@@ -44,6 +44,7 @@ import im.vector.app.databinding.FragmentFtueCombinedLoginBinding
 import im.vector.app.features.VectorFeatures
 import im.vector.app.features.login.LoginMode
 import im.vector.app.features.onboarding.OnboardingAction
+import im.vector.app.features.onboarding.OnboardingFlow
 import im.vector.app.features.onboarding.OnboardingViewEvents
 import im.vector.app.features.onboarding.OnboardingViewState
 import im.vector.app.timeshare.auth.ForgotPasswordActivity
@@ -86,7 +87,9 @@ class FtueAuthCombinedLoginFragment :
         }
 
         getView()?.findViewById<TextView>(R.id.tv_dont_account)?.setOnClickListener {
-           // startActivity(Intent(requireContext(), SignupActivity::class.java))
+            val isAlreadyHaveAccountEnabled = vectorFeatures.isOnboardingAlreadyHaveAccountSplashEnabled()
+            val getStartedFlow = if (isAlreadyHaveAccountEnabled) OnboardingFlow.SignUp else OnboardingFlow.SignInSignUp
+            viewModel.handle(OnboardingAction.SplashAction.OnGetStarted(onboardingFlow = getStartedFlow))
         }
         getView()?.findViewById<TextView>(R.id.loginForgotPas)?.setOnClickListener {
             startActivity(Intent(requireContext(), ForgotPasswordActivity::class.java))

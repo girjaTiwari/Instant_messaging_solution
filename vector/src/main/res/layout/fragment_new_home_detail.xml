@@ -131,7 +131,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/a11y_create_message"
         android:src="@drawable/ic_chat_ts"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:targetApi="lollipop_mr1"

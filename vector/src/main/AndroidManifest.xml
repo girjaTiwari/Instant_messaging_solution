@@ -256,13 +256,7 @@
         </activity-alias> <!-- exported="true" is required for the share functionality -->
         <activity
             android:name=".features.MainActivity"
-            android:exported="true"
-            android:theme="@style/BasicTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/Theme.Vector.Launcher">
         </activity>
         <activity
             android:name=".features.share.IncomingShareActivity"
