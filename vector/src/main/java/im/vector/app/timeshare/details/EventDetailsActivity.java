@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -52,7 +53,7 @@ import retrofit2.Callback;
 public class EventDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     AppCompatActivity mActivity;
     ViewPager vpBanner;
-    Button btn_upload_media;
+   AppCompatButton btn_upload_media;
    // DotsIndicator dots_indicator;
     ImageView ic_back_arrow,iv_LIKE,iv_profilepic;
     LinearLayout rl_attendi;
@@ -195,24 +196,27 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     GetActivityJoingingResponse joingingResponse = response.body();
                     String message = joingingResponse.getMsg();
                     List<JoiningUser> joiningUserList = joingingResponse.getGetActivityJoining();
-                    if (joiningUserList.size()>0) {
-                       // view.setVisibility(View.VISIBLE);
-                        for (JoiningUser joiningUser : joiningUserList) {
-                            String activity_uuid = joiningUser.getActivity_uuid();
-                            String first_name = joiningUser.getFirst_name();
-                            String last_name = joiningUser.getLast_name();
-                            String user_name = joiningUser.getUser_name();
-                            String profile_pic = joiningUser.getProfile_pic();
+                    if (joiningUserList!=null){
+                        if (joiningUserList.size()>0) {
+                            // view.setVisibility(View.VISIBLE);
+                            for (JoiningUser joiningUser : joiningUserList) {
+                                String activity_uuid = joiningUser.getActivity_uuid();
+                                String first_name = joiningUser.getFirst_name();
+                                String last_name = joiningUser.getLast_name();
+                                String user_name = joiningUser.getUser_name();
+                                String profile_pic = joiningUser.getProfile_pic();
 
-                            joiningUsers.add(new JoiningUser(activity_uuid, first_name, last_name, user_name, profile_pic));
+                                joiningUsers.add(new JoiningUser(activity_uuid, first_name, last_name, user_name, profile_pic));
+                            }
+
+                            tv_joining_count.setText(joiningUsers.size()+" Attendees");
+                            rv_attendies.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.HORIZONTAL,false));
+                            rvInterestedAdapter=new RvInterestedAdapter(mActivity,joiningUsers);
+                            rv_attendies.setAdapter(rvInterestedAdapter);
+
                         }
-
-                        tv_joining_count.setText(joiningUsers.size()+" Attendees");
-                        rv_attendies.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.HORIZONTAL,false));
-                        rvInterestedAdapter=new RvInterestedAdapter(mActivity,joiningUsers);
-                        rv_attendies.setAdapter(rvInterestedAdapter);
-
                     }
+
                 }else {
                     tv_joining_count.setVisibility(View.VISIBLE);
                     tv_joining_count.setText("No Attendies");

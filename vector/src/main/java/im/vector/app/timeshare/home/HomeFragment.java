@@ -41,6 +41,7 @@ import retrofit2.Callback;
 public class HomeFragment extends Fragment {
     Context mContext;
     MyDialog myDialog;
+    String uuid;
 
    // RequestQueue requestQueue;
     RecyclerView rv_ongoing_events;
@@ -79,8 +80,8 @@ public class HomeFragment extends Fragment {
 
             HashMap<String, String> user = new HashMap<>();
             user = tsSessionManager.getUserDetails();
-            String uuid =  user.get(TSSessionManager.KEY_user_uuid);
-            System.out.println("uuid>>"+uuid);
+             uuid =  user.get(TSSessionManager.KEY_user_uuid);
+
             if (uuid!=null){
 
                 Thread thread = new Thread(){
@@ -120,6 +121,25 @@ public class HomeFragment extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        HashMap<String, String> user = new HashMap<>();
+        user = tsSessionManager.getUserDetails();
+         uuid =  user.get(TSSessionManager.KEY_user_uuid);
+        System.out.println("uuid>>"+uuid);
+        if (uuid!=null){
+
+            Thread thread = new Thread(){
+                @Override
+                public void run() {
+                    getAllActvity(uuid);
+                }
+            };
+            thread.start();
+        }
     }
 
     private void searchEvent(String string) {

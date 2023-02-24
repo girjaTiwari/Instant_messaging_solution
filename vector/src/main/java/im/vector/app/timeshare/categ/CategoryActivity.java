@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +53,7 @@ public class CategoryActivity extends AppCompatActivity {
     RvCategoryAdapter rvCategoryAdapter;
     ImageView iv_close_category;
     RequestQueue requestQueue;
-    Button btn_continue;
+    AppCompatButton btn_continue;
   public static ArrayList<String>selectedCategoryList = new ArrayList<>();
   String email;
   String user_uuid,first_name,last_name,email_id,profile_name,mobile_number,chat_id,chat_password;

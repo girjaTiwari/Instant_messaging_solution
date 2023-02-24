@@ -1274,7 +1274,8 @@ class HomeActivity :
     override fun onResume() {
         super.onResume()
 
-        Toast.makeText(this@HomeActivity, "onResume called", Toast.LENGTH_SHORT).show()
+        //reload timeline's
+     //   replaceFragment(views.homeDetailFragmentContainer, HomeFragment::class.java)
 
         if (vectorUncaughtExceptionHandler.didAppCrash()) {
             vectorUncaughtExceptionHandler.clearAppCrashStatus()

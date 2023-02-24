@@ -17,6 +17,8 @@
 package im.vector.app.timeshare.menu;
 
 
+import static im.vector.app.timeshare.ApiClass.change_password;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,17 +37,32 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import org.jetbrains.annotations.ApiStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import im.vector.app.R;
 import im.vector.app.features.workers.signout.SignOutUiWorker;
+import im.vector.app.timeshare.ApiClass;
 import im.vector.app.timeshare.TSSessionManager;
 import im.vector.app.timeshare.TSUtils.MyDialog;
 import im.vector.app.timeshare.api_request_body.CommonRequest;
 import im.vector.app.timeshare.api_response_body.CommonResponse;
+import im.vector.app.timeshare.categ.CategoryActivity;
 import im.vector.app.timeshare.profile.MyProfileActivity;
 import im.vector.app.timeshare.webservices.ApiUtils;
 import im.vector.app.timeshare.webservices.RetrofitAPI;
@@ -62,6 +79,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     View view_notif;
     private AlertDialog logoutDialog,deleteDialog;
     TSSessionManager tsSessionManager;
+    RequestQueue requestQueue;
 
     MyDialog myDialog;
     ListView listview_about;
@@ -100,7 +118,15 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 }else if (expandableListAdapter.getGroup(groupPosition).equals("Permissions")){
                 //    startActivity(new Intent(getActivity(), PermissionActivity.class));
                 }else if (expandableListAdapter.getGroup(groupPosition).equals("Category")){
-                  //  startActivity(new Intent(getActivity(), CategoryActivity.class));
+                    if (tsSessionManager.isLoggedIn()){
+                        HashMap<String, String> user = new HashMap<>();
+                        user = tsSessionManager.getUserEmail();
+                      String email =  user.get(TSSessionManager.KEY_email_id);
+                      Intent intent = new Intent(getActivity(),CategoryActivity.class);
+                      intent.putExtra("email",email);
+                      startActivity(intent);
+                    }
+
                 }else if (expandableListAdapter.getGroup(groupPosition).equals("Logout")){
                     new SignOutUiWorker(requireActivity()).perform();
                    //alertDialog();
@@ -368,7 +394,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                     String newpass = edt_newpass.getText().toString().trim();
                     String repass = edt_repass.getText().toString().trim();
                     if (validate(uuid,oldpass,newpass,repass)) {
-                       // change_password(uuid,oldpass,newpass,repass,builder);
+                        change_password(uuid,oldpass,newpass,repass,builder);
                     }
                 }
             }
@@ -378,7 +404,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         builder.show();
     }
 
-/*    private void change_password(String uuid, String oldpass, String newpass, String repass,BottomSheetDialog builder) {
+   private void change_password(String uuid, String oldpass, String newpass, String repass,BottomSheetDialog builder) {
         myDialog.showProgresbar(getActivity());
         HashMap<String,String> params = new HashMap<>();
         params.put("user_uuid",uuid);
@@ -386,7 +412,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         params.put("new_password",newpass);
         params.put("retype_new_password",repass);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiStatus.BASE_URL + change_password, new JSONObject(params), new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, ApiClass.BASE_URL + change_password, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 System.out.println("change_password>>"+response);
@@ -437,7 +463,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-    }*/
+    }
 
     private boolean validate(String uuid, String oldpass, String newpass, String repass) {
         if (uuid.equals("")) {
