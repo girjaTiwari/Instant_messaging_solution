@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import im.vector.app.R;
+import kotlin.Suppress;
 
 public class SingleRecyclerViewAdapter
         extends RecyclerView.Adapter<SingleRecyclerViewAdapter.DataObjectHolder> {
@@ -38,7 +39,7 @@ public class SingleRecyclerViewAdapter
             tv_text_category_name = itemView.findViewById(R.id.tv_text_category_name);
             itemView.setOnClickListener(this);
         }
-
+        @Suppress(names = "DEPRECATION")
         @Override
         public void onClick(View view) {
             sSelected_category = getAdapterPosition();

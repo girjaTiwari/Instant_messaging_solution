@@ -31,6 +31,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageView
@@ -47,6 +48,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Mavericks
@@ -155,11 +157,10 @@ class HomeActivity :
         NavigationInterceptor,
         SpaceInviteBottomSheet.InteractionListener,
         MatrixToBottomSheet.InteractionListener,
+        View.OnClickListener,
+        SingleRecyclerViewAdapter.SingleClickListener,
+        SubCategorySingleSelectionAdapter.SingleClickListener,
         VectorMenuProvider {
-
-
-
-
 
     private lateinit var sharedActionViewModel: HomeSharedActionViewModel
     private lateinit var roomListSharedActionViewModel: RoomListSharedActionViewModel
@@ -743,9 +744,27 @@ class HomeActivity :
 
         getCategories(email_id)
 
-        tv_continue?.setOnClickListener {
+        //Listener's
+        tv_continue!!.setOnClickListener(this)
+        img_select_start_date!!.setOnClickListener(this)
+        img_select_end_date!!.setOnClickListener(this)
 
-        }
+        tv_calendar_cancel1!!.setOnClickListener(this)
+        tv_calendar_ok1!!.setOnClickListener(this)
+        tv_calendar_cancel2!!.setOnClickListener(this)
+        tv_calendar_ok2!!.setOnClickListener(this)
+
+        tv_time_ok1!!.setOnClickListener(this)
+        tv_time_ok2!!.setOnClickListener(this)
+
+
+        tv_time_cancel1!!.setOnClickListener(this)
+        tv_time_cancel1!!.setOnClickListener(this)
+
+        rl_select_category!!.setOnClickListener(this)
+        rl_select_subcategory!!.setOnClickListener(this)
+
+
 
         iv_back?.setOnClickListener {
             builder.dismiss()
@@ -766,6 +785,20 @@ class HomeActivity :
                     val message = categoryResponse?.msg
                     val status = categoryResponse?.status
                     if (status == "1") {
+                        rv_category!!.layoutManager = GridLayoutManager(this@HomeActivity, 2)
+                        rv_category!!.setHasFixedSize(true)
+                        // add static data in eventlist
+
+                        // add static data in eventlist
+                        categoryList.add(Category(R.drawable.ic_ideas, "Travelling"))
+                        categoryList.add(Category(R.drawable.ic_ideas, "Education"))
+                        categoryList.add(Category(R.drawable.ic_ideas, "Sports"))
+                        categoryList.add(Category(R.drawable.ic_ideas, "Cars"))
+                        categoryList.add(Category(R.drawable.ic_ideas, "Movie"))
+
+                        singleRecyclerViewAdapter = SingleRecyclerViewAdapter(this@HomeActivity, categoryList)
+                        rv_category!!.adapter = singleRecyclerViewAdapter
+                        singleRecyclerViewAdapter!!.setOnItemClickListener(this@HomeActivity)
                         Toast.makeText(this@HomeActivity, "" + message, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this@HomeActivity, "" + message, Toast.LENGTH_SHORT).show()
@@ -1452,5 +1485,91 @@ class HomeActivity :
 
     override fun mxToBottomSheetSwitchToSpace(spaceId: String) {
         navigator.switchToSpace(this, spaceId, Navigator.PostSwitchSpaceAction.OpenRoomList)
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.tv_continue ->{
+
+            }
+            R.id.rl_select_category ->{
+                hideKeyboard()
+                if (ll_category_space!!.visibility == View.VISIBLE) {
+                    ll_category_space!!.visibility = View.GONE
+                    ll_category_space!!.startAnimation(AnimationUtils.loadAnimation(this@HomeActivity, R.anim.slide_up))
+                } else {
+                    ll_category_space!!.visibility = View.VISIBLE
+                    ll_category_space!!.startAnimation(AnimationUtils.loadAnimation(this@HomeActivity, R.anim.slide_down))
+                }
+            }
+
+            R.id.rl_select_subcategory ->{
+                if (ll_subcategory_space!!.visibility == View.VISIBLE) {
+                    ll_subcategory_space!!.visibility = View.GONE
+                    ll_subcategory_space!!.startAnimation(AnimationUtils.loadAnimation(this@HomeActivity, R.anim.slide_up))
+                } else {
+                    ll_subcategory_space!!.visibility = View.VISIBLE
+                    ll_subcategory_space!!.startAnimation(AnimationUtils.loadAnimation(this@HomeActivity, R.anim.slide_down))
+                }
+            }
+        }
+    }
+
+    override fun onItemClickListener(position: Int, view: View?) {
+        singleRecyclerViewAdapter!!.selectedItem()
+        // Toast.makeText(this@HomeActivity, ""+categoryList.get(position).getCategory(), Toast.LENGTH_SHORT).show();
+        categoryName = categoryList[position].category
+        getSubCategories(userUuid, categoryList[position].category)
+    }
+
+    private fun getSubCategories(user_uuid: String?, category: String?) {
+        subCategoryList.clear()
+        // add static data in subCategory
+        if (category == "Travelling") {
+            subCategoryList.add(SubCategory("Mountains", 0, "Travelling"))
+            subCategoryList.add(SubCategory("Desert", 0, "Travelling"))
+            subCategoryList.add(SubCategory("Sea", 0, "Travelling"))
+            subCategoryList.add(SubCategory("Plains", 0, "Travelling"))
+            subCategoryList.add(SubCategory("City", 0, "Travelling"))
+        }
+        if (category == "Education") {
+            subCategoryList.add(SubCategory("Engineering", 1, "Education"))
+            subCategoryList.add(SubCategory("Medical", 1, "Education"))
+            subCategoryList.add(SubCategory("Astrophysics", 1, "Education"))
+            subCategoryList.add(SubCategory("Science", 1, "Education"))
+            subCategoryList.add(SubCategory("Economics", 1, "Education"))
+        }
+        if (category == "Sports") {
+            subCategoryList.add(SubCategory("Cricket", 2, "Sports"))
+            subCategoryList.add(SubCategory("Hockey", 2, "Sports"))
+            subCategoryList.add(SubCategory("Tenis", 2, "Sports"))
+            subCategoryList.add(SubCategory("Football", 2, "Sports"))
+            subCategoryList.add(SubCategory("Chess", 2, "Sports"))
+        }
+        if (category == "Cars") {
+            subCategoryList.add(SubCategory("BMW", 3, "Cars"))
+            subCategoryList.add(SubCategory("Mercedes ", 3, "Cars"))
+            subCategoryList.add(SubCategory("Maruti Suzuki ", 3, "Cars"))
+            subCategoryList.add(SubCategory("Honda", 3, "Cars"))
+            subCategoryList.add(SubCategory("Ferrari ", 3, "Cars"))
+        }
+        if (category == "Movie") {
+            subCategoryList.add(SubCategory("Action", 4, "Movie"))
+            subCategoryList.add(SubCategory("Drama ", 4, "Movie"))
+            subCategoryList.add(SubCategory("Horror ", 4, "Movie"))
+            subCategoryList.add(SubCategory("Thrill", 4, "Movie"))
+            subCategoryList.add(SubCategory("3D ", 4, "Movie"))
+        }
+        rv_spinnersubcategory!!.layoutManager = GridLayoutManager(this@HomeActivity, 2)
+        rv_spinnersubcategory!!.setHasFixedSize(true)
+        subCategorySingleSelectionAdapter = SubCategorySingleSelectionAdapter(this@HomeActivity, subCategoryList)
+        rv_spinnersubcategory!!.adapter = subCategorySingleSelectionAdapter
+        subCategorySingleSelectionAdapter!!.setOnItemClickListener(this@HomeActivity)
+
+    }
+
+    override fun onSubCategoryListener(position: Int, view: View?) {
+        TODO("Not yet implemented")
+        subCategorySingleSelectionAdapter!!.selectedItem()
     }
 }
