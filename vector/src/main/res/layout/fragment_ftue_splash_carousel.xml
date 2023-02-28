@@ -102,12 +102,12 @@
         android:drawablePadding="12dp"
         android:textColor="?vctr_content_secondary"
         android:visibility="gone"
-        app:drawableStartCompat="@drawable/ic_debug_icon"
+        android:layout_marginBottom="8dp"
         app:drawableTint="?colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
         app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
         tools:text="@string/settings_version"
         tools:visibility="visible" />
-
+ <!--   app:drawableStartCompat="@drawable/ic_debug_icon"-->
 </androidx.constraintlayout.widget.ConstraintLayout>

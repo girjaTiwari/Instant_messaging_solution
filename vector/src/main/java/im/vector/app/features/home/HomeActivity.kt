@@ -108,8 +108,10 @@ import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
 import im.vector.app.timeshare.MovableFloatingActionButton
 import im.vector.app.timeshare.TSSessionManager
 import im.vector.app.timeshare.TSUtils.MYUtil.random
+import im.vector.app.timeshare.TSUtils.MyDialog
 import im.vector.app.timeshare.api_request_body.GetCategoryRequest
 import im.vector.app.timeshare.api_response_body.GetCategoryResponse
+import im.vector.app.timeshare.api_response_body.UploadImage
 import im.vector.app.timeshare.auth.EmailVerifyActivity
 import im.vector.app.timeshare.categ.Category
 import im.vector.app.timeshare.categ.CategoryActivity
@@ -127,6 +129,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.matrix.android.sdk.api.session.permalinks.PermalinkService
@@ -140,7 +144,10 @@ import retrofit2.Response
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
+import java.util.TimeZone
 import javax.inject.Inject
 
 @Parcelize
@@ -258,8 +265,9 @@ class HomeActivity :
     var gallerybitmap: Bitmap? = null
     var filePart: MultipartBody.Part? = null
     var filePartList: List<MultipartBody.Part> = ArrayList<MultipartBody.Part>()
+    var call: Call<UploadImage>? = null
 
-
+    var myDialog:MyDialog?=null
     var edit_venu: EditText? = null
     var calendarView_startdate: CalendarView? = null
     var calendarView_enddate: CalendarView? = null
@@ -311,14 +319,14 @@ class HomeActivity :
 
     //multipart enstances
     var activityname: RequestBody? = null
-    var activitydesc:okhttp3.RequestBody? = null
-    var numberoffiles:okhttp3.RequestBody? = null
-    var category:okhttp3.RequestBody? = null
-    var subcategory:okhttp3.RequestBody? = null
-    var user_uuid:okhttp3.RequestBody? = null
-    var location:okhttp3.RequestBody? = null
-    var start_date_and_time:okhttp3.RequestBody? = null
-    var end_date_and_time:okhttp3.RequestBody? = null
+    var activitydesc:RequestBody? = null
+    var numberoffiles:RequestBody? = null
+    var category:RequestBody? = null
+    var subcategory:RequestBody? = null
+    var user_uuid:RequestBody? = null
+    var location:RequestBody? = null
+    var start_date_and_time:RequestBody? = null
+    var end_date_and_time:RequestBody? = null
 
 
     var isHome = false
@@ -744,6 +752,43 @@ class HomeActivity :
 
         getCategories(email_id)
 
+        /* DateFormat dateFormat = new SimpleDateFormat("mm-dd-yyyy");
+        Date date = new Date();
+        tv_activity_start_date.setText(dateFormat.format(date));
+        tv_activity_end_date.setText(dateFormat.format(date));*/
+        val calendar = Calendar.getInstance(TimeZone.getDefault())
+
+        val currentYear = calendar[Calendar.YEAR]
+        val currentMonth = calendar[Calendar.MONTH] + 1
+        val currentDay = calendar[Calendar.DAY_OF_MONTH]
+
+        val hour: String
+        val minute: String
+        val hour2: String
+        val minute2: String
+        @Suppress("DEPRECATION")
+        if (timePicker1!!.currentHour < 10) {
+            hour = "0" + timePicker1!!.currentHour
+            hour2 = "0" + timePicker2!!.currentHour
+        } else {
+            hour = "" + timePicker1!!.currentHour
+            hour2 = "" + timePicker2!!.currentHour
+        }
+        @Suppress("DEPRECATION")
+        if (timePicker1!!.currentMinute < 10) {
+            minute = "0" + timePicker1!!.currentMinute
+            minute2 = "0" + timePicker2!!.currentMinute
+        } else {
+            minute = "" + timePicker1!!.currentMinute
+            minute2 = "" + timePicker2!!.currentMinute
+        }
+
+        val currentTime_start = "$hour:$minute"
+        val currentTime2_end = "$hour2:$minute2"
+
+        tv_activity_start_date?.setText(splitDate(StringBuilder().append(currentYear).append("-").append(currentMonth).append("-").append(currentDay).append("")) + "-" + currentTime_start)
+        tv_activity_end_date?.setText(splitDate(StringBuilder().append(currentYear).append("-").append(currentMonth).append("-").append(currentDay).append("")) + "-" + currentTime2_end)
+
         //Listener's
         tv_continue!!.setOnClickListener(this)
         img_select_start_date!!.setOnClickListener(this)
@@ -770,11 +815,106 @@ class HomeActivity :
             builder.dismiss()
         }
 
+        tv_continue.setOnClickListener {
+            myDialog?.showProgresbar(this@HomeActivity)
+            categoryList.clear()
+            subCategoryList.clear()
+            hideKeyboard()
+            postLocation = edit_venu!!.text.toString().trim { it <= ' ' }
+            startDate = tv_activity_start_date!!.text.toString().trim { it <= ' ' }
+            endDate = tv_activity_end_date!!.text.toString().trim { it <= ' ' }
+            @Suppress("DEPRECATION")
+            if (validateMoreInfo(postLocation!!, startDate!!, endDate!!, categoryName.toString(), subCategory.toString(), edit_venu!!)) {
+                numberoffiles = RequestBody.create("text/plain".toMediaTypeOrNull(), numberOfFiles!!)
+                category = RequestBody.create("text/plain".toMediaTypeOrNull(), categoryName!!)
+                subcategory = RequestBody.create("text/plain".toMediaTypeOrNull(), subCategory!!)
+                user_uuid = RequestBody.create("text/plain".toMediaTypeOrNull(), userUuid!!)
+                location = RequestBody.create("text/plain".toMediaTypeOrNull(), postLocation!!)
+                start_date_and_time = RequestBody.create("text/plain".toMediaTypeOrNull(), startDate!!)
+                end_date_and_time = RequestBody.create("text/plain".toMediaTypeOrNull(), endDate!!)
+
+                // System.out.println("error>> udid " + uuid);
+                if (filePartList.size > 0) {
+                    call = mAPIService.createPostImages(
+                            filePartList, activityname, activitydesc, numberoffiles, category, subcategory, user_uuid,
+                            location, start_date_and_time, end_date_and_time
+                    )
+                } else {
+                    call = mAPIService.createPost(
+                            filePart, activityname, activitydesc, numberoffiles, category, subcategory, user_uuid,
+                            location, start_date_and_time, end_date_and_time
+                    )
+                }
+    /*            call.enqueue(object : Callback<UploadImage?> {
+                    override fun onResponse(call: Call<UploadImage?>, response: Response<UploadImage?>) {
+                        println("msg>>  response: $response")
+                        myDialog!!.hideDialog(this@HomeActivity)
+                        SingleRecyclerViewAdapter.sSelected_category = -1
+                        SubCategorySingleSelectionAdapter.sSelected_subcategory = -1
+                        if (response.body() != null) {
+                            val uploadImage: UploadImage? = response.body()
+                            val Activity_UUID: String = uploadImage.getActivity_UUID()
+                            println("Activity_UUID>>$Activity_UUID")
+                            if (Activity_UUID != null) {
+                                // inviteDialog(Activity_UUID) // pass the Activity_UUID for invite friend api
+                                builder.dismiss()
+                            }
+                        } else {
+                            Toast.makeText(this@HomeActivity, "Invalid response from server", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<UploadImage?>, t: Throwable) {
+                        myDialog!!.hideDialog(this@HomeActivity)
+                        println("msg>> failure: " + t.cause)
+                        //  Toast.makeText(MainActivity.this, "" + t.getCause(), Toast.LENGTH_SHORT).show();
+                    }
+                })*/
+            }
+        }
+
         builder.show()
     }
 
+    private fun validateMoreInfo(postLocation: String, startDate: String, endDate: String, categoryName: String, subCategory: String, edit_venu: EditText): Boolean {
+        if (postLocation.isEmpty()) {
+            edit_venu.error = "Please enter location!"
+            edit_venu.requestFocus()
+            return false
+        } else if (startDate == "") {
+            Toast.makeText(this@HomeActivity, "Please select activity start date and time", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (endDate == "") {
+            Toast.makeText(this@HomeActivity, "Please select activity end date and time", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (categoryName == "") {
+            Toast.makeText(this@HomeActivity, "Please select category name", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (subCategory == "") {
+            Toast.makeText(this@HomeActivity, "Please select sub-category name", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    private fun splitDate(strDate: java.lang.StringBuilder): String? {
+        var finalDate = ""
+        val objDate:Date?;
+        try {
+            //current date format
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+            objDate = dateFormat.parse(strDate.toString())
+
+            //Expected date format
+            val dateFormat2 = SimpleDateFormat("MMMM dd, yyyy")
+            finalDate= objDate?.let { dateFormat2.format(it) }.toString()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return finalDate
+    }
     private fun getCategories(emailId: String?) {
-        Log.d("email_id>>",""+emailId)
+      //  Log.d("email_id>>",""+emailId)
         val getCategoryRequest = GetCategoryRequest(emailId)
         val call: Call<GetCategoryResponse> = mAPIService.getCategory(getCategoryRequest)
         call.enqueue(object : Callback<GetCategoryResponse?> {
@@ -1489,9 +1629,99 @@ class HomeActivity :
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.tv_continue ->{
-
+            R.id.img_select_start_date ->{
+                hideKeyboard()
+                if (ll_calendar_view_start_date!!.visibility != View.VISIBLE) {
+                    ll_calendar_view_start_date!!.visibility = View.VISIBLE
+                } else {
+                    ll_calendar_view_start_date!!.visibility = View.GONE
+                }
             }
+            R.id.img_select_end_date ->{
+                hideKeyboard()
+                if (ll_calendar_view_end_date!!.visibility != View.VISIBLE) {
+                    ll_calendar_view_end_date!!.visibility = View.VISIBLE
+                } else {
+                    ll_calendar_view_end_date!!.visibility = View.GONE
+                }
+            }
+            R.id.tv_calendar_cancel1 ->{
+                ll_calendar_view_start_date!!.visibility = View.GONE
+            }
+            R.id.tv_calendar_cancel2 ->{
+                ll_calendar_view_end_date!!.visibility = View.GONE
+            }
+            R.id.tv_calendar_ok1 ->{
+                ll_calendar_view_start_date!!.visibility = View.GONE
+                ll_start_time!!.visibility = View.VISIBLE
+            }
+
+            R.id.tv_calendar_ok2 ->{
+                ll_calendar_view_end_date!!.visibility = View.GONE
+                ll_end_time!!.visibility = View.VISIBLE
+            }
+
+            R.id.tv_time_ok1 ->{
+                val hour: String
+                val minute: String
+                ll_start_time!!.visibility = View.GONE
+                @Suppress("DEPRECATION")
+                hour = if (timePicker1!!.currentHour < 10) {
+                    "0" + timePicker1!!.currentHour
+                } else {
+                    "" + timePicker1!!.currentHour
+                }
+                @Suppress("DEPRECATION")
+                minute = if (timePicker1!!.currentMinute < 10) {
+                    "0" + timePicker1!!.currentMinute
+                } else {
+                    "" + timePicker1!!.currentMinute
+                }
+
+                val currentTime = "$hour:$minute"
+                if (tv_activity_start_date!!.text.toString().length>0) {
+                    tv_activity_start_date!!.text = tv_activity_start_date!!.text.toString() + "-" + currentTime
+                } else {
+                    val dateFormat: java.text.DateFormat = SimpleDateFormat("mm-dd-yyyy")
+                    val date = Date()
+                    tv_activity_start_date!!.text = dateFormat.format(date) + "-" + currentTime
+                }
+            }
+
+            R.id.tv_time_ok2 ->{
+                val hour: String
+                val minute: String
+                ll_end_time!!.visibility = View.GONE
+                @Suppress("DEPRECATION")
+                hour = if (timePicker2!!.currentHour < 10) {
+                    "0" + timePicker2!!.currentHour
+                } else {
+                    "" + timePicker2!!.currentHour
+                }
+                @Suppress("DEPRECATION")
+                minute = if (timePicker2!!.currentMinute < 10) {
+                    "0" + timePicker2!!.currentMinute
+                } else {
+                    "" + timePicker2!!.currentMinute
+                }
+                val currentTime = "$hour:$minute"
+                if (tv_activity_end_date!!.text.toString().length>0) {
+                    tv_activity_end_date!!.text = tv_activity_end_date!!.text.toString() + "-" + currentTime
+                } else {
+                    val dateFormat: java.text.DateFormat = SimpleDateFormat("mm-dd-yyyy")
+                    val date = Date()
+                    tv_activity_end_date!!.text = dateFormat.format(date) + "-" + currentTime
+                }
+            }
+
+            R.id.tv_time_cancel1 ->{
+                ll_start_time!!.visibility = View.GONE
+            }
+
+            R.id.tv_time_cancel2 ->{
+                ll_end_time!!.visibility = View.GONE
+            }
+
             R.id.rl_select_category ->{
                 hideKeyboard()
                 if (ll_category_space!!.visibility == View.VISIBLE) {
@@ -1519,10 +1749,10 @@ class HomeActivity :
         singleRecyclerViewAdapter!!.selectedItem()
         // Toast.makeText(this@HomeActivity, ""+categoryList.get(position).getCategory(), Toast.LENGTH_SHORT).show();
         categoryName = categoryList[position].category
-        getSubCategories(userUuid, categoryList[position].category)
+        getSubCategories(categoryList[position].category)
     }
 
-    private fun getSubCategories(user_uuid: String?, category: String?) {
+    private fun getSubCategories(category: String?) {
         subCategoryList.clear()
         // add static data in subCategory
         if (category == "Travelling") {
@@ -1568,8 +1798,9 @@ class HomeActivity :
 
     }
 
-    override fun onSubCategoryListener(position: Int, view: View?) {
-        TODO("Not yet implemented")
+     override fun onSubCategoryListener(position: Int, view: View?) {
         subCategorySingleSelectionAdapter!!.selectedItem()
+          Toast.makeText(this@HomeActivity, ""+subCategoryList.get(position).getSub_categ_name(), Toast.LENGTH_SHORT).show();
+         subCategory = subCategoryList[position].sub_categ_name
     }
 }

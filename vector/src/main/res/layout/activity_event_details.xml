@@ -40,7 +40,7 @@
                 android:layout_marginLeft="8dp"
                 android:fontFamily="@font/ubuntu_regular"
                 android:gravity="center"
-                android:text="TimeShare"
+                android:text="Pareza"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </LinearLayout>
