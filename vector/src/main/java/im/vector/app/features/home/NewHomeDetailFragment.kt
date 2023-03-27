@@ -23,6 +23,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.mvrx.activityViewModel
@@ -91,6 +92,8 @@ class NewHomeDetailFragment :
 
     private val newChatBottomSheet = NewChatBottomSheet()
     private val spaceListBottomSheet = SpaceListBottomSheet()
+
+   // lateinit var iv_create_group: ImageView
 
     private var hasUnreadRooms = false
         set(value) {
@@ -318,14 +321,17 @@ class NewHomeDetailFragment :
     }
 
     private fun setupToolbar() {
-        setupToolbar(views.toolbar)
+       // setupToolbar(views.toolbar)
 
         views.collapsingToolbar.debouncedClicks(::openSpaceSettings)
         views.toolbar.debouncedClicks(::openSpaceSettings)
+      //  iv_create_group = views.collapsingToolbar.findViewById(R.id.iv_create_group)
+       /* iv_create_group.setOnClickListener {
 
-        views.avatar.debouncedClicks {
+        }*/
+       /* views.avatar.debouncedClicks {
             navigator.openSettings(requireContext())
-        }
+        }*/
     }
 
     private fun openSpaceSettings() = withState(viewModel) { viewState ->

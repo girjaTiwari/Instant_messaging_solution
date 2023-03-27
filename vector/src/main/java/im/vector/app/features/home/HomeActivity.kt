@@ -258,7 +258,7 @@ class HomeActivity :
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
     var tsSessionManager: TSSessionManager? = null
     val mAPIService = ApiUtils.getAPIService()
-    lateinit var fab:MovableFloatingActionButton
+  //  lateinit var fab:MovableFloatingActionButton
      lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     val cameraRequest = 100
     val PICK_IMAGE_MULTIPLE = 101
@@ -357,7 +357,7 @@ class HomeActivity :
         iv_users = findViewById(R.id.iv_users)
         iv_chat = findViewById(R.id.iv_chat)
         iv_menu = findViewById(R.id.iv_menu)
-        fab = findViewById(R.id.fab_add_activity)
+      //  fab = findViewById(R.id.fab_add_activity)
 
         views.drawerLayout.addDrawerListener(drawerListener)
         if (isFirstCreation()) {
@@ -435,11 +435,11 @@ class HomeActivity :
        // Log.d("userid>>",""+userUuid)
       //  Log.d("email_id>>",""+email_id)
 
-        fab.setOnClickListener {
+      /*  fab.setOnClickListener {
             startCreatingNewEvents()
            // val intent = Intent(this, PhotoActivity::class.java)
            // startActivity(intent)
-        }
+        }*/
 
         // Get view id's and perform listener's for Bottom items
         val rl_home = findViewById<RelativeLayout>(R.id.rl_home)

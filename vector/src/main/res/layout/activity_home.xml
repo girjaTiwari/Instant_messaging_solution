@@ -28,7 +28,7 @@
                 android:id="@+id/waiting_view"
                 layout="@layout/merge_overlay_waiting_view" />
 
-            <im.vector.app.timeshare.MovableFloatingActionButton
+<!--            <im.vector.app.timeshare.MovableFloatingActionButton
                 android:id="@+id/fab_add_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/ic_plus_icon"
-                app:tint="#FFFFFF"/>
+                app:tint="#FFFFFF"/>-->
 
             <LinearLayout
                 android:id="@+id/footer"

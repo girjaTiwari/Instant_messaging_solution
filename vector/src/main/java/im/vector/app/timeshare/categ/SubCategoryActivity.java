@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +44,7 @@ public class SubCategoryActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     TSSessionManager tsSessionManager;
     MyDialog myDialog;
-    Button btn_continue;
+    AppCompatButton btn_continue;
     ArrayList<Category> categoryList = new ArrayList<>();
     RvSubCategoryAdapter rvSubCategoryAdapter;
     ImageView iv_close_subcategory;

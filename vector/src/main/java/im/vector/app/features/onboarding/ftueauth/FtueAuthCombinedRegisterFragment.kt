@@ -18,6 +18,8 @@ package im.vector.app.features.onboarding.ftueauth
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,23 +76,40 @@ class FtueAuthCombinedRegisterFragment :
         super.onViewCreated(view, savedInstanceState)
         updateServerUrl()
         setupSubmitButton()
-        views.createAccountRoot.realignPercentagesToParent()
-        views.editServerButton.debouncedClicks { viewModel.handle(OnboardingAction.PostViewEvent(OnboardingViewEvents.EditServerSelection)) }
+       // views.createAccountRoot.realignPercentagesToParent()
+       // views.editServerButton.debouncedClicks { viewModel.handle(OnboardingAction.PostViewEvent(OnboardingViewEvents.EditServerSelection)) }
         views.createAccountPasswordInput.setOnImeDoneListener {
-            if (canSubmit(views.createAccountInput.content(), views.createAccountPasswordInput.content())) {
+            if (canSubmit(views.createAccountInput.text.toString(), views.createAccountPasswordInput.content())) {
                 submit()
             }
         }
 
-        views.createAccountInput.onTextChange(viewLifecycleOwner) {
+      /*  views.createAccountInput.text.onTextChange(viewLifecycleOwner) {
             viewModel.handle(OnboardingAction.ResetSelectedRegistrationUserName)
-            views.createAccountEntryFooter.text = ""
-        }
+          //  views.createAccountEntryFooter.text = ""
+        }*/
+        views.createAccountInput.addTextChangedListener(object : TextWatcher {
 
-        views.createAccountInput.setOnFocusLostListener(viewLifecycleOwner) {
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                viewModel.handle(OnboardingAction.ResetSelectedRegistrationUserName)
+            }
+        })
+
+        /*views.createAccountInput.setOnFocusLostListener(viewLifecycleOwner) {
             viewModel.handle(OnboardingAction.UserNameEnteredAction.Registration(views.createAccountInput.content()))
-        }
+        }*/
+
+
+
     }
+
 
     private fun updateServerUrl() {
 
@@ -106,17 +125,17 @@ class FtueAuthCombinedRegisterFragment :
 
     private fun setupSubmitButton() {
         views.createAccountSubmit.setOnClickListener { submit() }
-        views.firstNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
-        views.lastNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
+      //  views.firstNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
+      //  views.lastNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
         views.emailInput.clearErrorOnChange(viewLifecycleOwner)
-        views.createAccountInput.clearErrorOnChange(viewLifecycleOwner)
+      //  views.createAccountInput.clearErrorOnChange(viewLifecycleOwner)
         views.createAccountPasswordInput.clearErrorOnChange(viewLifecycleOwner)
         views.createAccounPhoneInput.clearErrorOnChange(viewLifecycleOwner)
 
-        combine(views.createAccountInput.editText().textChanges(),
+     /*   combine(views.createAccountInput.text.textChanges(),
                 views.createAccountPasswordInput.editText().textChanges()) { account, password ->
             views.createAccountSubmit.isEnabled = canSubmit(account, password)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)*/
     }
 
 
@@ -126,9 +145,9 @@ class FtueAuthCombinedRegisterFragment :
             cleanupUi()
             // This can be called by the IME action, so deal with empty cases
             var error = 0
-            val firstname = views.firstNameCreateAccountInput.content()
-            val lastname = views.lastNameCreateAccountInput.content()
-            val username = views.createAccountInput.content()
+            val firstname = views.firstNameCreateAccountInput.text.toString()
+            val lastname = views.lastNameCreateAccountInput.text.toString()
+            val username = views.createAccountInput.text.toString()
             val email = views.emailInput.content()
             val password = views.createAccountPasswordInput.content()
             val phone = views.createAccounPhoneInput.content()
@@ -165,7 +184,7 @@ class FtueAuthCombinedRegisterFragment :
                 val initialDeviceName = getString(R.string.login_default_session_public_name)
                 val registerAction = when {
                    // login.isMatrixId() -> AuthenticateAction.RegisterWithMatrixId(login, password, initialDeviceName)
-                    else -> AuthenticateAction.Register(firstname,lastname,username,email, password, phone, initialDeviceName)
+                    else -> AuthenticateAction.Register(lastname,lastname,username,email, password, phone, initialDeviceName)
                 }
                 viewModel.handle(registerAction)
             }
@@ -223,21 +242,21 @@ class FtueAuthCombinedRegisterFragment :
     }
 
     private fun setupUi(state: OnboardingViewState) {
-        views.selectedServerName.text = state.selectedHomeserver.userFacingUrl.toReducedUrl()
+       // views.selectedServerName.text = state.selectedHomeserver.userFacingUrl.toReducedUrl()
 
         if (state.isLoading) {
             // Ensure password is hidden
             views.createAccountPasswordInput.editText().hidePassword()
         }
 
-        views.createAccountEntryFooter.text = when {
+        /*views.createAccountEntryFooter.text = when {
             state.registrationState.isUserNameAvailable -> getString(
                     R.string.ftue_auth_create_account_username_entry_footer,
                     state.registrationState.selectedMatrixId
             )
 
             else -> ""
-        }
+        }*/
 
        /* when (state.selectedHomeserver.preferredLoginMode) {
             is LoginMode.SsoAndPassword -> renderSsoProviders(state.deviceId, state.selectedHomeserver.preferredLoginMode.ssoState)
