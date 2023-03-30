@@ -89,43 +89,51 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                 if(response.body()!=null){
                     LoginResponse verifyEmailResponse = response.body();
                      String message = verifyEmailResponse.getMsg();
+                     String status = verifyEmailResponse.getStatus();
                      String email_id="";
 
-                    AccountStatus account_status = verifyEmailResponse.getAccount_status();
-                    if (account_status != null) {
-                        String user_uuid = account_status.getUser_uuid();
-                        System.out.println("user_uuid_>>" + user_uuid);
-                        String first_name = account_status.getFirst_name();
-                        String last_name = account_status.getLast_name();
-                         email_id = account_status.getEmail_id();
-                        String profile_name = account_status.getProfile_name();
-                        String mobile_number = account_status.getMobile_number();
-                        String chat_id = account_status.getChat_id();
-                        String chat_password = account_status.getChat_password();
-                        String is_category = account_status.getIs_category();
-                        String is_sub_category = account_status.getIs_sub_category();
-                        tsSessionManager.createLoginSession(
-                                true,
-                                true,
-                                user_uuid,
-                                first_name,
-                                last_name,
-                                email_id,
-                                profile_name,
-                                mobile_number,
-                                chat_id,
-                                chat_password,
-                                parseBoolean("false"),
-                                parseBoolean("false")
-                        );
+                     if (status.equals("1")){
+                         AccountStatus account_status = verifyEmailResponse.getAccount_status();
+                         if (account_status != null) {
+                             String user_uuid = account_status.getUser_uuid();
+                             System.out.println("user_uuid_>>" + user_uuid);
+                             String first_name = account_status.getFirst_name();
+                             String last_name = account_status.getLast_name();
+                             email_id = account_status.getEmail_id();
+                             String profile_name = account_status.getProfile_name();
+                             String mobile_number = account_status.getMobile_number();
+                             String chat_id = account_status.getChat_id();
+                             String chat_password = account_status.getChat_password();
+                             String is_category = account_status.getIs_category();
+                             String is_sub_category = account_status.getIs_sub_category();
+                             tsSessionManager.createLoginSession(
+                                     true,
+                                     true,
+                                     user_uuid,
+                                     first_name,
+                                     last_name,
+                                     email_id,
+                                     profile_name,
+                                     mobile_number,
+                                     chat_id,
+                                     chat_password,
+                                     parseBoolean("false"),
+                                     parseBoolean("false")
+                             );
 
-                    }
+                         }
+                         Intent intent = new Intent(mActivity, CategoryActivity.class);
+                         intent.putExtra("email",strEmail);
+                         startActivity(intent);
+                         finish();
+                     }else {
+                         Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
+                     }
 
-                    Toast.makeText(mActivity, ""+message, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mActivity, CategoryActivity.class);
-                    intent.putExtra("email",strEmail);
-                    startActivity(intent);
-                    finish();
+
+
+
+
 
                 }
             }

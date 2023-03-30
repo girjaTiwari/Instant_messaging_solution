@@ -23,6 +23,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.autofill.HintConstants
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.lifecycleScope
@@ -64,6 +65,7 @@ import reactivecircus.flowbinding.android.widget.textChanges
 private const val MINIMUM_PASSWORD_LENGTH = 8
 private const val MINIMUM_PHONE_LENGTH = 10
 
+
 @AndroidEntryPoint
 class FtueAuthCombinedRegisterFragment :
         AbstractSSOFtueAuthFragment<FragmentFtueCombinedRegisterBinding>() {
@@ -78,34 +80,21 @@ class FtueAuthCombinedRegisterFragment :
         setupSubmitButton()
        // views.createAccountRoot.realignPercentagesToParent()
        // views.editServerButton.debouncedClicks { viewModel.handle(OnboardingAction.PostViewEvent(OnboardingViewEvents.EditServerSelection)) }
-        views.createAccountPasswordInput.setOnImeDoneListener {
-            if (canSubmit(views.createAccountInput.text.toString(), views.createAccountPasswordInput.content())) {
+      /*  views.createAccountPasswordInput.setOnImeDoneListener {
+            if (canSubmit(views.createAccountInput.text.toString(), views.createAccountPasswordInput.text.toString())) {
                 submit()
             }
-        }
+        }*/
 
       /*  views.createAccountInput.text.onTextChange(viewLifecycleOwner) {
             viewModel.handle(OnboardingAction.ResetSelectedRegistrationUserName)
           //  views.createAccountEntryFooter.text = ""
         }*/
-        views.createAccountInput.addTextChangedListener(object : TextWatcher {
 
-            override fun afterTextChanged(s: Editable) {}
-
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-                viewModel.handle(OnboardingAction.ResetSelectedRegistrationUserName)
-            }
-        })
 
         /*views.createAccountInput.setOnFocusLostListener(viewLifecycleOwner) {
             viewModel.handle(OnboardingAction.UserNameEnteredAction.Registration(views.createAccountInput.content()))
         }*/
-
 
 
     }
@@ -125,12 +114,12 @@ class FtueAuthCombinedRegisterFragment :
 
     private fun setupSubmitButton() {
         views.createAccountSubmit.setOnClickListener { submit() }
-      //  views.firstNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
-      //  views.lastNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
+        views.firstNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
+        views.lastNameCreateAccountInput.clearErrorOnChange(viewLifecycleOwner)
         views.emailInput.clearErrorOnChange(viewLifecycleOwner)
-      //  views.createAccountInput.clearErrorOnChange(viewLifecycleOwner)
+        views.createAccountInput.clearErrorOnChange(viewLifecycleOwner)
         views.createAccountPasswordInput.clearErrorOnChange(viewLifecycleOwner)
-        views.createAccounPhoneInput.clearErrorOnChange(viewLifecycleOwner)
+      //  views.createAccounPhoneInput.clearErrorOnChange(viewLifecycleOwner)
 
      /*   combine(views.createAccountInput.text.textChanges(),
                 views.createAccountPasswordInput.editText().textChanges()) { account, password ->
@@ -145,12 +134,12 @@ class FtueAuthCombinedRegisterFragment :
             cleanupUi()
             // This can be called by the IME action, so deal with empty cases
             var error = 0
-            val firstname = views.firstNameCreateAccountInput.text.toString()
-            val lastname = views.lastNameCreateAccountInput.text.toString()
-            val username = views.createAccountInput.text.toString()
+            val firstname = views.firstNameCreateAccountInput.content()
+            val lastname = views.lastNameCreateAccountInput.content()
+            val username = views.createAccountInput.content()
             val email = views.emailInput.content()
-            val password = views.createAccountPasswordInput.content()
-            val phone = views.createAccounPhoneInput.content()
+            val password = views.createAccountPasswordInput.text.toString()
+            val phone = views.createAccounPhoneInput.text.toString()
 
 
             if (firstname.isEmpty()) {
@@ -214,9 +203,9 @@ class FtueAuthCombinedRegisterFragment :
             throwable.isLoginEmailUnknown() -> {
                 views.createAccountInput.error = getString(R.string.login_login_with_email_error)
             }
-            throwable.isInvalidPassword() && views.createAccountPasswordInput.hasSurroundingSpaces() -> {
+         /*   throwable.isInvalidPassword() && views.createAccountPasswordInput.hasSurroundingSpaces() -> {
                 views.createAccountPasswordInput.error = getString(R.string.auth_invalid_login_param_space_in_password)
-            }
+            }*/
             throwable.isWeakPassword() || throwable.isInvalidPassword() -> {
                 views.createAccountPasswordInput.error = errorFormatter.toHumanReadable(throwable)
             }
@@ -246,7 +235,7 @@ class FtueAuthCombinedRegisterFragment :
 
         if (state.isLoading) {
             // Ensure password is hidden
-            views.createAccountPasswordInput.editText().hidePassword()
+           // views.createAccountPasswordInput.editText().hidePassword()
         }
 
         /*views.createAccountEntryFooter.text = when {
